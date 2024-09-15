@@ -1,0 +1,29 @@
+.main {
+    display: flex;
+    width: 100%;
+    
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+}
+
+.main > h2 {
+    font-size: 25px;
+    margin: 0;
+}
+
+.main > a > section {
+    display: flex;
+    align-items: center;
+    
+    flex-direction: row-reverse;
+    gap: 0 8px;
+}
+
+.main > a > section > span {
+    font-size: 15px;
+    font-weight: 500;
+
+    color: #0ED951;
+}

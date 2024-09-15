@@ -1,0 +1,12 @@
+.main {
+    box-sizing: border-box;
+}
+
+.main > .list {
+    width: 100%;
+    height: auto;
+    
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+}

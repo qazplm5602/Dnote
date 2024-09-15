@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Logo from '../../assets/Dnote.svg'
 import SearchIcon from '../../assets/icons/ic-search.svg';
 import CloseIcon from '../../assets/icons/ic-close-solid.svg';
-import HighlightBg from '../../assets/highlight_bg.png';
 import PostBox from '../PostBox/PostBox';
+import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
 
 export default function Home() {
     return <main>
@@ -15,6 +15,8 @@ export default function Home() {
         {/* <img className={style.highlight_bg} src={HighlightBg} draggable={false} /> */}
         <div className={style.highlight_bg}></div>
         <HighlightSection />
+        
+        <PopularPostSection />
     </main>;
 }
 
@@ -122,4 +124,11 @@ function HighlightList() {
         <PostBox />
         <PostBox />
     </section>;
+}
+
+function PopularPostSection() {
+    return <HeadMenuList title='인기 있는 Post' menu='더보기' to='/' className={`screen_container ${style.popular_list}`}>
+        <PostBox />
+        <PostBox />
+    </HeadMenuList>
 }
