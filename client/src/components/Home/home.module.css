@@ -21,6 +21,7 @@
     margin: 0 8px;
 
     font-weight: 600;
+    text-wrap: nowrap;
 
     background: linear-gradient(#67FF52 0%, #00A6FF 100%);
     background-clip: text;
@@ -28,4 +29,75 @@
     color: transparent;
 
     transition: opacity 300ms, width 300ms;
+}
+
+.search_main {
+    width: 600px;
+    height: auto;
+
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.search_main > .search_box {
+    width: 100%;
+    height: 45px;
+    border-radius: 50px;
+
+    padding: 10px 15px;
+    gap: 0 10px;
+
+    display: flex;
+    align-items: center;
+    
+    background-color: #EEEEF0;
+}
+
+.search_main > .search_box > .icon {
+    height: 20px;
+}
+
+.search_main > .search_box > .clear {
+    border: none;
+    background-color: transparent;
+    display: flex;
+
+    padding: 0;
+
+    width: 15px;
+    height: 15px;
+}
+
+.search_main > .search_box > .clear > img {
+    width: 100%;
+    height: 100%;
+}
+
+.search_main > .search_box > input {
+    font-size: 16px;
+
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+
+    outline: none;
+}
+
+.search_main > .popular_tags {
+    display: flex;
+    margin-top: 3px;
+
+    gap: 0 6px;
+    padding: 0 15px;
+}
+
+.search_main > .popular_tags > div {
+    font-size: 13px;
+    color: #8F8F8F;
+
+    cursor: pointer;
+}
+
+.search_main > .popular_tags > div:hover {
+    text-decoration: underline;
 }

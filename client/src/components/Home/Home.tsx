@@ -1,10 +1,14 @@
 import style from './home.module.css';
-import Logo from '../../assets/Dnote.svg'
 import { useEffect, useMemo, useState } from 'react';
+
+import Logo from '../../assets/Dnote.svg'
+import SearchIcon from '../../assets/icons/ic-search.svg';
+import CloseIcon from '../../assets/icons/ic-close-solid.svg';
 
 export default function Home() {
     return <main>
         <Title />
+        <SearchSection />
     </main>;
 }
 
@@ -64,4 +68,33 @@ function Title() {
         <img src={Logo} />
         <div>다른 사람들의 <div className={style.text} style={{ width: `${width}px`, opacity: show ? 1 : 0 }}>{titleList[idx]}</div> 이야기를 들어보세요.</div>
     </section>
+}
+
+function SearchSection() {
+    return <section className={style.search_main}>
+        <SearchBox />
+        <PopularTags />
+    </section>;
+}
+
+function SearchBox() {
+    return <div className={style.search_box}>
+        <img className={style.icon} src={SearchIcon} />
+        <input type="text" placeholder='검색' />
+        
+        <button className={style.clear}>
+            <img src={CloseIcon} />
+        </button>
+    </div>;
+}
+
+function PopularTags() {
+    return <section className={style.popular_tags}>
+        <div>#linux</div>
+        <div>#spring</div>
+        <div>#javascript</div>
+        <div>#react</div>
+        <div>#jquery</div>
+        <div>#unity</div>
+    </section>;
 }
