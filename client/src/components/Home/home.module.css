@@ -11,15 +11,21 @@
 }
 
 .title_section > div {
+    display: flex;
+
     font-size: 23px;
     margin-top: 20px;
 }
 
-.title_section > div > span {
+.title_section > div > .text {
+    margin: 0 8px;
+
     font-weight: 600;
 
     background: linear-gradient(#67FF52 0%, #00A6FF 100%);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+
+    transition: opacity 300ms, width 300ms;
 }
