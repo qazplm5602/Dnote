@@ -5,8 +5,12 @@ import NameTag from '../NameTag/NameTag';
 import TimeTake from '../TimeTake/TimeTake';
 import { Link } from 'react-router-dom';
 
-export default function PostBox() {
-    return <div className={style.item}>
+export default function PostBox({ className }: { className?: string }) {
+    const classList = [style.item];
+    if (className)
+        classList.push(className);
+
+    return <div className={classList.join(' ')}>
         <Link to={'#'}>
             <img className={style.thumbnail} src={ExampleImg} />
         </Link>

@@ -119,5 +119,7 @@ function HighlightSection() {
 function HighlightList() {
     return <section className={style.highlight_list}>
         <PostBox />
+        <PostBox />
+        <PostBox />
     </section>;
 }
