@@ -13,12 +13,15 @@
 
   /* color-scheme: light dark; */
   color: #3D3D3D;
-  background-color: #fafafa;
+  background-color: #fff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* 전역 변수 */
+  --screen-max-width: 1300px;
 }
 
 a {
@@ -39,4 +42,14 @@ header, button, main, div, section {
 
 button {
   cursor: pointer;
+}
+
+.screen_container {
+  width: 100%;
+  max-width: var(--screen-max-width);
+
+  height: auto;
+
+  margin: 0 auto;
+  padding: 0 10px;
 }

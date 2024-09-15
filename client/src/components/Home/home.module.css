@@ -1,0 +1,25 @@
+.title_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 50px;
+}
+
+.title_section > img {
+    height: 50px;
+}
+
+.title_section > div {
+    font-size: 23px;
+    margin-top: 20px;
+}
+
+.title_section > div > span {
+    font-weight: 600;
+
+    background: linear-gradient(#67FF52 0%, #00A6FF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}

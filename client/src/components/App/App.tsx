@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "../Header/Header";
+import Home from "../Home/Home";
 
 
 export default function App() {
@@ -9,7 +10,7 @@ export default function App() {
             <Header />
 
             <Routes>
-                <Route path="/" element={<h1>메인</h1>} />
+                <Route path="/" element={<Home />} />
             </Routes>
 
             {/* footer */}
