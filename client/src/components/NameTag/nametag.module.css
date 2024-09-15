@@ -1,0 +1,22 @@
+.nametag {
+    display: flex;
+    align-items: center;
+
+    gap: 0 8px;
+}
+
+.nametag > img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+
+    object-fit: cover;
+}
+
+.nametag > span {
+    font-weight: 600;
+    font-size: 16px;
+}
