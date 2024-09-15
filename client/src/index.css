@@ -22,6 +22,7 @@
 
   /* 전역 변수 */
   --screen-max-width: 1300px;
+  --text-color-black: #3D3D3D;
 }
 
 a {

@@ -1,0 +1,9 @@
+.time {
+    font-size: 13px;
+    display: flex;
+    gap: 0 5px;
+}
+
+.time > img {
+    width: 13px;
+}

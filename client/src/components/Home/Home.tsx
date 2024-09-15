@@ -4,11 +4,17 @@ import { useEffect, useMemo, useState } from 'react';
 import Logo from '../../assets/Dnote.svg'
 import SearchIcon from '../../assets/icons/ic-search.svg';
 import CloseIcon from '../../assets/icons/ic-close-solid.svg';
+import HighlightBg from '../../assets/highlight_bg.png';
+import PostBox from '../PostBox/PostBox';
 
 export default function Home() {
     return <main>
         <Title />
         <SearchSection />
+
+        {/* <img className={style.highlight_bg} src={HighlightBg} draggable={false} /> */}
+        <div className={style.highlight_bg}></div>
+        <HighlightSection />
     </main>;
 }
 
@@ -96,5 +102,22 @@ function PopularTags() {
         <div>#react</div>
         <div>#jquery</div>
         <div>#unity</div>
+    </section>;
+}
+
+function HighlightSection() {
+    return <section className={[style.highlight_section, "screen_container"].join(' ')}>
+        <div className={style.title_info}>
+            <div>학생들의 게임 제작</div>
+            <div>Unity</div>
+        </div>
+
+        <HighlightList />
+    </section>;
+}
+
+function HighlightList() {
+    return <section className={style.highlight_list}>
+        <PostBox />
     </section>;
 }
