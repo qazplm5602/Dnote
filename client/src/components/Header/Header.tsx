@@ -7,7 +7,9 @@ import SearchIcon from '../../assets/icons/ic-outline-search.svg';
 
 export default function Header() {
     return <header className={style.main}>
-        <img className={style.logo} src={Logo} />
+        <Link to="/">
+            <img className={style.logo} src={Logo} />
+        </Link>
         
         <section className={style.menu}>
             <img className={style.search} src={SearchIcon} />
