@@ -2,6 +2,7 @@ import style from './signup.module.css';
 
 import WelcomeImg from '../../assets/welcome.png';
 import SignUpAgree from './Agree';
+import SignUpForm from './Form';
 
 export default function SignUp() {
     return <main className={`screen_container ${style.main}`}>
@@ -14,6 +15,7 @@ export default function SignUp() {
             </ul>
         </section>
 
-        <SignUpAgree />
+        {/* <SignUpAgree /> */}
+        <SignUpForm />
     </main>
 }

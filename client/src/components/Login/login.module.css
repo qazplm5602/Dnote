@@ -74,7 +74,7 @@
 
     border: none;
     border-radius: 3px;
-    background-color: #88D57A;
+    background-color: var(--green-color);
     color: white;
 }
 

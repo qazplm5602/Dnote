@@ -104,7 +104,7 @@
     font-weight: 600;
     
     color: white;
-    background-color: #88D57A;
+    background-color: var(--green-color);
     
     border: none;
 }

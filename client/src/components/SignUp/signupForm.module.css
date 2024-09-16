@@ -1,0 +1,82 @@
+.main {
+    margin: 0 auto;
+    margin-top: 50px;
+    
+    max-width: 500px;
+}
+
+.main > section {
+    margin-bottom: 10px;
+}
+
+.main > section > h3 {
+    margin: 0;
+
+    font-size: 18px;
+}
+
+.main > section > .input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 5px;
+}
+
+.main > section > .sub {
+    font-size: 13px;
+    color: #999999;
+}
+
+.main > .register_btn {
+    width: 100%;
+    
+    font-size: 15px;
+    font-weight: 600;
+
+    border: none;
+    border-radius: 3px;
+
+    padding: 8px 0;
+    margin-top: 10px;
+
+    background-color: var(--green-color);
+    color: white;
+}
+
+.main > .already {
+    width: 100%;
+    text-align: center;
+
+    margin-top: 10px;
+    
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.main > .already > a {
+    margin-left: 5px;
+    font-weight: 600;
+
+    background: linear-gradient(#67FF52 0%, #00A6FF 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.bar {
+    width: 100%;
+    height: 5px;
+
+    margin-bottom: 5px;
+    
+    border-radius: 10px;
+    background-color: #d6d6d6;
+
+    overflow: hidden;
+}
+
+.bar > .barin {
+    width: 50%;
+    height: 100%;
+    
+    background-color: red;
+}
