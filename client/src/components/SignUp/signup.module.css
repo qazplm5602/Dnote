@@ -1,0 +1,27 @@
+.main > .head {
+    display: flex;
+    align-items: center;
+}
+
+.main > .head > img {
+    width: 60px;
+    height: 60px;
+
+    margin-right: 16px;
+}
+
+.main > .head > ul {
+    margin: 0;
+    padding: 0;
+}
+
+.main > .head > ul > .title {
+    font-size: 35px;
+    font-weight: 800;
+}
+
+.main > .head > ul > .sub {
+    color: #9A9A9A;
+    font-size: 16px;
+    font-weight: 500;
+}

@@ -8,6 +8,7 @@ import style from './app.module.css';
 import Login from "../Login/Login";
 import LoginHelp from "../Login/Help/LoginHelp";
 import LoginPasswordForget from "../Login/PasswordForget/LoginPasswordForget";
+import SignUp from "../SignUp/Signup";
 
 export default function App() {
     
@@ -34,6 +35,7 @@ function AppRouter() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/login/help" element={<LoginHelp />} />
                 <Route path="/login/help/forget" element={<LoginPasswordForget />} />
+                <Route path="/signup" element={<SignUp />} />
 
             </Routes>
         </CSSTransition>
