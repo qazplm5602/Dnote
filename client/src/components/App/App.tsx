@@ -6,6 +6,7 @@ import Footer from "../Footer/Footer";
 
 import style from './app.module.css';
 import Login from "../Login/Login";
+import LoginHelp from "../Login/Help/LoginHelp";
 
 export default function App() {
     
@@ -30,6 +31,7 @@ function AppRouter() {
                 <Route path="/" element={<Home />} />
                 <Route path="/test" element={<><h2>안녕.</h2><Footer /></>} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/login/help" element={<LoginHelp />} />
 
             </Routes>
         </CSSTransition>

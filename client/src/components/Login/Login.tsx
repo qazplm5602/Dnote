@@ -19,7 +19,7 @@ export default function Login() {
             <Input type='text' placeholder='이메일' />
             <Input type='password' placeholder='비밀번호' />
 
-            <Link to="/login/find" className={style.find}>로그인이 안되시나요?</Link>
+            <Link to="/login/help" className={style.find}>로그인이 안되시나요?</Link>
             
             <button className={style.login}>로그인</button>
         </article>

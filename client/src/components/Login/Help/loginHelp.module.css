@@ -1,0 +1,37 @@
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 100%;
+    height: calc(100vh - var(--header-height));
+
+    padding: 0 20px;
+}
+
+.main > .list {
+    width: 100%;
+    max-width: 800px;
+}
+
+.main > .list > section:nth-child(2) {
+    margin-top: 30px;
+    padding: 0 50px;
+    
+    gap: 15px 0;
+    justify-content: center;
+
+    flex-direction: column;
+}
+
+.main > .list > section > .box > div {
+    width: 100%;
+    padding: 18px 20px;
+
+    font-size: 16px;
+    font-weight: 500;
+    color: #5B5B5B;
+
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
