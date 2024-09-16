@@ -5,6 +5,7 @@ import Home from "../Home/Home";
 import Footer from "../Footer/Footer";
 
 import style from './app.module.css';
+import Login from "../Login/Login";
 
 export default function App() {
     
@@ -28,6 +29,7 @@ function AppRouter() {
 
                 <Route path="/" element={<Home />} />
                 <Route path="/test" element={<><h2>안녕.</h2><Footer /></>} />
+                <Route path="/login" element={<Login />} />
 
             </Routes>
         </CSSTransition>
