@@ -6,6 +6,7 @@ import SearchIcon from '../../assets/icons/ic-search.svg';
 import CloseIcon from '../../assets/icons/ic-close-solid.svg';
 import PostBox from '../PostBox/PostBox';
 import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
+import Footer from '../Footer/Footer';
 
 export default function Home() {
     return <main>
@@ -17,6 +18,8 @@ export default function Home() {
         <HighlightSection />
         
         <PopularPostSection />
+
+        <Footer />
     </main>;
 }
 

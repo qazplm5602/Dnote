@@ -1,0 +1,22 @@
+.enter {
+    position: absolute;
+    width: 100%;
+
+    background-color: white;
+
+    opacity: 0;
+    transition: opacity 300ms;
+}
+
+.enter_active {
+    opacity: 1;
+}
+
+.exit {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.exit_active {
+    opacity: 0;
+}
