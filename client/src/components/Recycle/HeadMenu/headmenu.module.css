@@ -25,5 +25,5 @@
     font-size: 15px;
     font-weight: 500;
 
-    color: #0ED951;
+    color: var(--thickn-green-color);
 }

@@ -41,7 +41,7 @@
 }
 
 .main > .menu > a > .link_btn.register {
-    background-color: #0ED951;
+    background-color: var(--thickn-green-color);
     color: white;
     font-weight: 600;
 }
