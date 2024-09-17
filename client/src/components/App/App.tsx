@@ -10,6 +10,7 @@ import LoginHelp from "../Login/Help/LoginHelp";
 import LoginPasswordForget from "../Login/PasswordForget/LoginPasswordForget";
 import SignUp from "../SignUp/SignUp";
 import UserPage from "../UserPage/UserPage";
+import Setting from "../Setting/Setting";
 
 export default function App() {
     
@@ -38,6 +39,7 @@ function AppRouter() {
                 <Route path="/login/help/forget" element={<LoginPasswordForget />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/user/:id" element={<UserPage />} />
+                <Route path="/setting/*" element={<Setting />} />
 
             </Routes>
         </CSSTransition>
