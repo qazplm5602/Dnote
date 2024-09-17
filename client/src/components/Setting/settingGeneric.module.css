@@ -1,0 +1,94 @@
+.main > .profile > h3 {
+    font-size: 25px;
+    margin: 0;
+    margin-bottom: 15px;
+}
+
+.main > .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.main > .profile > .group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main > .profile > .group > .avater {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.main > .profile > .group > .upload_btn {
+    position: relative;
+    margin-top: 10px;
+}
+
+.main > .profile > .group > .upload_btn > span {
+    position: absolute;
+    right: -10px;
+    transform: translateX(100%);
+
+    width: max-content;
+
+    color: #999999;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.main > .input_field {
+    
+}
+
+.main > .input_field > h3,
+.main > .link_screen > h3 {
+    font-size: 23px;
+    
+    margin: 0;
+    margin-top: 60px;
+    /* margin-bottom: 15px; */
+}
+
+.main > .input_field > .in {
+    display: flex;
+    align-items: stretch;
+    gap: 0 10px;
+
+    margin-top: 5px;
+}
+
+.main > .input_field > .in > input {
+    margin: 0;
+}
+
+.main > .input_field > .in > .btn {
+    flex-shrink: 0;
+}
+
+.main > .link_screen > .field {
+    display: flex;
+    align-items: center;
+
+    margin-top: 10px;
+}
+
+.main > .link_screen > .field > img {
+    margin-right: 15px;
+    width: 30px;
+}
+
+.main > .link_screen > .field > input {
+    margin: 0;
+}
+
+.main > .link_screen > .save_btn {
+    margin-left: auto;
+    margin-top: 10px;
+
+    display: block;
+}
