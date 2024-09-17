@@ -1,0 +1,91 @@
+.profile {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile > section {
+    display: flex;
+    align-items: center;
+}
+
+.profile > .left > .avater {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profile > .left > .detail {
+    margin-left: 13px;
+}
+
+.profile > .left > .detail > .name {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.profile > .left > .detail > .info {
+    font-size: 16px;
+    color: gray;
+}
+
+.profile > .right {
+    gap: 0 13px;
+    align-items: center;
+}
+
+.profile > .right > .follow {
+    font-size: 18px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    gap: 0 5px;
+}
+
+.profile > .right > .follow_btn {
+    font-size: 18px;
+    font-weight: 600;
+
+    padding: 8px 15px;
+    border-radius: 50px;
+    
+    border: none;
+
+    color: white;
+    background-color: var(--green-color);
+}
+
+.links {
+    display: flex;
+    align-items: center;
+
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.links > span {
+    font-size: 18px;
+    color: #AAAAAA;
+
+    margin-right: 10px;
+}
+
+.links > ul {
+    padding: 0;
+    margin: 0;
+}
+
+.links > ul > a > img {
+    width: 30px;
+    height: 30px;
+}
+
+.links > ul > a:not(:first-child) {
+    margin-left: 10px;
+}
+
+.list {
+    margin-top: 20px;
+}
