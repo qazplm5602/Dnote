@@ -11,6 +11,7 @@ import LoginPasswordForget from "../Login/PasswordForget/LoginPasswordForget";
 import SignUp from "../SignUp/SignUp";
 import UserPage from "../UserPage/UserPage";
 import Setting from "../Setting/Setting";
+import Write from "../Write/Write";
 
 export default function App() {
     
@@ -40,6 +41,7 @@ function AppRouter() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/user/:id" element={<UserPage />} />
                 <Route path="/setting/*" element={<Setting />} />
+                <Route path="/write" element={<Write />} />
 
             </Routes>
         </CSSTransition>
