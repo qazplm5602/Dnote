@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import style from './write.module.css';
 import ReactTextareaAutosize from 'react-textarea-autosize';
+import Button from '../Recycle/Button';
+import IconText from '../Recycle/IconText';
+
+import style from './write.module.css';
 
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
+import sendSvg from '../../assets/icons/ic-round-send.svg';
 
 export default function Write() {
     const [title, setTitle] = useState<string>("");
@@ -10,6 +14,7 @@ export default function Write() {
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
         <TagBox />
+        <Interactions />
     </main>;
 }
 
@@ -67,4 +72,15 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
     const onValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value);
 
     return <ReactTextareaAutosize className={style.title_input} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
+}
+
+function Interactions() {
+    return <article className={style.interaction_main}>
+        <Button className={[style.gray]}>불러오기</Button>
+        <Button className={[style.gray]}>임시저장</Button>
+
+        <div className={style.line}></div>
+
+        <Button className={[style.send_btn]}><IconText icon={sendSvg} text='게시하기' /></Button>
+    </article>;
 }

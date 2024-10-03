@@ -90,3 +90,35 @@
     border: none;
     outline: none;
 }
+
+.interaction_main {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    
+    gap: 0 15px;
+
+    margin-top: 20px;
+}
+
+.interaction_main > .gray {
+    background-color: #D1D1D1;
+}
+
+.interaction_main > .line {
+    width: 1px;
+    height: 23px;
+
+    background-color: #D8D8D8;
+}
+
+.interaction_main > .send_btn > section {
+    display: flex;
+    align-items: center;
+     
+    gap: 0 8px;
+}
+
+.interaction_main > .send_btn > section > img {
+    height: 15px;
+}
