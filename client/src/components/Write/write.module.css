@@ -40,6 +40,7 @@
     padding: 8px 10px;
     background-color: #F4F4F4;
 
+    min-height: 46px;
     height: max-content;
     border-radius: 20px;
 }
