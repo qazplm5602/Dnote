@@ -97,8 +97,7 @@
     justify-content: flex-end;
     
     gap: 0 15px;
-
-    margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .interaction_main > .gray {
@@ -121,4 +120,10 @@
 
 .interaction_main > .send_btn > section > img {
     height: 15px;
+}
+
+.editor_container {
+    height: 600px;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }

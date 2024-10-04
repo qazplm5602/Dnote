@@ -1,7 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import Button from '../Recycle/Button';
 import IconText from '../Recycle/IconText';
+
+// 에디터
+import '@toast-ui/editor/dist/toastui-editor.css';
+import '@toast-ui/editor/dist/i18n/ko-kr';
+import { Editor } from '@toast-ui/react-editor';
 
 import style from './write.module.css';
 
@@ -14,6 +19,7 @@ export default function Write() {
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
         <TagBox />
+        <EditorSection />
         <Interactions />
     </main>;
 }
@@ -82,5 +88,18 @@ function Interactions() {
         <div className={style.line}></div>
 
         <Button className={[style.send_btn]}><IconText icon={sendSvg} text='게시하기' /></Button>
+    </article>;
+}
+
+function EditorSection() {
+    return <article className={style.editor_container}>
+        <Editor
+            initialValue="hello react editor world!"
+            previewStyle="vertical"
+            height="100%"
+            initialEditType="markdown"
+            useCommandShortcut={true}
+            language="ko-KR"
+        />
     </article>;
 }
