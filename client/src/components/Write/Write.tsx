@@ -8,6 +8,11 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/i18n/ko-kr';
 import { Editor } from '@toast-ui/react-editor';
 
+// 에디터 플러그인
+import EditorColor from '@toast-ui/editor-plugin-color-syntax';
+import 'tui-color-picker/dist/tui-color-picker.css';
+import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+
 import style from './write.module.css';
 
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
@@ -100,6 +105,7 @@ function EditorSection() {
             initialEditType="markdown"
             useCommandShortcut={true}
             language="ko-KR"
+            plugins={[ EditorColor ]}
         />
     </article>;
 }
