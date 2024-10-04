@@ -17,6 +17,7 @@ import style from './write.module.css';
 
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
 import sendSvg from '../../assets/icons/ic-round-send.svg';
+import WriteTemp from './WriteTemp';
 
 export default function Write() {
     const [title, setTitle] = useState<string>("");
@@ -26,6 +27,8 @@ export default function Write() {
         <TagBox />
         <EditorSection />
         <Interactions />
+
+        <WriteTemp />
     </main>;
 }
 
