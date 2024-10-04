@@ -1,16 +1,27 @@
+import { CSSTransition } from "react-transition-group";
 import style from './write.module.css';
 
 import closeSvg from '../../assets/icons/ic-round-close.svg';
 import trashSvg from '../../assets/icons/trash.svg';
 import { IconButton } from '../Recycle/Button';
+import { useRef } from "react";
 
-export default function WriteTemp() {
-    return <article className={style.temp_main}>
-        <div className={style.box}>
-            <Head />
-            <List />
-        </div>
-    </article>;
+export default function WriteTemp({ show }: { show: boolean }) {
+    const nodeRef = useRef(null);
+    
+    return <CSSTransition in={show} nodeRef={nodeRef} unmountOnExit timeout={300} classNames={{
+        enter: style.enter,
+        enterActive: style.enter_active,
+        exit: style.exit,
+        exitActive: style.exit_active
+    }} >
+        <article ref={nodeRef} className={style.temp_main}>
+            <div className={style.box}>
+                <Head />
+                <List />
+            </div>
+        </article>
+    </CSSTransition>;
 }
 
 function Head() {

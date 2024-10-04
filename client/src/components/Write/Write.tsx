@@ -21,6 +21,7 @@ import WriteTemp from './WriteTemp';
 
 export default function Write() {
     const [title, setTitle] = useState<string>("");
+    const [showTemp, setShowTemp] = useState(false);
 
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
@@ -28,7 +29,7 @@ export default function Write() {
         <EditorSection />
         <Interactions />
 
-        <WriteTemp />
+        <WriteTemp show={showTemp} />
     </main>;
 }
 
