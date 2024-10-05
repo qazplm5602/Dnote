@@ -1,0 +1,110 @@
+.main {
+    display: flex;
+}
+
+.main > .content {
+    flex-grow: 1;
+}
+
+.main > .popular {
+    width: 300px;
+}
+
+.main > .content > .title {
+    font-size: 28px;
+    margin: 0;
+}
+
+.main > .content > .tags {
+    display: flex;
+    
+    gap: 0 8px;
+    
+    font-size: 15px;
+    color: #9A9A9A;
+}
+
+.main > .content > .detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.main > .content > .detail > .view {
+    display: flex;
+    align-items: center;
+    gap: 0 5px;
+
+    font-size: 14px;
+    color: #ABABAB;
+}
+
+.main > .content > .detail > .left > p {
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+    margin-top: 3px;
+
+    gap: 0 8px;
+}
+
+.main > .content > .detail > .left > p > .date {
+    font-size: 14px;
+    font-weight: 400;
+
+    color: #9A9A9A;
+}
+
+.main > .content > .detail > .left > p > .line {
+    width: 1px;
+    height: 15px;
+    
+    background-color: #D8D8D8;
+}
+
+.main > .content > .interaction {
+    display: flex;
+    justify-content: center;
+
+    gap: 0 10px;
+
+    margin: 50px 0;
+}
+
+.main > .content > .interaction > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: max-content;
+    height: 40px;
+
+    padding: 0 15px;
+    background-color: transparent;
+
+    border-radius: 100px;
+    border: 1px solid #D8D8D8;
+    color: #D8D8D8;
+
+    font-size: 14px;
+}
+
+.main > .content > .interaction > .good > section {
+    display: flex;
+    align-items: center;
+
+    gap: 0 5px;
+}
+
+.main > .content > .interaction > .good > section > img {
+    height: 18px;
+}
+
+.main > .content > .interaction > .share > img {
+    width: 18px;
+    height: 18px;
+}
