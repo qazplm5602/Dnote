@@ -11,6 +11,7 @@ import Button, { IconButton } from '../Recycle/Button';
 import eyeSvg from '../../assets/icons/eyes.svg';
 import goodSvg from '../../assets/icons/good.svg';
 import shareSvg from '../../assets/icons/share.svg';
+import replySvg from '../../assets/icons/reply.svg';
 
 export default function Post() {
     return <main className={`screen_container ${style.main}`}>
@@ -65,7 +66,8 @@ function Chat() {
     return <section className={style.chat_main}>
         <h2>댓글 <span>20</span></h2>
         <ChatInput />
-        
+
+        <ChatList />
     </section>;
 }
 
@@ -74,6 +76,31 @@ function ChatInput() {
         <textarea placeholder='내용을 입력하세요.'></textarea>
         <Button>전송</Button>
     </article>;
+}
+
+function ChatList() {
+    return <article className={style.list}>
+        <ChatBox />
+    </article>;
+}
+
+function ChatBox() {
+    return <div className={style.box}>
+        <section className={style.detail}>
+            <div className={style.info}>
+                <NameTag className={style.nametag} />
+                <div className={style.one}></div>
+                <div className={style.date}>2024.09.13</div>
+            </div>
+        </section>
+
+        <div className={style.content}>그냥 아무 댓글 임니다.</div>
+
+        <section className={style.interaction}>
+            <IconButton icon={replySvg} className={[style.reply]} />
+            <button><IconText icon={goodSvg} text='10' /></button>
+        </section>
+    </div>;
 }
 
 function Interactions() {

@@ -149,3 +149,48 @@
     display: block;
     margin-left: auto;
 }
+
+/* .main > .content > .chat_main > .list {
+    
+} */
+
+
+.main > .content > .chat_main > .list > .box > .detail {
+    display: flex;
+}
+
+.main > .content > .chat_main > .list > .box > .detail > .info {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 3px;
+}
+
+.main > .content > .chat_main > .list > .box > .detail > .info > .one {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+    background-color: #D8D8D8;
+    
+    margin: 0 6px;
+}
+
+.main > .content > .chat_main > .list > .box > .detail > .info > .nametag > span {
+    font-size: 14px;
+}
+
+.main > .content > .chat_main > .list > .box > .detail > .info > .date {
+    color: #AAAAAA;
+    font-size: 12px;
+}
+
+.main > .content > .chat_main > .list > .box > .content {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.main > .content > .chat_main > .list > .box > .interaction > .reply {
+    width: 18px;
+    height: 18px;
+}
