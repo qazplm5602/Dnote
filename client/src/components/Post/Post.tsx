@@ -12,12 +12,16 @@ import eyeSvg from '../../assets/icons/eyes.svg';
 import goodSvg from '../../assets/icons/good.svg';
 import shareSvg from '../../assets/icons/share.svg';
 import replySvg from '../../assets/icons/reply.svg';
+import Footer from '../Footer/Footer';
 
 export default function Post() {
-    return <main className={`screen_container ${style.main}`}>
-        <Content />
-        <PopularList />
-    </main>;
+    return <>
+        <main className={`screen_container ${style.main}`}>
+            <Content />
+            <PopularList />
+        </main>
+        <Footer />
+    </>;
 }
 
 function Content() {
@@ -81,6 +85,7 @@ function ChatInput() {
 function ChatList() {
     return <article className={style.list}>
         <ChatBox />
+        <ChatBox />
     </article>;
 }
 
@@ -98,7 +103,8 @@ function ChatBox() {
 
         <section className={style.interaction}>
             <IconButton icon={replySvg} className={[style.reply]} />
-            <button><IconText icon={goodSvg} text='10' /></button>
+            <button className={style.good}><IconText icon={goodSvg} text='10' /></button>
+            <button className={style.reply_open}>답글 3개</button>
         </section>
     </div>;
 }

@@ -150,9 +150,9 @@
     margin-left: auto;
 }
 
-/* .main > .content > .chat_main > .list {
-    
-} */
+.main > .content > .chat_main > .list > .box:not(:first-child) {
+    margin-top: 15px;    
+}
 
 
 .main > .content > .chat_main > .list > .box > .detail {
@@ -162,8 +162,6 @@
 .main > .content > .chat_main > .list > .box > .detail > .info {
     display: flex;
     align-items: center;
-
-    margin-bottom: 3px;
 }
 
 .main > .content > .chat_main > .list > .box > .detail > .info > .one {
@@ -188,9 +186,55 @@
 .main > .content > .chat_main > .list > .box > .content {
     font-size: 14px;
     font-weight: 500;
+
+    margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+.main > .content > .chat_main > .list > .box > .interaction {
+    display: flex;
+    align-items: center;
+    
+    gap: 0 13px;
 }
 
 .main > .content > .chat_main > .list > .box > .interaction > .reply {
     width: 18px;
     height: 18px;
+}
+
+.main > .content > .chat_main > .list > .box > .interaction > .good {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.main > .content > .chat_main > .list > .box > .interaction > .good > section {
+    display: flex;
+    align-items: center;
+    
+    gap: 0 5px;
+
+    font-size: 13px;
+    color: #B3B3B3;
+}
+
+.main > .content > .chat_main > .list > .box > .interaction > .good > section > img {
+    width: 18px;
+    height: 18px;    
+}
+
+.main > .content > .chat_main > .list > .box > .interaction > .reply_open {
+    font-size: 12px;
+    padding: 5px 8px;
+    
+    border: none;
+    border-radius: 3px;
+    background-color: transparent;
+    color: #B3B3B3;
+}
+
+.main > .content > .chat_main > .list > .box > .interaction > .reply_open:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #585858;
 }
