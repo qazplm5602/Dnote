@@ -117,5 +117,7 @@ function Interactions() {
 }
 
 function PopularList() {
-    return <article className={style.popular}></article>;
+    return <article className={style.popular}>
+        <h2>인기있는 콘텐츠</h2>
+    </article>;
 }
