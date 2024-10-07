@@ -6,7 +6,7 @@ import style from './post.module.css';
 
 import NameTag from '../NameTag/NameTag';
 import TimeTake from '../TimeTake/TimeTake';
-import { IconButton } from '../Recycle/Button';
+import Button, { IconButton } from '../Recycle/Button';
 
 import eyeSvg from '../../assets/icons/eyes.svg';
 import goodSvg from '../../assets/icons/good.svg';
@@ -62,7 +62,18 @@ function ViewerContainer() {
 }
 
 function Chat() {
-    return <section></section>;
+    return <section className={style.chat_main}>
+        <h2>댓글 <span>20</span></h2>
+        <ChatInput />
+        
+    </section>;
+}
+
+function ChatInput() {
+    return <article className={style.input_container}>
+        <textarea placeholder='내용을 입력하세요.'></textarea>
+        <Button>전송</Button>
+    </article>;
 }
 
 function Interactions() {
