@@ -13,6 +13,7 @@ import goodSvg from '../../assets/icons/good.svg';
 import shareSvg from '../../assets/icons/share.svg';
 import replySvg from '../../assets/icons/reply.svg';
 import Footer from '../Footer/Footer';
+import PostBoxRow from '../PostBox/PostBoxRow';
 
 export default function Post() {
     return <>
@@ -119,5 +120,7 @@ function Interactions() {
 function PopularList() {
     return <article className={style.popular}>
         <h2>인기있는 콘텐츠</h2>
+
+        <PostBoxRow />
     </article>;
 }
