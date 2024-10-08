@@ -16,14 +16,14 @@ export default function PostBoxRow({ className }: { className?: string }) {
             <Link to={'#'}>
                 <h3>react도 하면서 mysql도 하는 방법 알려드림니다.</h3>
             </Link>
-            <ul className={defaultStyle.tags}>
+            <ul className={`${defaultStyle.tags} ${style.tags}`}>
                 <div>#mysql</div>
                 <div>#react</div>
             </ul>
         </div>
 
         <Link to={'#'}>
-            <img className={style.thumbnail} src={ExampleImg} />
+            <img className={`${defaultStyle.thumbnail} ${style.thumbnail}`} src={ExampleImg} />
         </Link>
     </div>;
 }

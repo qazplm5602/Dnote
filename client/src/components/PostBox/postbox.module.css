@@ -5,7 +5,7 @@
     /* border: 1px solid red; */
 }
 
-.item > a > .thumbnail {
+.item a > .thumbnail {
     width: 100%;
     height: 160px;
     object-fit: cover;
@@ -28,7 +28,7 @@
     font-size: 14px;
 }
 
-.item > a > h3 {
+.item a > h3 {
     margin: 0;
     margin-top: 5px;
     

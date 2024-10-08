@@ -1,0 +1,23 @@
+.item {
+    display: flex;
+
+    width: 100%;
+    height: max-content;
+}
+
+.item a > h3 {
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.item .tags {
+    font-size: 13px;
+}
+
+.item a > .thumbnail {
+    width: 117px;
+    height: 60px;
+    border-radius: 5px;
+
+    margin-left: 10px;
+}

@@ -121,6 +121,9 @@ function PopularList() {
     return <article className={style.popular}>
         <h2>인기있는 콘텐츠</h2>
 
-        <PostBoxRow />
+        <PostBoxRow className={style.item} />
+        <PostBoxRow className={style.item} />
+        <PostBoxRow className={style.item} />
+        <PostBoxRow className={style.item} />
     </article>;
 }

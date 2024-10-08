@@ -7,12 +7,14 @@
 }
 
 .main > .popular {
-    width: 300px;
+    width: 330px;
     margin-left: 40px;
 }
 
 .main > .popular > h2 {
     font-size: 20px;
+    margin: 0;
+    margin-bottom: 8px;
 }
 
 .main > .content > .title {
@@ -242,4 +244,8 @@
 .main > .content > .chat_main > .list > .box > .interaction > .reply_open:hover {
     background-color: rgba(0, 0, 0, 0.05);
     color: #585858;
+}
+
+.main > .popular > .item {
+    margin-bottom: 7px;
 }
