@@ -2,12 +2,18 @@ import { IconButton } from '../Recycle/Button';
 import style from './search.module.css';
 
 import arrowIcon from '../../assets/icons/ic-round-navigate-before.svg';
+import PostBox from '../PostBox/PostBox';
+import Footer from '../Footer/Footer';
 
 export default function Search() {
-    return <main className={`screen_container ${style.main}`}>
-        <Head />
-        <Pagination />
-    </main>;
+    return <>
+        <main className={`screen_container ${style.main}`}>
+            <Head />
+            <List />
+            <Pagination />
+        </main>
+        <Footer />
+    </>;
 }
 
 function Head() {
@@ -33,5 +39,24 @@ function Pagination() {
         <button>4</button>
         <button>5</button>
         <IconButton icon={arrowIcon} className={[style.icon]} />
+    </section>;
+}
+
+function List() {
+    return <section className={style.list}>
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
+        <PostBox className={style.item} />
     </section>;
 }
