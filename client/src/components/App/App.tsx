@@ -13,6 +13,7 @@ import UserPage from "../UserPage/UserPage";
 import Setting from "../Setting/Setting";
 import Write from "../Write/Write";
 import Post from "../Post/Post";
+import Search from "../Search/Search";
 
 export default function App() {
     
@@ -44,6 +45,7 @@ function AppRouter() {
                 <Route path="/setting/*" element={<Setting />} />
                 <Route path="/write" element={<Write />} />
                 <Route path="/post/:id" element={<Post />} />
+                <Route path="/search" element={<Search />} />
 
             </Routes>
         </CSSTransition>

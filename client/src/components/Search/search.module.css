@@ -1,0 +1,28 @@
+.main > .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main > .head > .info {
+    font-size: 16px;
+}
+
+.main > .head > .sort > button {
+    height: 30px;
+    padding: 0 13px;
+
+    border: none;
+    border-radius: 30px;
+
+    margin-left: 10px;
+
+    color: rgb(105, 105, 105);
+    background-color: #F6F6F6;
+}
+
+.main > .head > .sort > button.active {
+    background-color: black;
+    font-weight: 500;
+    color: white;
+}

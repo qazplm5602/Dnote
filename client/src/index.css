@@ -58,3 +58,12 @@ button {
   margin: 0 auto;
   padding: 0 10px;
 }
+
+.domi_gradient {
+  font-weight: 600;
+
+  background: linear-gradient(#67FF52 0%, #00A6FF 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
