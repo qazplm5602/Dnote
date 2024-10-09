@@ -1,8 +1,12 @@
+import { IconButton } from '../Recycle/Button';
 import style from './search.module.css';
+
+import arrowIcon from '../../assets/icons/ic-round-navigate-before.svg';
 
 export default function Search() {
     return <main className={`screen_container ${style.main}`}>
         <Head />
+        <Pagination />
     </main>;
 }
 
@@ -18,5 +22,16 @@ function SortSection() {
         <button className={style.active}>연관순</button>
         <button>최신순</button>
         <button>인기순</button>
+    </section>;
+}
+
+function Pagination() {
+    return <section className={style.pagination}>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <IconButton icon={arrowIcon} className={[style.icon]} />
     </section>;
 }
