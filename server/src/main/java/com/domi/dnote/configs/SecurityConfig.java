@@ -1,5 +1,6 @@
 package com.domi.dnote.configs;
 
+import com.domi.dnote.Filter.CustomAuthenticationEntryPoint;
 import com.domi.dnote.Filter.TokenAuthenticationFilter;
 import com.domi.dnote.Service.CustomOAuth2UserService;
 import com.domi.dnote.Service.OAuth2SuccessService;
@@ -55,6 +56,10 @@ public class SecurityConfig {
                 .oauth2Login(oauth ->
                         oauth.userInfoEndpoint(c -> c.userService(oAuth2UserService))
                                 .successHandler(oAuth2SuccessService)
+                )
+
+                .exceptionHandling(exceptions ->
+                        exceptions.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
 
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
