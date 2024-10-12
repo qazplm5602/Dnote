@@ -19,4 +19,12 @@ public class UserService {
     public boolean checkUserPassword(User user, String inputPassword) {
         return passwordEncoder.matches(inputPassword, user.getPassword());
     }
+
+    public User getUserByVerifyToken(String token) {
+        return userRepository.findByVerify(token).orElse(null);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 }

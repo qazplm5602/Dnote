@@ -37,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                .requestMatchers("/error"); // 이거는 security 적용 안함
+                .requestMatchers("/error", "/api/signup/**"); // 이거는 security 적용 안함
     }
 
     @Bean

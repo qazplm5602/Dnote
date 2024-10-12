@@ -41,6 +41,7 @@ public class OAuth2UserInfo {
         return User.builder()
                 .name(name)
                 .email(email)
+                .verify(null)
                 .role(Role.USER)
                 .build();
     }

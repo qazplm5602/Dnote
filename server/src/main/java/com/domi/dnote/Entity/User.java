@@ -1,14 +1,12 @@
 package com.domi.dnote.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GeneratedColumn;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +27,5 @@ public class User {
     Role role;
 
     boolean ban;
+    String verify; // null 이면 인증 되어있음 , 토큰이면 인증해야됨
 }

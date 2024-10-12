@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,7 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class UserController {
     final UserService userService;
-    OAuth2SuccessService oAuth2SuccessService;
+    final OAuth2SuccessService oAuth2SuccessService;
 
     @PostMapping("/login")
     void LoginUser(@RequestBody LoginDTO data, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,6 +40,11 @@ public class UserController {
         boolean result = userService.checkUserPassword(user, data.password);
         if (!result) {
             throw new UserException(UserException.Type.FAILED_LOGIN);
+        }
+
+        // 이메일 인증??
+        if (user.getVerify() != null) {
+            throw new DomiException("SIGNUP2", "이메일 인증이 필요합니다.", HttpStatus.FORBIDDEN);
         }
 
         // 토큰 만들기
