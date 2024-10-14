@@ -2,6 +2,7 @@ package com.domi.dnote.Controller;
 
 import com.domi.dnote.DTO.LoginDTO;
 import com.domi.dnote.DTO.TokenDTO;
+import com.domi.dnote.DTO.UserDTO;
 import com.domi.dnote.Entity.CustomUserDetails;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Exception.DomiException;
@@ -16,16 +17,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
     final UserService userService;
     final OAuth2SuccessService oAuth2SuccessService;
@@ -52,5 +50,11 @@ public class UserController {
         Authentication authentication = new UsernamePasswordAuthenticationToken(data.email, data.password, userDetails.getAuthorities());
 
         oAuth2SuccessService.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    @GetMapping("/@me")
+    UserDTO getCurrentUser() {
+        User user = userService.getCurrentUser();
+        return UserDTO.toEntity(user);
     }
 }
