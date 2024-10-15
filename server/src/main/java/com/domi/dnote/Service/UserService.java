@@ -45,4 +45,15 @@ public class UserService {
 
         return user;
     }
+
+    // 이건 그냥 throw 하지 않고 null로 줌
+    public User getCurrentUserForce() {
+        User user = null;
+        try {
+            user = getCurrentUser();
+        } catch (UserException ignored) {
+        }
+
+        return user;
+    }
 }
