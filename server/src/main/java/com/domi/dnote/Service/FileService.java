@@ -37,15 +37,19 @@ public class FileService {
     // 파일 등록
     public String registerFile(FileGroup type, MultipartFile multipartFile) throws IOException {
         String fileName = multipartFile.getOriginalFilename();
-        int dotIdx = fileName.lastIndexOf('.');
-        String ext = fileName.substring(dotIdx);
+        String newFileName  = MiscUtil.randomString(20);
 
-        String id = MiscUtil.randomString(20);
-        String path = getPath(type, id + ext);
+        int dotIdx = fileName.lastIndexOf('.');
+        if (dotIdx != -1) {
+            String ext = fileName.substring(dotIdx);
+            newFileName += ext;
+        }
+
+        String path = getPath(type, newFileName);
 
         File file = new File(path);
         multipartFile.transferTo(file);
 
-        return id + ext;
+        return newFileName;
     }
 }

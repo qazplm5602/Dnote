@@ -30,7 +30,7 @@ public class FileController {
     }
 
     @PostMapping("/test")
-    String testFileUpload(@RequestParam MultipartFile file) throws IOException {
+    String testFileUpload(@RequestParam("domi") MultipartFile file) throws IOException {
         return fileService.registerFile(FileGroup.Avatar, file);
     }
 }
