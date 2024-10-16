@@ -14,12 +14,16 @@ import Setting from "../Setting/Setting";
 import Write from "../Write/Write";
 import Post from "../Post/Post";
 import Search from "../Search/Search";
+import { Provider } from "react-redux";
+import { store } from "../Redux/Store";
 
 export default function App() {
     
     return <BrowserRouter>
-        <Header />
-        <AppRouter />
+        <Provider store={store}>
+            <Header />
+            <AppRouter />
+        </Provider>
     </BrowserRouter>;
 }
 
