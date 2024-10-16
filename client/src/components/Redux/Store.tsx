@@ -6,3 +6,5 @@ export const store = configureStore({
         user: loginStateReducer
     }
 })
+
+export type RootState = ReturnType<typeof store.getState>;

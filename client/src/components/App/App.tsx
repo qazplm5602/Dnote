@@ -16,11 +16,13 @@ import Post from "../Post/Post";
 import Search from "../Search/Search";
 import { Provider } from "react-redux";
 import { store } from "../Redux/Store";
+import LoginState from "../LoginState/LoginState";
 
 export default function App() {
     
     return <BrowserRouter>
         <Provider store={store}>
+            <LoginState />
             <Header />
             <AppRouter />
         </Provider>
