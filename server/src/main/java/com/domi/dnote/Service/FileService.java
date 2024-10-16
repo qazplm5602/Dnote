@@ -1,18 +1,15 @@
 package com.domi.dnote.Service;
 
 import com.domi.dnote.Enums.FileGroup;
-import com.domi.dnote.Exception.DomiException;
+import com.domi.dnote.Exception.FileException;
 import com.domi.dnote.Util.MiscUtil;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 
 @RequiredArgsConstructor
@@ -29,7 +26,7 @@ public class FileService {
         String path = getPath(type, fileName);
         File file = new File(path);
         if (!file.exists())
-            throw new DomiException("FILE0", "파일을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            throw new FileException(FileException.Type.NOT_EXIST_FILE);
 
         return Files.readAllBytes(file.toPath());
     }
@@ -51,5 +48,17 @@ public class FileService {
         multipartFile.transferTo(file);
 
         return newFileName;
+    }
+
+    // 파일 삭제
+    public void removeFile(FileGroup type, String fileName) {
+        String path = getPath(type, fileName);
+        File file = new File(path);
+
+        if (!file.exists())
+            throw new FileException(FileException.Type.NOT_EXIST_FILE);
+
+        if (!file.delete())
+            throw new FileException(FileException.Type.FAILED_REMOVE);
     }
 }
