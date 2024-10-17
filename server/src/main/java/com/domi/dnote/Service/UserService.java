@@ -18,6 +18,9 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
+    public User getUserById(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserException(UserException.Type.NOT_FOUND_USER));
+    }
 
     public boolean checkUserPassword(User user, String inputPassword) {
         return passwordEncoder.matches(inputPassword, user.getPassword());
