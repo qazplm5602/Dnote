@@ -33,7 +33,8 @@ export default function LoginState() {
         const dto: LoginStateDTO = {
             logined: false,
             avatar: "",
-            name: ""
+            name: "",
+            id: -1
         }
 
         const isLogin = data !== undefined && error === undefined && data.id !== undefined  && data.name !== undefined && data.avatar !== undefined;
@@ -42,6 +43,7 @@ export default function LoginState() {
             dto.logined = true;
             dto.avatar = data.avatar;
             dto.name = data.name;
+            dto.id = data.id;
         }
         
         dispatch(setLogin(dto));

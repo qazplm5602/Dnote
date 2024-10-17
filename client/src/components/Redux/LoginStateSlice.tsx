@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { UserDTO } from "../LoginState/LoginState";
 
-export interface LoginStateDTO {
+export interface LoginStateDTO extends UserDTO {
     logined: boolean,
-    name: string,
-    avatar: string | null    
 }
 
 export interface LoginState extends LoginStateDTO {
@@ -14,7 +13,8 @@ const initValue: LoginState = {
     loading: true,
     logined: false,
     name: "",
-    avatar: ""
+    avatar: "",
+    id: -1
 }
 
 export const loginStateSlice = createSlice({
@@ -31,6 +31,7 @@ export const loginStateSlice = createSlice({
             if (newState.logined) {
                 newState.avatar = action.payload.avatar;
                 newState.name = action.payload.name;
+                newState.id = action.payload.id;
             }
 
             return newState;

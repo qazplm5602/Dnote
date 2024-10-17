@@ -6,6 +6,7 @@ import Logo from '../../assets/Dnote.svg'
 import SearchIcon from '../../assets/icons/ic-outline-search.svg';
 import GearIcon from '../../assets/icons/gear.svg';
 import LogoutIcon from '../../assets/icons/logout.svg';
+import UserIcon from '../../assets/icons/user.svg';
 import NameTag from '../NameTag/NameTag';
 import IconText from '../Recycle/IconText';
 import { useEffect, useRef, useState } from "react";
@@ -60,10 +61,12 @@ function Button({ text, link, className }: { text: string, link: string, classNa
 }
 
 function AccountMenu({ show }: { show: boolean }) {
+    const userId = useSelector<RootState, number>(v => v.user?.id);
     const ref = useRef(null);
 
     return <CSSTransition in={show} nodeRef={ref} classNames={{enter: style.enter, enterActive: style.enter_active, exitActive: style.exit_active, exit: style.exit}} timeout={300} unmountOnExit>
         <section ref={ref} className={style.account_menu}>
+            <AccountMenuButton icon={UserIcon} text='나의 프로필' href={`/user/${userId}`} />
             <AccountMenuButton icon={GearIcon} text='설정' href="/setting" />
             <AccountMenuButton icon={LogoutIcon} text='로그아웃' href="/logout" />
         </section>
