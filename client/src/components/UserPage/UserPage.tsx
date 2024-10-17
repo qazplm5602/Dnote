@@ -4,30 +4,59 @@ import style from './userpage.module.css';
 import Avater from '../../assets/image0.jpg';
 import IconText from '../Recycle/IconText';
 import HeartIcon from '../../assets/icons/heart.svg';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import GithubIcon from '../../assets/icons/github.svg';
 import EmailIcon from '../../assets/icons/email.svg';
 import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
 import PostBox from '../PostBox/PostBox';
+import { useEffect, useState } from 'react';
+import request from '../Utils/request';
+import { UserDTO } from '../LoginState/LoginState';
+import { getProfileURL } from '../NameTag/NameTag';
+
+interface SocialDTO {
+    github: string | null,
+    email: string | null
+}
+
+export interface ProfileDTO {
+    user: UserDTO,
+    social: SocialDTO,
+    info: string
+}
 
 export default function UserPage() {
+    const { id: userId } = useParams();
+    const [ profile, setProfile ] = useState<ProfileDTO | null>(null);
+
+    const profileLoad = async function() {
+        const { data, status } = await request<ProfileDTO>(`profile/${userId}`);
+        if (status !== 200) return; // 잘못됨...
+
+        setProfile(data);
+    }
+
+    useEffect(() => {
+        profileLoad();
+    }, [ userId ]);
+
     return <main>
-        <Profile />
-        <LinkList />
+        <Profile data={profile} />
+        <LinkList social={profile?.social} />
         <PopularContent />
         <LatestConent />
         <Footer />
     </main>;
 }
 
-function Profile() {
+function Profile({ data }: { data: ProfileDTO | null }) {
     return <article className={`${style.profile} screen_container`}>
         <section className={style.left}>
-            <img className={style.avater} src={Avater} />
+            <img className={style.avater} src={getProfileURL(data?.user.avatar || null)} />
             <div className={style.detail}>
-                <div className={style.name}>도미</div>
-                <div className={style.info}>여기에는 아무 프로필 소개</div>
+                <div className={style.name}>{data?.user.name || "--"}</div>
+                <div className={style.info}>{data?.info}</div>
             </div>
         </section>
 
@@ -38,12 +67,14 @@ function Profile() {
     </article>;
 }
 
-function LinkList() {
+function LinkList({ social }: { social?: SocialDTO }) {
+    if (social === undefined || (social.email === null && social.github === null)) return null;
+
     return <section className={`screen_container ${style.links}`}>
         <span>Link</span>
         <ul>
-            <Link to="https://github.com/qazplm5602"><img src={GithubIcon} /></Link>
-            <Link to="https://github.com/qazplm5602"><img src={EmailIcon} /></Link>
+            {social?.github && <Link to={`https://github.com/${social.github}`}><img src={GithubIcon} /></Link>}
+            {social?.email && <Link to={`mailto:${social.email}`}><img src={EmailIcon} /></Link>}
         </ul>
     </section>
 }
