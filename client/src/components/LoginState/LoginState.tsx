@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../Redux/Store";
-import { LoginState as ILoginState, setLoad, setLogin, LoginStateDTO } from "../Redux/LoginStateSlice.tsx";
+import { useDispatch } from "react-redux";
+import { setLoad, setLogin, LoginStateDTO } from "../Redux/LoginStateSlice.tsx";
 import { useEffect } from "react";
 import useSWR from "swr";
 
@@ -29,21 +28,24 @@ export default function LoginState() {
 
     useEffect(() => {
         dispatch(setLoad(isLoading));
+        if (isLoading) return;
 
         const dto: LoginStateDTO = {
             logined: false,
             avatar: "",
             name: ""
         }
+
+        const isLogin = data !== undefined && error === undefined && data.id !== undefined  && data.name !== undefined && data.avatar !== undefined;
         
-        if (data !== undefined && error === undefined) {
+        if (isLogin) {
             dto.logined = true;
             dto.avatar = data.avatar;
             dto.name = data.name;
         }
         
         dispatch(setLogin(dto));
-    }, [isLoading]);
+    }, [isLoading, data]);
 
     return null;
 }   
