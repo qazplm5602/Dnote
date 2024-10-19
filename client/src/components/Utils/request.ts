@@ -7,11 +7,11 @@ export default async function request<T>(path: string, option: AxiosRequestConfi
     if (accessToken !== null) {
         defaultHeader.Authorization = `Barer ${accessToken}`;
     }
-
+    
     const response = await axios(`/api/${path}`, {
         ...option,
-        headers: option.headers !== undefined ? Object.assign(option.headers, defaultHeader) : {}
-    }).catch(e => e);
+        headers: Object.assign(option.headers || {}, defaultHeader)
+    });
 
     return response;
 }

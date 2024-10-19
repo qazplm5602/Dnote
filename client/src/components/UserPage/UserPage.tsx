@@ -17,6 +17,7 @@ import { getProfileURL } from '../NameTag/NameTag';
 import LoadBox from '../Recycle/LoadBox';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/Store';
+import { LoginState } from '../Redux/LoginStateSlice';
 
 interface SocialDTO {
     github: string | null,
@@ -41,7 +42,7 @@ export default function UserPage() {
     const [ status, setStatus ] = useState<LoadStatus>(LoadStatus.Loading);
 
     const profileLoad = async function() {
-        const { data, status } = await request<ProfileDTO>(`profile/${userId}`);
+        const { data, status } = await request<ProfileDTO>(`profile/${userId}`).catch(e => e);
         if (status !== 200) return; // 잘못됨...
 
         setProfile(data);
@@ -84,36 +85,64 @@ function Profile({ id, data }: { id: string | undefined, data: ProfileDTO | null
 }
 
 function FollowSection({ id }: { id?: string }) {
-    const targetId = useSelector<RootState, number>(v => v.user.id);
+    const user = useSelector<RootState, LoginState>(v => v.user);
     
     const [ followed, setFollowed ] = useState(false);
-    const [ loading, setLoading ] = useState(false);
+    const [ loading, setLoading ] = useState(true);
     const [ count, setCount ] = useState(0);
 
-    const loadStatus = async function() {
-        
+    const loadStatus = async function(): Promise<boolean> {
+        const response = await request<boolean>(`user/follow/status?id=${id}`);
+        return response.data;
     }
 
-    const loadCount = async function() {
-        
+    const loadCount = async function(): Promise<number> {
+        const response = await request<number>(`user/follow/count?id=${id}`);
+        return response.data;
+    }
+
+    const onStart = async function() {
+        // const [ status, num ] = await Promise.all([loadStatus(), loadCount()]);
+        // setFollowed(status);
+        // setCount(num);
+
+        const num = await loadCount();
+        setCount(num);
     }
 
     useEffect(() => {
         let current = true;
 
         setLoading(true);
-
         if (id === undefined) return;
 
-
+        onStart().then(() => {
+            if (current)
+                setLoading(false);
+        });
+        
         return () => { current = false; }
     }, [ id ]);
+
+    useEffect(() => {
+        let current = true;
+        
+        setFollowed(false);
+        if (!user.logined || user.id === Number(id)) return;
+        
+        loadStatus().then(v => {
+            if (current)
+                setFollowed(v);
+        });
+
+        return () => { current = false; }
+    }, [ user.logined, user.id, id ]);
 
     if (loading) return <FollowLoading />;
     
     return <section className={style.right}>
-        <IconText icon={HeartIcon} text='10' className={style.follow} />
-        <button className={style.follow_btn}>팔로우</button>
+        <IconText icon={HeartIcon} text={count.toString()} className={style.follow} />
+        {user.id !== Number(id) && <button className={`${style.follow_btn} ${followed ? style.active : ''}`}>{`${followed ? "언" : ""}팔로우`}</button>}
     </section>;
 }
 

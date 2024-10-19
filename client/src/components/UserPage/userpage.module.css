@@ -57,6 +57,14 @@
     background-color: var(--green-color);
 }
 
+.profile > .right > .follow_btn.active {
+    background-color: #dddddd;
+}
+
+.profile > .right > .follow_btn.active:hover {
+    background-color: rgb(216, 90, 90);
+}
+
 .links {
     display: flex;
     align-items: center;
