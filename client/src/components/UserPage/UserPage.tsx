@@ -14,6 +14,9 @@ import { useEffect, useState } from 'react';
 import request from '../Utils/request';
 import { UserDTO } from '../LoginState/LoginState';
 import { getProfileURL } from '../NameTag/NameTag';
+import LoadBox from '../Recycle/LoadBox';
+import { useSelector } from 'react-redux';
+import { RootState } from '../Redux/Store';
 
 interface SocialDTO {
     github: string | null,
@@ -26,23 +29,39 @@ export interface ProfileDTO {
     info: string
 }
 
+enum LoadStatus {
+    Loading,
+    Success,
+    NotFound,
+    Error
+}
 export default function UserPage() {
     const { id: userId } = useParams();
     const [ profile, setProfile ] = useState<ProfileDTO | null>(null);
+    const [ status, setStatus ] = useState<LoadStatus>(LoadStatus.Loading);
 
     const profileLoad = async function() {
         const { data, status } = await request<ProfileDTO>(`profile/${userId}`);
         if (status !== 200) return; // 잘못됨...
 
         setProfile(data);
+        setStatus(LoadStatus.Success);
     }
 
     useEffect(() => {
+        setStatus(LoadStatus.Loading);
         profileLoad();
     }, [ userId ]);
 
+    if (status == LoadStatus.Loading) {
+        return <main>
+            <ProfileLoading />
+            <Footer />
+        </main>;
+    }
+
     return <main>
-        <Profile data={profile} />
+        <Profile id={userId} data={profile} />
         <LinkList social={profile?.social} />
         <PopularContent />
         <LatestConent />
@@ -50,7 +69,7 @@ export default function UserPage() {
     </main>;
 }
 
-function Profile({ data }: { data: ProfileDTO | null }) {
+function Profile({ id, data }: { id: string | undefined, data: ProfileDTO | null }) {
     return <article className={`${style.profile} screen_container`}>
         <section className={style.left}>
             <img className={style.avater} src={getProfileURL(data?.user.avatar || null)} />
@@ -60,11 +79,42 @@ function Profile({ data }: { data: ProfileDTO | null }) {
             </div>
         </section>
 
-        <section className={style.right}>
-            <IconText icon={HeartIcon} text='10' className={style.follow} />
-            <button className={style.follow_btn}>팔로우</button>
-        </section>
+        <FollowSection id={id} />
     </article>;
+}
+
+function FollowSection({ id }: { id?: string }) {
+    const targetId = useSelector<RootState, number>(v => v.user.id);
+    
+    const [ followed, setFollowed ] = useState(false);
+    const [ loading, setLoading ] = useState(false);
+    const [ count, setCount ] = useState(0);
+
+    const loadStatus = async function() {
+        
+    }
+
+    const loadCount = async function() {
+        
+    }
+
+    useEffect(() => {
+        let current = true;
+
+        setLoading(true);
+
+        if (id === undefined) return;
+
+
+        return () => { current = false; }
+    }, [ id ]);
+
+    if (loading) return <FollowLoading />;
+    
+    return <section className={style.right}>
+        <IconText icon={HeartIcon} text='10' className={style.follow} />
+        <button className={style.follow_btn}>팔로우</button>
+    </section>;
 }
 
 function LinkList({ social }: { social?: SocialDTO }) {
@@ -95,4 +145,24 @@ function LatestConent() {
         <PostBox />
         <PostBox />
     </HeadMenuList>
+}
+
+function ProfileLoading() {
+    return <article className={`${style.profile} ${style.loading} screen_container`}>
+        <section className={style.left}>
+            <img className={style.avater} src={getProfileURL(null)} />
+            <div className={style.detail}>
+                <LoadBox className={style.name} />
+                <LoadBox className={style.info} />
+            </div>
+        </section>
+
+        <FollowLoading />
+    </article>;
+}
+
+function FollowLoading() {
+    return <section className={style.right}>
+        <LoadBox className={style.follow_loading} />
+    </section>;
 }

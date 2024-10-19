@@ -89,3 +89,20 @@
 .list {
     margin-top: 20px;
 }
+
+/* 로당 */
+.profile.loading > .left > .detail > .name {
+    width: 100px;
+    height: 25px;
+}
+
+.profile.loading > .left > .detail > .info {
+    width: 300px;
+    height: 15px;
+    margin-top: 6px;
+}
+
+.profile > .right > .follow_loading {
+    height: 35px;
+    border-radius: 50px;
+}
