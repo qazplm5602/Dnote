@@ -36,7 +36,7 @@ public class UserFollowController {
     }
 
     @Transactional
-    @PostMapping("/set")    
+    @PostMapping("/set")
     void setFollow(@RequestParam("id") long id, @RequestBody boolean active) {
         User user = userService.getCurrentUser();
         if (user.getId() == id) {
