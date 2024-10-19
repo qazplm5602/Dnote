@@ -13,4 +13,5 @@ public interface UserFollowRepository extends JpaRepository<UserFollow, User> {
     List<UserFollow> findByUser(User user);
     List<UserFollow> findByTarget(User target);
     Optional<UserFollow> findByUserAndTarget(User user, User target);
+    void deleteByUserAndTarget(User user, User target);
 }

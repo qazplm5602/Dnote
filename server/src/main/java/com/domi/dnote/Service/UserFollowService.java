@@ -26,4 +26,12 @@ public class UserFollowService {
         Optional<UserFollow> userFollow = userFollowRepository.findByUserAndTarget(user, target);
         return userFollow.isPresent();
     }
+
+    public void setFollow(User user, User target, boolean active) {
+        if (active) {
+            userFollowRepository.save(UserFollow.builder().user(user).target(target).build());
+        } else {
+            userFollowRepository.deleteByUserAndTarget(user, target);
+        }
+    }
 }
