@@ -18,6 +18,7 @@ import LoadBox from '../Recycle/LoadBox';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/Store';
 import { LoginState } from '../Redux/LoginStateSlice';
+import PostBoxPre from '../PostBox/PostBoxPre';
 
 interface SocialDTO {
     github: string | null,
@@ -160,10 +161,10 @@ function LinkList({ social }: { social?: SocialDTO }) {
 
 function PopularContent() {
     return <HeadMenuList title='인기있는 콘텐츠' menu='모두 보기' to='/' className={`${style.list} screen_container`}>
-        <PostBox />
-        <PostBox />
-        <PostBox />
-        <PostBox />
+        <PostBoxPre />
+        <PostBoxPre delay={300} />
+        <PostBoxPre delay={300 * 2} />
+        <PostBoxPre delay={300 * 3} />
     </HeadMenuList>
 }
 

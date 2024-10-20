@@ -79,3 +79,27 @@
 
     color: var(--text-color-black);
 }
+
+/* 로딩 */
+.item.preload a > .thumbnail {
+    border: none;
+}
+
+.item.preload .title {
+    width: 70%;
+    margin-top: 10px;
+}
+
+.item.preload .subtext {
+    height: 10px;
+}
+
+.item.preload .subtext:nth-child(3) {
+    margin-top: 10px;
+    width: 90%;
+}
+
+.item.preload .subtext:nth-child(4) {
+    margin-top: 5px;
+    width: 50%;
+}
