@@ -49,7 +49,7 @@ public class UserController {
         CustomUserDetails userDetails = new CustomUserDetails(user, null, null);
         Authentication authentication = new UsernamePasswordAuthenticationToken(data.email, data.password, userDetails.getAuthorities());
 
-        oAuth2SuccessService.onAuthenticationSuccess(request, response, authentication);
+        oAuth2SuccessService.onAuthenticationSuccess(request, response, authentication, false);
     }
 
     @GetMapping("/@me")

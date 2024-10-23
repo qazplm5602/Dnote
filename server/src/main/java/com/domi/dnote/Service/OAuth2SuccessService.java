@@ -21,6 +21,10 @@ public class OAuth2SuccessService implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        onAuthenticationSuccess(request, response, authentication, true);
+    }
+
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication, boolean redirect) throws IOException, ServletException {
         // 토큰 발급
         TokenDTO tokens = tokenProvider.generateAccessRefresh(authentication);
 
@@ -33,8 +37,9 @@ public class OAuth2SuccessService implements AuthenticationSuccessHandler {
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
-        String targetUrl = UriComponentsBuilder.fromUriString("/login/success").build().toUriString();
-        response.sendRedirect(targetUrl);
+//        String targetUrl = UriComponentsBuilder.fromUriString("/login/success").build().toUriString();
+        if (redirect)
+            response.sendRedirect("/login/success");
     }
 
     void setCookie(Cookie cookie) {

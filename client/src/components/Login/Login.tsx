@@ -1,7 +1,7 @@
 import style from './login.module.css';
 import Logo from '../../assets/Dnote.svg';
 import Input from '../Recycle/Input';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import AppleIcon from '../../assets/icons/social/apple.svg';
 import DiscordIcon from '../../assets/icons/social/discord.svg';
@@ -53,6 +53,7 @@ const inputInitValue: InputData = { value: "", error: false, text: "" };
 function IdPasswordSection() {
     const [email, setEmail] = useState({...inputInitValue});
     const [password, setPassword] = useState({...inputInitValue});
+    const navigate = useNavigate();
 
     const onLogin = async function() {
         // 초기화
@@ -87,7 +88,7 @@ function IdPasswordSection() {
             return;
         }
 
-        console.log(response);
+        navigate("/login/success"); // 성공
     }
     
     const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail({ value: e.currentTarget.value, text: '', error: false });
