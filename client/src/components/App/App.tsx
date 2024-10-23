@@ -17,6 +17,7 @@ import Search from "../Search/Search";
 import { Provider } from "react-redux";
 import { store } from "../Redux/Store";
 import LoginState from "../LoginState/LoginState";
+import LoginSuccess from "../Login/Process/LoginSuccess";
 
 export default function App() {
     
@@ -46,6 +47,7 @@ function AppRouter() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/login/help" element={<LoginHelp />} />
                 <Route path="/login/help/forget" element={<LoginPasswordForget />} />
+                <Route path="/login/success" element={<LoginSuccess />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/user/:id" element={<UserPage />} />
                 <Route path="/setting/*" element={<Setting />} />
