@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-export default async function request<T>(path: string, option: AxiosRequestConfig = {}): Promise<AxiosResponse<T, any>> {
+export default async function  request<T>(path: string, option: AxiosRequestConfig = {}): Promise<AxiosResponse<T, any>> {
     // 토큰 넣기
     const defaultHeader: AxiosRequestConfig['headers'] = {};
     const accessToken = localStorage.getItem("accessToken");
@@ -14,4 +14,9 @@ export default async function request<T>(path: string, option: AxiosRequestConfi
     });
 
     return response;
+}
+
+export interface ErrorResponse {
+    code: string,
+    message: string
 }
