@@ -46,6 +46,6 @@ public class OAuth2SuccessService implements AuthenticationSuccessHandler {
         cookie.setHttpOnly(false); // 자바스크립트에서 쓸꺼
         cookie.setSecure(false); // 나중에 https 로 하면 할꺼
         cookie.setPath("/");
-        cookie.setMaxAge(60 * 30);
+        cookie.setMaxAge(-1);
     }
 }

@@ -88,7 +88,8 @@ function IdPasswordSection() {
             return;
         }
 
-        navigate("/login/success"); // 성공
+        location.href = "/login/success"; // 성공
+        //     navigate("/login/success"); // (쿠키가 저장되기전에 해버림 ㅡㅡ)
     }
     
     const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail({ value: e.currentTarget.value, text: '', error: false });
