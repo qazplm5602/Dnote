@@ -1,4 +1,4 @@
-import style from './signup.module.css';
+    import style from './signup.module.css';
 
 import WelcomeImg from '../../assets/welcome.png';
 import SignUpAgree from './Agree';
@@ -15,7 +15,7 @@ export default function SignUp() {
             </ul>
         </section>
 
-        {/* <SignUpAgree /> */}
-        <SignUpForm />
+        <SignUpAgree />
+        {/* <SignUpForm /> */}
     </main>
 }
