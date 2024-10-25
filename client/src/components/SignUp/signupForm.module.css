@@ -55,6 +55,11 @@
     color: white;
 }
 
+.main > .register_btn:disabled {
+    background-color: #d6d6d6;
+    color: #a1a1a1;
+}
+
 .main > .already {
     width: 100%;
     text-align: center;
