@@ -108,3 +108,9 @@
     
     border: none;
 }
+
+.next_btn:disabled {
+    background-color: #f0f0f0;
+    color: #c0c0c0;
+    cursor: initial;
+}

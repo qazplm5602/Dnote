@@ -1,11 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import style from './signupAgree.module.css';
 
-export default function SignUpAgree() {
+export interface AgreeData { tos: boolean, personal: boolean, ad: boolean }
+
+export default function SignUpAgree({ onNext }: { onNext: (data: AgreeData) => void }) {
     const [ tos, setTos ] = useState(false);
     const [ personal, setPersonal ] = useState(false);
     const [ ad, setAd ] = useState(false);
     const [ all, setAll ] = useState(false);
+
+    const requireCheck = useMemo(() => tos && personal, [tos, personal]);
+
+    const onNextClick = function() {
+        onNext({ tos, personal, ad });
+    }
 
     useEffect(() => {
         // 3개가 다 체크 안되어있는데 전체 동의가 체크된 경우
@@ -38,7 +46,7 @@ export default function SignUpAgree() {
         <div className={style.line}></div>
         <CheckLabel id='all' text="약관 전체 동의" need={null} state={[ all, setAll ]} />
 
-        <button className={style.next_btn}>다음</button>
+        <button className={style.next_btn} disabled={!requireCheck} onClick={onNextClick}>다음</button>
     </article>;
 }
 
