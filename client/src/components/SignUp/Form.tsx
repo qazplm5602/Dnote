@@ -10,7 +10,7 @@ import { AxiosError } from 'axios';
 type InputData = { value: string, error: string }
 const inputInitValue = (): InputData => ({ value: "", error: "" });
 
-export default function SignUpForm() {
+export default function SignUpForm({ onComplete }: { onComplete: (name: string) => void }) {
     const [ email, setEmail ] = useState<InputData>(inputInitValue());
     const [ password, setPassword ] = useState<InputData>(inputInitValue());
     const [ passwordRe, setPasswordRe ] = useState<InputData>(inputInitValue());
@@ -93,7 +93,7 @@ export default function SignUpForm() {
 
         // 성공!!!
         // 이메일 인증하라고 다음 페이지에서 해야함
-        console.log("완료.");
+        onComplete(nickname.value);
     }
 
     // 비번 다름 검사

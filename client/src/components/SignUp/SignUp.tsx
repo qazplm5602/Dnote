@@ -7,17 +7,40 @@ import { useMemo, useRef, useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import SignUpWelcome from './Welcome';
 
+interface SignUpData extends AgreeData {
+    finish: string
+}
+
+enum Page {
+    Agree = 0,
+    Form,
+    Welcome
+}
+
+const subTextList = [ "이제 거의 다 왔어요! 정보를 기입해주세요.", "아래의 약관을 동의해야 가입할 수 있어요.", "어서오세요! 이제부터 Dnote를 사용해보세요." ]
+
 export default function SignUp() {
-    const [ agree, setAgree ] = useState<AgreeData>({ tos: false, personal: false, ad: false });
-    const isNextPage = useMemo(() => agree.tos && agree.personal, [ agree ]);
+    const [ agree, setAgree ] = useState<SignUpData>({ tos: false, personal: false, ad: false, finish: '' });
+    const hasPage = useMemo(() => {
+        if (agree.finish !== '') return Page.Welcome;
+        if (agree.tos && agree.personal) return Page.Form;
 
+        return Page.Agree;
+    }, [ agree ]);
 
-    const agreeRef = useRef<HTMLElement>(null);
-    const formRef = useRef<HTMLElement>(null);
-    const nodeRef = isNextPage ? formRef : agreeRef;
+    const refs = {
+        [Page.Agree]: useRef<HTMLElement>(null),
+        [Page.Form]: useRef<HTMLElement>(null),
+        [Page.Welcome]: useRef<HTMLElement>(null),
+    }
+    const nodeRef = refs[hasPage];
     
     const onNext = function(data: AgreeData) {
-        setAgree(data);
+        setAgree({ ...data, finish: '' });
+    }
+
+    const onComplete = function(name: string) {
+        setAgree({ ...agree, finish: name });
     }
 
     return <main className={`screen_container ${style.main}`}>
@@ -26,14 +49,14 @@ export default function SignUp() {
 
             <ul>
                 <div className={style.title}>환영합니다!</div>
-                <div className={style.sub}>{isNextPage ? "이제 거의 다 왔어요! 정보를 기입해주세요." : "아래의 약관을 동의해야 가입할 수 있어요."}</div>
+                <div className={style.sub}>{subTextList[hasPage]}</div>
             </ul>
         </section>
 
         <div className={style.content_wrapper}>
             <SwitchTransition mode='out-in'>
                 <CSSTransition
-                    key={String(isNextPage)}
+                    key={hasPage}
                     nodeRef={nodeRef}
                     timeout={300}
                     classNames={{
@@ -49,8 +72,9 @@ export default function SignUp() {
                     unmountOnExit
                 >
                     <section ref={nodeRef} className={style.content}>
-                        {/* {isNextPage ? <SignUpForm /> : <SignUpAgree onNext={onNext} />} */}
-                        <SignUpWelcome />
+                        {hasPage === Page.Agree && <SignUpAgree onNext={onNext} />}
+                        {hasPage === Page.Form && <SignUpForm onComplete={onComplete} />}
+                        {hasPage === Page.Welcome && <SignUpWelcome name={agree.finish} />}
                     </section>
                 </CSSTransition>
             </SwitchTransition>
