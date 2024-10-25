@@ -53,7 +53,7 @@ const inputInitValue: InputData = { value: "", error: false, text: "" };
 function IdPasswordSection() {
     const [email, setEmail] = useState({...inputInitValue});
     const [password, setPassword] = useState({...inputInitValue});
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const onLogin = async function() {
         // 초기화
