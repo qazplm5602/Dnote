@@ -34,8 +34,9 @@ export default function SignUpForm() {
 
         let failed = false;
 
-        if (password.value.length === 0) {
-            setPassword({ ...password, error: "비밀번호를 입력해야 합니다." });
+        if (password.value.length < 8) {
+            // setPassword({ ...password, error: "비밀번호를 입력해야 합니다." });
+            setPassword({ ...password, value: "." });
             failed = true;
         }
 
@@ -98,8 +99,16 @@ export default function SignUpForm() {
     // 비번 다름 검사
     useEffect(() => {
         // 입력 했는데 오류 인경우
-        if (password.value.length > 0 && password.error !== "")
-            setPassword({ ...password, error: "" });
+        // if (password.value.length > 0 && password.error !== "")
+        //     setPassword({ ...password, error: "" });
+
+        if (password.value.length > 0)
+            if (password.error === "" && password.value.length < 8) {
+                setPassword({ ...password, error: "비밀번호는 8자리 이상이여야 합니다." });
+                
+            } else if (password.error !== "" && password.value.length >= 8) {
+                setPassword({ ...password, error: "" });
+            }
 
         if (password.value.length === 0 || passwordRe.value.length === 0) return;
         
