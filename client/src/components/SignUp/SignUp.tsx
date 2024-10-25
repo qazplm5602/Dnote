@@ -5,6 +5,7 @@ import SignUpAgree, { AgreeData } from './Agree';
 import SignUpForm from './Form';
 import { useMemo, useRef, useState } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import SignUpWelcome from './Welcome';
 
 export default function SignUp() {
     const [ agree, setAgree ] = useState<AgreeData>({ tos: false, personal: false, ad: false });
@@ -48,7 +49,8 @@ export default function SignUp() {
                     unmountOnExit
                 >
                     <section ref={nodeRef} className={style.content}>
-                        {isNextPage ? <SignUpForm /> : <SignUpAgree onNext={onNext} />}
+                        {/* {isNextPage ? <SignUpForm /> : <SignUpAgree onNext={onNext} />} */}
+                        <SignUpWelcome />
                     </section>
                 </CSSTransition>
             </SwitchTransition>
