@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import Button from '../Recycle/Button';
 import IconText from '../Recycle/IconText';
@@ -18,22 +18,51 @@ import style from './write.module.css';
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
 import sendSvg from '../../assets/icons/ic-round-send.svg';
 import WriteTemp from './WriteTemp';
+import request from '../Utils/request';
+import { AxiosError } from 'axios';
 
 export default function Write() {
     const [title, setTitle] = useState<string>("");
     const [showTemp, setShowTemp] = useState(false);
 
+    const tagRef = useRef<string[]>([]);
+    const editorRef = useRef<Editor>(null);
+
+    const onPost = async function() {
+        if (editorRef.current === null) return;
+        
+        const editor = editorRef.current?.getInstance();
+
+        if (title.length === 0) {
+            // 나중에 안되는 표시 함
+            return;
+        }
+        
+        const form = {
+            title,
+            tags: tagRef.current,
+            content: editor.getHTML()
+        }
+        const response = await request("post/upload", { method: "POST", data: form }).catch(e => e as AxiosError);
+        if (response instanceof AxiosError) {
+            // 오류 처리
+            return;
+        }
+
+        console.log(title, editor.getHTML(), tagRef.current);
+    }
+
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
-        <TagBox />
-        <EditorSection />
-        <Interactions />
+        <TagBox tagRef={tagRef} />
+        <EditorSection editorRef={editorRef} />
+        <Interactions onPost={onPost} />
 
         <WriteTemp show={showTemp} />
     </main>;
 }
 
-function TagBox() {
+function TagBox({ tagRef }: { tagRef: React.MutableRefObject<string[]> }) {
     const [tagSet, setTagSet] = useState<Set<string>>(new Set());
     const tags = useMemo(() => Array.from(tagSet), [tagSet]);
  
@@ -66,6 +95,11 @@ function TagBox() {
         setTagValue(list[list.length - 1]);
     }, [tagValue]);
 
+    // 부모한테 알려줘야징
+    useEffect(() => {
+            tagRef.current = tags;
+    }, [tagSet]);
+
     return <article className={style.tag_main}>
         <div className={style.title}>태그</div>
 
@@ -89,18 +123,18 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
     return <ReactTextareaAutosize className={style.title_input} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
 }
 
-function Interactions() {
+function Interactions({ onPost }: { onPost: () => void }) {
     return <article className={style.interaction_main}>
         <Button className={[style.gray]}>불러오기</Button>
         <Button className={[style.gray]}>임시저장</Button>
 
         <div className={style.line}></div>
 
-        <Button className={[style.send_btn]}><IconText icon={sendSvg} text='게시하기' /></Button>
+        <Button className={[style.send_btn]} onClick={onPost}><IconText icon={sendSvg} text='게시하기' /></Button>
     </article>;
 }
 
-function EditorSection() {
+function EditorSection({ editorRef }: { editorRef?: React.LegacyRef<Editor> }) {
     return <article className={style.editor_container}>
         <Editor
             initialValue="hello react editor world!"
@@ -110,6 +144,7 @@ function EditorSection() {
             useCommandShortcut={true}
             language="ko-KR"
             plugins={[ EditorColor ]}
+            ref={editorRef}
         />
     </article>;
 }
