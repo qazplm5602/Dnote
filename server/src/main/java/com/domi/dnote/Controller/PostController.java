@@ -1,15 +1,14 @@
 package com.domi.dnote.Controller;
 
 import com.domi.dnote.DTO.PostDTO;
+import com.domi.dnote.DTO.PostUploadDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,4 +24,14 @@ public class PostController {
 
         return PostDTO.toEntity(post);
     }
+
+    @PostMapping("/upload")
+    @Transactional
+    long uploadPost(@RequestBody PostUploadDTO form) {
+        User user = userService.getCurrentUser();
+        Post newPost = postService.createPost(user, form);
+
+        return newPost.getId();
+    }
+
 }

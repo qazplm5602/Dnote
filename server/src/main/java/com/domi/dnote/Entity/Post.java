@@ -2,13 +2,19 @@ package com.domi.dnote.Entity;
 
 import com.domi.dnote.Util.TagListConverter;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @IdClass(PostId.class)
 @Table(name = "posts")
 public class Post {
