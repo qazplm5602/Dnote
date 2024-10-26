@@ -134,7 +134,27 @@ function Interactions({ onPost }: { onPost: () => void }) {
     </article>;
 }
 
-function EditorSection({ editorRef }: { editorRef?: React.LegacyRef<Editor> }) {
+function EditorSection({ editorRef }: { editorRef?: React.RefObject<Editor> }) {
+    const addImageBlobHook = async function(blob: File, cb: (url: string, type: string) => void) {
+        const form = new FormData();
+        form.append("domi", blob);
+
+        const response = await request<string>("post/attachment/upload", { method: "POST", data: form });
+        // 나중에 오류 처리...
+
+        cb(`/file/attachment/${response.data}`, 'image');
+    }
+
+    useEffect(() => {
+        if (!editorRef?.current) return;
+
+        const editor = editorRef.current.getInstance();
+        editor.removeHook('addImageBlobHook');
+        editor.addHook('addImageBlobHook', (blob: File, cb: (url: string, type: string) => void) => {
+            addImageBlobHook(blob, cb);
+        });
+    }, [ editorRef ]);
+
     return <article className={style.editor_container}>
         <Editor
             initialValue="hello react editor world!"
