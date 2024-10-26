@@ -1,5 +1,6 @@
 package com.domi.dnote.Controller;
 
+import com.domi.dnote.DTO.PostDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Service.PostService;
@@ -18,8 +19,10 @@ public class PostController {
     final UserService userService;
 
     @GetMapping("/info/{user}/{id}")
-    Post getPostInfo(@PathVariable("user") long userId, @PathVariable("id") long postId) {
+    PostDTO getPostInfo(@PathVariable("user") long userId, @PathVariable("id") long postId) {
         User user = userService.getUserById(userId);
-        return postService.getPostByOwnerId(user, postId);
+        Post post = postService.getPostByOwnerId(user, postId);
+
+        return PostDTO.toEntity(post);
     }
 }

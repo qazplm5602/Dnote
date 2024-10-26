@@ -1,9 +1,11 @@
 package com.domi.dnote.Entity;
 
+import com.domi.dnote.Util.TagListConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -22,7 +24,10 @@ public class Post {
 
     private String thumbnail; // 썸네일 이미지 ID Group: Attachment
 
-    private String tags;
+    @Convert(converter = TagListConverter.class)
+    private List<String> tags;
+
+    private long viewCount; // 조회수
 
     @JoinColumn(nullable = false)
     private String content;
