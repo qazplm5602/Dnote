@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -28,5 +29,13 @@ public class TempAttachService {
                 .build();
 
         tempAttachRepository.save(attach);
+    }
+
+    public List<TempAttach> getExpireFiles() {
+        return tempAttachRepository.findByExpiredLessThan(LocalDateTime.now());
+    }
+
+    public void removeFiles(List<TempAttach> files) {
+        tempAttachRepository.deleteByFileIn(files.stream().map(TempAttach::getFile).toList());
     }
 }

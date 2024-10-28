@@ -7,6 +7,7 @@ import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
 import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.PostService;
+import com.domi.dnote.Service.TempAttachService;
 import com.domi.dnote.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class PostController {
     final PostService postService;
     final UserService userService;
     final FileService fileService;
+    final TempAttachService tempAttachService;
 
     @GetMapping("/info/{user}/{id}")
     PostDTO getPostInfo(@PathVariable("user") long userId, @PathVariable("id") long postId) {
@@ -43,7 +45,11 @@ public class PostController {
     @PostMapping("/attachment/upload")
     String tempImageUpload(@RequestParam("domi") MultipartFile file) throws IOException {
         userService.getCurrentUser(); // 로그인 유도
+        String fileId = fileService.registerFile(FileGroup.Attachment, file);
 
-        return fileService.registerFile(FileGroup.Attachment, file);
+        // 임시 파일로 지정
+        tempAttachService.setAttach(fileId, 60 * 60 * 6 /* 12시간 */);
+
+        return fileId;
     }
 }
