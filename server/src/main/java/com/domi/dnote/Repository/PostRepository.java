@@ -5,6 +5,7 @@ import com.domi.dnote.Entity.PostId;
 import com.domi.dnote.Entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,7 @@ public interface PostRepository extends JpaRepository<Post, PostId> {
 
     @Query("SELECT IFNULL(MAX(c.id), 0) FROM Post AS c WHERE c.owner = :user")
     long getMaxIdByOwner(@Value("user") User user);
+
+    @Modifying
+    byte deleteByOwnerAndId(User owner, long id);
 }

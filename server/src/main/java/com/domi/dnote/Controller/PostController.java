@@ -5,6 +5,7 @@ import com.domi.dnote.DTO.PostUploadDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
+import com.domi.dnote.Exception.PostException;
 import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.TempAttachService;
@@ -52,6 +53,22 @@ public class PostController {
         tempAttachService.removeFiles(tempIds);
 
         return newPost.getId();
+    }
+
+    @Transactional
+    @DeleteMapping("/remove/{id}")
+    void removePost(@PathVariable("id") long postId) {
+        User user = userService.getCurrentUser();
+        Post post = postService.getPostByOwnerId(user, postId);
+        boolean result = postService.removePost(user, postId);
+
+        if (!result) return; // 머임..
+
+        List<String> images = getImageUrls(post.getContent());
+
+        for (String imageId : images) {
+            fileService.removeFile(FileGroup.Attachment, imageId);
+        }
     }
 
     @PostMapping("/attachment/upload")
