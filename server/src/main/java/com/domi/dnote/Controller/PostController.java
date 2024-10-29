@@ -5,6 +5,7 @@ import com.domi.dnote.DTO.PostUploadDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
+import com.domi.dnote.Exception.DomiException;
 import com.domi.dnote.Exception.PostException;
 import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.PostService;
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -67,8 +71,45 @@ public class PostController {
         List<String> images = getImageUrls(post.getContent());
 
         for (String imageId : images) {
-            fileService.removeFile(FileGroup.Attachment, imageId);
+            try {
+                fileService.removeFile(FileGroup.Attachment, imageId);
+            } catch (DomiException ignored) {}
         }
+    }
+
+    @Transactional
+    @PostMapping("/edit/{id}")
+    void editPost(@PathVariable("id") long postId, @RequestBody PostUploadDTO form) {
+        User user = userService.getCurrentUser();
+        Post post = postService.getPostByOwnerId(user, postId);
+
+        Set<String> oldImages = new HashSet<String>(getImageUrls(post.getContent()));
+        Set<String> newImages = new HashSet<String>(getImageUrls(form.getContent()));
+
+        List<String> removeImages = new ArrayList<>(); // 삭제된건 파일도 삭제해야함
+        List<String> addImages = new ArrayList<>(); // 추가된 이미지는 임시 파일에서 제거해야함
+
+        // 삭제한 이미지 감지
+        oldImages.forEach(v -> {
+            if (!newImages.contains(v)) // 바꿀곳에는 없다ㅏ
+                removeImages.add(v);
+        });
+
+        // 추가된 이미지 감지
+        newImages.forEach(v -> {
+            if (!oldImages.contains(v)) // 바꿀곳에는 없다ㅏ
+                addImages.add(v);
+        });
+
+        for (String imageId : removeImages) {
+            try {
+                fileService.removeFile(FileGroup.Attachment, imageId);
+            } catch (DomiException ignored) {}
+        }
+
+        tempAttachService.removeFiles(addImages);
+
+        postService.save(post);
     }
 
     @PostMapping("/attachment/upload")

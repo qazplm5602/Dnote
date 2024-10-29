@@ -42,4 +42,8 @@ public class PostService {
     public boolean removePost(User user, long id) {
         return postRepository.deleteByOwnerAndId(user, id) > 0;
     }
+
+    public Post save(Post post) {
+        return postRepository.save(post);
+    }
 }
