@@ -9,12 +9,18 @@ import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.TempAttachService;
 import com.domi.dnote.Service.UserService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +30,8 @@ public class PostController {
     final UserService userService;
     final FileService fileService;
     final TempAttachService tempAttachService;
+
+    final String SERVER_IMAGE_PATH = "/file/attachment/";
 
     @GetMapping("/info/{user}/{id}")
     PostDTO getPostInfo(@PathVariable("user") long userId, @PathVariable("id") long postId) {
@@ -39,6 +47,10 @@ public class PostController {
         User user = userService.getCurrentUser();
         Post newPost = postService.createPost(user, form);
 
+        // 임시 저장 파일 해제하기
+        List<String> tempIds = getImageUrls(form.getContent());
+        tempAttachService.removeFiles(tempIds);
+
         return newPost.getId();
     }
 
@@ -51,5 +63,16 @@ public class PostController {
         tempAttachService.setAttach(fileId, 60 * 60 * 6 /* 12시간 */);
 
         return fileId;
+    }
+
+    List<String> getImageUrls(String content) {
+        Document document = Jsoup.parse(content);
+
+        Elements elements = document.select("img");
+        return elements.stream()
+                .map(v -> v.attr("src"))
+                .filter(v -> v.startsWith(SERVER_IMAGE_PATH))
+                .map(v -> v.substring(SERVER_IMAGE_PATH.length()))
+                .toList();
     }
 }

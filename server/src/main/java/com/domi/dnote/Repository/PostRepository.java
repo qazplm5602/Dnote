@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, PostId> {
     public Optional<Post> findByOwnerAndId(User owner, long id);
 
-    @Query("SELECT MAX(c.id) FROM Post AS c WHERE c.owner = :user")
+    @Query("SELECT IFNULL(MAX(c.id), 0) FROM Post AS c WHERE c.owner = :user")
     long getMaxIdByOwner(@Value("user") User user);
 }

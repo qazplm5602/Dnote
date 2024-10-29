@@ -35,7 +35,7 @@ public class TempAttachService {
         return tempAttachRepository.findByExpiredLessThan(LocalDateTime.now());
     }
 
-    public void removeFiles(List<TempAttach> files) {
-        tempAttachRepository.deleteByFileIn(files.stream().map(TempAttach::getFile).toList());
+    public void removeFiles(List<String> files) {
+        tempAttachRepository.deleteByFileIn(files);
     }
 }

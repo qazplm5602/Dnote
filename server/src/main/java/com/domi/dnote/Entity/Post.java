@@ -35,7 +35,7 @@ public class Post {
 
     private long viewCount; // 조회수
 
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @JoinColumn(nullable = false)

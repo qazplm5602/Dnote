@@ -38,7 +38,7 @@ public class TempAttachFileSchedule {
             }
         }
 
-        tempAttachService.removeFiles(attachList);
+        tempAttachService.removeFiles(attachList.stream().map(TempAttach::getFile).toList());
         log.info("Remove temp file success ");
     }
 }
