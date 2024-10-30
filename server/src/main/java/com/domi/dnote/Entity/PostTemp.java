@@ -21,6 +21,9 @@ public class PostTemp {
     @ManyToOne
     User user;
 
+    @Column(nullable = false)
+    String title;
+
     @Convert(converter = TagListConverter.class)
     List<String> tags;
 

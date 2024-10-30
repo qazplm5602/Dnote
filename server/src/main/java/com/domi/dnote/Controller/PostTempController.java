@@ -7,10 +7,7 @@ import com.domi.dnote.Service.PostTempService;
 import com.domi.dnote.Service.UserService;
 import com.domi.dnote.Util.MiscUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,4 +32,6 @@ public class PostTempController {
         postTempService.save(post);
         return tempId;
     }
+
+//    @GetMapping("/{id}")
 }
