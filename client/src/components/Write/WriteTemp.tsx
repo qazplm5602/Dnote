@@ -6,8 +6,16 @@ import trashSvg from '../../assets/icons/trash.svg';
 import { IconButton } from '../Recycle/Button';
 import { useRef } from "react";
 
-export default function WriteTemp({ show }: { show: boolean }) {
+export default function WriteTemp({ show, onClose }: { show: boolean, onClose: () => void }) {
     const nodeRef = useRef(null);
+    
+    const onBGClick = function() {
+        onClose();
+    }
+    
+    const onBoxClick = function(e: React.MouseEvent) {
+        e.stopPropagation();
+    }
     
     return <CSSTransition in={show} nodeRef={nodeRef} unmountOnExit timeout={300} classNames={{
         enter: style.enter,
@@ -15,20 +23,20 @@ export default function WriteTemp({ show }: { show: boolean }) {
         exit: style.exit,
         exitActive: style.exit_active
     }} >
-        <article ref={nodeRef} className={style.temp_main}>
-            <div className={style.box}>
-                <Head />
+        <article ref={nodeRef} className={style.temp_main} onClick={onBGClick}>
+            <div className={style.box} onClick={onBoxClick}>
+                <Head onClose={onClose} />
                 <List />
             </div>
         </article>
     </CSSTransition>;
 }
 
-function Head() {
+function Head({ onClose }: { onClose: () => void }) {
     return <section className={style.head}>
         <h2>임시글 목록</h2>
 
-        <button className={style.close_btn}>
+        <button className={style.close_btn} onClick={onClose}>
             <img src={closeSvg} />
         </button>
     </section>;

@@ -52,13 +52,18 @@ export default function Write() {
         console.log(title, editor.getHTML(), tagRef.current);
     }
 
+    const onTempLoad = function() {
+        setShowTemp(true);
+    }
+    const onTempClose = () => setShowTemp(false);
+
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagRef={tagRef} />
         <EditorSection editorRef={editorRef} />
-        <Interactions onPost={onPost} />
+        <Interactions onPost={onPost} onTempLoad={onTempLoad} />
 
-        <WriteTemp show={showTemp} />
+        <WriteTemp show={showTemp} onClose={onTempClose} />
     </main>;
 }
 
@@ -123,9 +128,9 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
     return <ReactTextareaAutosize className={style.title_input} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
 }
 
-function Interactions({ onPost }: { onPost: () => void }) {
+function Interactions({ onPost, onTempLoad }: { onPost: () => void, onTempLoad: () => void }) {
     return <article className={style.interaction_main}>
-        <Button className={[style.gray]}>불러오기</Button>
+        <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>
         <Button className={[style.gray]}>임시저장</Button>
 
         <div className={style.line}></div>
