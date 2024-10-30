@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostTempRepository extends JpaRepository<PostTemp, String> {
-
+    
 }
