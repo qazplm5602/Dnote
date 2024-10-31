@@ -18,11 +18,11 @@ public class PostTempService {
     }
 
     public PostTemp getById(String id) {
-        PostTemp post = postTempRepository.getReferenceById(id);
+        Optional<PostTemp> post = postTempRepository.findById(id);
+        return post.orElseThrow(() -> new PostException(PostException.Type.NOT_FOUND_TEMP));
+    }
 
-        if (post == null)
-            throw new PostException(PostException.Type.NOT_FOUND_TEMP);
-
-        return post;
+    public void removeById(String id) {
+        postTempRepository.deleteById(id);
     }
 }

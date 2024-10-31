@@ -11,6 +11,7 @@ import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.TempAttachService;
 import com.domi.dnote.Service.UserService;
+import com.domi.dnote.Util.MiscUtil;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -36,8 +37,6 @@ public class PostController {
     final FileService fileService;
     final TempAttachService tempAttachService;
 
-    final String SERVER_IMAGE_PATH = "/file/attachment/";
-
     @GetMapping("/info/{user}/{id}")
     PostDTO getPostInfo(@PathVariable("user") long userId, @PathVariable("id") long postId) {
         User user = userService.getUserById(userId);
@@ -53,7 +52,7 @@ public class PostController {
         Post newPost = postService.createPost(user, form);
 
         // 임시 저장 파일 해제하기
-        List<String> tempIds = getImageUrls(form.getContent());
+        List<String> tempIds = MiscUtil.getImageUrls(form.getContent());
         tempAttachService.removeFiles(tempIds);
 
         return newPost.getId();
@@ -68,7 +67,7 @@ public class PostController {
 
         if (!result) return; // 머임..
 
-        List<String> images = getImageUrls(post.getContent());
+        List<String> images = MiscUtil.getImageUrls(post.getContent());
 
         for (String imageId : images) {
             try {
@@ -83,8 +82,8 @@ public class PostController {
         User user = userService.getCurrentUser();
         Post post = postService.getPostByOwnerId(user, postId);
 
-        Set<String> oldImages = new HashSet<String>(getImageUrls(post.getContent()));
-        Set<String> newImages = new HashSet<String>(getImageUrls(form.getContent()));
+        Set<String> oldImages = new HashSet<String>(MiscUtil.getImageUrls(post.getContent()));
+        Set<String> newImages = new HashSet<String>(MiscUtil.getImageUrls(form.getContent()));
 
         List<String> removeImages = new ArrayList<>(); // 삭제된건 파일도 삭제해야함
         List<String> addImages = new ArrayList<>(); // 추가된 이미지는 임시 파일에서 제거해야함
@@ -123,14 +122,5 @@ public class PostController {
         return fileId;
     }
 
-    List<String> getImageUrls(String content) {
-        Document document = Jsoup.parse(content);
 
-        Elements elements = document.select("img");
-        return elements.stream()
-                .map(v -> v.attr("src"))
-                .filter(v -> v.startsWith(SERVER_IMAGE_PATH))
-                .map(v -> v.substring(SERVER_IMAGE_PATH.length()))
-                .toList();
-    }
 }

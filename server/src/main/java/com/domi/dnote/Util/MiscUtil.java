@@ -1,7 +1,11 @@
 package com.domi.dnote.Util;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Random;
 
 public class MiscUtil {
@@ -15,5 +19,17 @@ public class MiscUtil {
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    static final String SERVER_IMAGE_PATH = "/file/attachment/";
+    public static List<String> getImageUrls(String content) {
+        Document document = Jsoup.parse(content);
+
+        Elements elements = document.select("img");
+        return elements.stream()
+                .map(v -> v.attr("src"))
+                .filter(v -> v.startsWith(SERVER_IMAGE_PATH))
+                .map(v -> v.substring(SERVER_IMAGE_PATH.length()))
+                .toList();
     }
 }
