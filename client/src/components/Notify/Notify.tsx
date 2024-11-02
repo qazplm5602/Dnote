@@ -20,32 +20,7 @@ interface NotifyData {
 }
 
 export default function Notify({ callback }: { callback: React.MutableRefObject<ContextType['post']> }) {
-    const [ list, setList ] = useState<NotifyData[]>([
-        {
-            id: randomString(5),
-            text: "ㅁㄴㅇㄹ",
-            time: new Date(Date.now() + (1000 * 60)),
-            nodeRef: createRef(),
-            timer: null,
-            type: 'Success'
-        },
-        {
-            id: randomString(5),
-            text: "ㅁㄴㅇㄹ",
-            time: new Date(Date.now() + (1000 * 60)),
-            nodeRef: createRef(),
-            timer: null,
-            type: 'Success'
-        },
-        {
-            id: randomString(5),
-            text: "ㅁㄴㅇㄹ",
-            time: new Date(Date.now() + (1000 * 60)),
-            nodeRef: createRef(),
-            timer: null,
-            type: 'Success'
-        }
-    ]);
+    const [ list, setList ] = useState<NotifyData[]>([]);
     const listRef = useRef<NotifyData[]>([]);
 
     const onRemove = function(id: string) {
@@ -55,6 +30,11 @@ export default function Notify({ callback }: { callback: React.MutableRefObject<
             prev.forEach((v, i) => {
                 if (v.id === id) {
                     idx = i;
+
+                    // 타이머 끝 ---
+                    if (v.timer !== null)
+                        clearTimeout(v.timer);
+
                     return false;
                 }
             });
@@ -64,6 +44,7 @@ export default function Notify({ callback }: { callback: React.MutableRefObject<
             }
 
             prev.splice(idx, 1);
+
             return [ ...prev ];
         });
     }
@@ -99,6 +80,7 @@ export default function Notify({ callback }: { callback: React.MutableRefObject<
             callback.current = null;
 
             // 타이머 제거
+            console.log("timer clear!");
             listRef.current.forEach(v => {
                 if (v.timer)
                     clearTimeout(v.timer);
@@ -119,7 +101,7 @@ export default function Notify({ callback }: { callback: React.MutableRefObject<
                     exitActive: style.exit_active
                 }}
             >
-                <Box type={v.type} text={v.text} ref={v.nodeRef} />
+                <Box type={v.type} text={v.text} ref={v.nodeRef} onClose={() => onRemove(v.id)} />
             </CSSTransition>
         ))}
     </TransitionGroup>;

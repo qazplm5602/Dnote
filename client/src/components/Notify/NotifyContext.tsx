@@ -7,7 +7,7 @@ export type ContextType = {
 
 const context = createContext<ContextType>({ post: null });
 
-export default function NotifyContext({ children }: { children: React.ReactNode }) {
+export default function NotifyContext({ children }: { children?: React.ReactNode }) {
     const ref = useRef<ContextType['post']>(null);
     const sendPost = function(type: NotifyType, text: string, time: number) {
         if (ref.current === null)

@@ -18,11 +18,13 @@ import style from './write.module.css';
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
 import sendSvg from '../../assets/icons/ic-round-send.svg';
 import WriteTemp from './WriteTemp';
-import request from '../Utils/request';
+import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
+import { useNotify } from '../Notify/NotifyContext';
 
 export default function Write() {
     const [title, setTitle] = useState<string>("");
+    const notify = useNotify();
     const [showTemp, setShowTemp] = useState(false);
 
     const tagRef = useRef<string[]>([]);
@@ -34,7 +36,7 @@ export default function Write() {
         const editor = editorRef.current?.getInstance();
 
         if (title.length === 0) {
-            // 나중에 안되는 표시 함
+            notify('Error', "제목을 입력해야 합니다.", 5000);
             return;
         }
         
@@ -45,7 +47,7 @@ export default function Write() {
         }
         const response = await request("post/upload", { method: "POST", data: form }).catch(e => e as AxiosError);
         if (response instanceof AxiosError) {
-            // 오류 처리
+            notify('Error', "업로드 실패. 나중에 다시 시도하세요.", 5000);
             return;
         }
 
@@ -140,12 +142,18 @@ function Interactions({ onPost, onTempLoad }: { onPost: () => void, onTempLoad: 
 }
 
 function EditorSection({ editorRef }: { editorRef?: React.RefObject<Editor> }) {
+    const notify = useNotify();
+
     const addImageBlobHook = async function(blob: File, cb: (url: string, type: string) => void) {
         const form = new FormData();
         form.append("domi", blob);
 
-        const response = await request<string>("post/attachment/upload", { method: "POST", data: form });
+        const response = await request<string>("post/attachment/upload", { method: "POST", data: form }).catch(e => e as AxiosError<ErrorResponse>);
         // 나중에 오류 처리...
+        if (response instanceof AxiosError) {
+            notify('Error', `이미지 업로드 실패 (${response.response?.data.message})`, 5000);
+            return;
+        }
 
         cb(`/file/attachment/${response.data}`, 'image');
     }

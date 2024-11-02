@@ -19,14 +19,19 @@ import { store } from "../Redux/Store";
 import LoginState from "../LoginState/LoginState";
 import LoginSuccess from "../Login/Process/LoginSuccess";
 import Logout from "../Login/Process/Logout";
+import NotifyContext from "../Notify/NotifyContext";
 
 export default function App() {
     
     return <BrowserRouter>
         <Provider store={store}>
-            <LoginState />
-            <Header />
-            <AppRouter />
+            <NotifyContext>
+                
+                <LoginState />
+                <Header />
+                <AppRouter />
+
+            </NotifyContext>
         </Provider>
     </BrowserRouter>;
 }
