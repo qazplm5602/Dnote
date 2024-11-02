@@ -5,8 +5,9 @@ import errorIco from '../../assets/icons/error.svg';
 import successIco from '../../assets/icons/success.svg';
 import clsoeSvg from '../../assets/icons/ic-close-solid.svg';
 import { IconButton } from '../Recycle/Button';
-import { createRef, forwardRef, useState } from 'react';
+import { createRef, forwardRef, useEffect, useRef, useState } from 'react';
 import { randomString } from '../Utils/misc';
+import { ContextType } from './NotifyContext';
 
 export type NotifyType = 'Error' | 'Success';
 interface NotifyData {
@@ -18,7 +19,7 @@ interface NotifyData {
     timer: NodeJS.Timeout | null
 }
 
-export default function Notify() {
+export default function Notify({ callback }: { callback: React.MutableRefObject<ContextType['post']> }) {
     const [ list, setList ] = useState<NotifyData[]>([
         {
             id: randomString(5),
@@ -45,7 +46,65 @@ export default function Notify() {
             type: 'Success'
         }
     ]);
+    const listRef = useRef<NotifyData[]>([]);
 
+    const onRemove = function(id: string) {
+        setList(prev => {
+            let idx = -1;
+            
+            prev.forEach((v, i) => {
+                if (v.id === id) {
+                    idx = i;
+                    return false;
+                }
+            });
+
+            if (idx === -1) {
+                return prev;
+            }
+
+            prev.splice(idx, 1);
+            return [ ...prev ];
+        });
+    }
+
+    const onCreate = function(type: NotifyType, text: string, time: number) {
+        const id = randomString(5);
+        const timeHandler = setTimeout(() => {
+            onRemove(id);
+        }, time);
+        
+        const data: NotifyData = {
+            id,
+            type,
+            nodeRef: createRef(),
+            text,
+            time: new Date( Date.now() + time ),
+            timer: timeHandler
+        }
+
+        setList((prev) => {
+            return [...prev, data];
+        });
+    }
+    
+    useEffect(() =>  {
+        listRef.current = list;
+    }, [list]);
+
+    useEffect(() => {
+        callback.current = onCreate;
+
+        return () => {
+            callback.current = null;
+
+            // 타이머 제거
+            listRef.current.forEach(v => {
+                if (v.timer)
+                    clearTimeout(v.timer);
+            });
+        }
+    }, []);
 
     return <TransitionGroup className={style.main}>
         {list.map(v => (
