@@ -54,3 +54,27 @@
 .main > .box:not(:first-child) {
     margin-top: 12px;
 }
+
+.main > .box.enter {
+    transform: translateX(30%);
+    opacity: 0;
+}
+
+.main > .box.enter_active {
+    transform: translateX(0);
+    opacity: 1;
+
+    transition: transform 250ms, opacity 250ms;
+}
+
+.main > .box.exit {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.main > .box.exit_active {
+    transform: translateX(30%);
+    opacity: 0;
+
+    transition: transform 250ms, opacity 250ms;
+}
