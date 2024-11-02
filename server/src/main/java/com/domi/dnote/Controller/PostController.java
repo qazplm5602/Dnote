@@ -82,8 +82,29 @@ public class PostController {
         User user = userService.getCurrentUser();
         Post post = postService.getPostByOwnerId(user, postId);
 
-        Set<String> oldImages = new HashSet<String>(MiscUtil.getImageUrls(post.getContent()));
-        Set<String> newImages = new HashSet<String>(MiscUtil.getImageUrls(form.getContent()));
+        imageDiffApply(post.getContent(), form.getContent());
+
+        post.setTitle(form.getTitle());
+        post.setTags(form.getTags());
+        post.setContent(form.getContent());
+
+        postService.save(post);
+    }
+
+    @PostMapping("/attachment/upload")
+    String tempImageUpload(@RequestParam("domi") MultipartFile file) throws IOException {
+        userService.getCurrentUser(); // 로그인 유도
+        String fileId = fileService.registerFile(FileGroup.Attachment, file);
+
+        // 임시 파일로 지정
+        tempAttachService.setAttach(fileId, 60 * 60 * 6 /* 12시간 */);
+
+        return fileId;
+    }
+
+    public void imageDiffApply(String prev, String next) {
+        Set<String> oldImages = new HashSet<String>(MiscUtil.getImageUrls(prev));
+        Set<String> newImages = new HashSet<String>(MiscUtil.getImageUrls(next));
 
         List<String> removeImages = new ArrayList<>(); // 삭제된건 파일도 삭제해야함
         List<String> addImages = new ArrayList<>(); // 추가된 이미지는 임시 파일에서 제거해야함
@@ -107,20 +128,5 @@ public class PostController {
         }
 
         tempAttachService.removeFiles(addImages);
-
-        postService.save(post);
     }
-
-    @PostMapping("/attachment/upload")
-    String tempImageUpload(@RequestParam("domi") MultipartFile file) throws IOException {
-        userService.getCurrentUser(); // 로그인 유도
-        String fileId = fileService.registerFile(FileGroup.Attachment, file);
-
-        // 임시 파일로 지정
-        tempAttachService.setAttach(fileId, 60 * 60 * 6 /* 12시간 */);
-
-        return fileId;
-    }
-
-
 }

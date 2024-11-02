@@ -16,13 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post/temp")
 public class PostTempController {
     final UserService userService;
+    final PostController postController;
     final PostTempService postTempService;
     final PostService postService;
     final TempAttachService tempAttachService;
@@ -80,6 +84,25 @@ public class PostTempController {
                 fileService.removeFile(FileGroup.Attachment, fileId);
             } catch (DomiException ignored) {}
         }
+    }
+
+    @PostMapping("/edit")
+    void postTempEdit(@RequestParam("id") String tempId, @RequestBody PostUploadDTO form) {
+        User user = userService.getCurrentUser();
+        PostTemp postTemp = postTempService.getById(tempId);
+
+        // 다른 사람이 수정할 순 없음 ㅅㄱ
+        if (user != postTemp.getUser())
+            throw new UserException(UserException.Type.NEED_PERMISSION);
+
+        // 이미지 변경 적용
+        postController.imageDiffApply(postTemp.getContent(), form.getContent());
+
+        postTemp.setTitle(form.getTitle());
+        postTemp.setTags(form.getTags());
+        postTemp.setContent(form.getContent());
+
+        postTempService.save(postTemp);
     }
 
     @GetMapping("/{id}")
