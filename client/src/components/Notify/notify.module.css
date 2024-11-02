@@ -1,0 +1,56 @@
+.main {
+    position: absolute;
+    right: 20px;
+    
+    margin-top: 10px;
+
+    width: 300px;
+    height: max-content;
+}
+
+.main > .box {
+    display: flex;
+    align-items: center;
+
+    gap: 0 10px;
+
+    padding: 15px 16px;
+    border-radius: 8px;
+
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+
+    width: 100%;
+    background-color: white;
+}
+
+.main > .box > img {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.main > .box > span {
+    flex-grow: 1;
+    color: #747483;
+    font-size: 14px;
+}
+
+.main > .box > .close_btn {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+
+    display: none;
+}
+
+.main > .box:hover > .close_btn {
+    display: initial;
+}
+
+.main > .box:hover > .close_btn > img {
+    display: block;
+}
+
+.main > .box:not(:first-child) {
+    margin-top: 12px;
+}
