@@ -21,8 +21,12 @@ import WriteTemp from './WriteTemp';
 import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
 import { useNotify } from '../Notify/NotifyContext';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Write() {
+    const [ searchParams, setSearchParams ] = useSearchParams();
+    const tempId = useMemo(() => searchParams.get("temp"), [ searchParams ]);
+
     const [title, setTitle] = useState<string>("");
     const notify = useNotify();
     const [showTemp, setShowTemp] = useState(false);
@@ -58,12 +62,15 @@ export default function Write() {
         setShowTemp(true);
     }
     const onTempClose = () => setShowTemp(false);
+    const onNewPost = function() {
+
+    }
 
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagRef={tagRef} />
         <EditorSection editorRef={editorRef} />
-        <Interactions onPost={onPost} onTempLoad={onTempLoad} />
+        <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} temp={tempId !== null} />
 
         <WriteTemp show={showTemp} onClose={onTempClose} />
     </main>;
@@ -130,10 +137,11 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
     return <ReactTextareaAutosize className={style.title_input} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
 }
 
-function Interactions({ onPost, onTempLoad }: { onPost: () => void, onTempLoad: () => void }) {
+function Interactions({ onPost, onTempLoad, onNewPost, temp }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, temp: boolean }) {
     return <article className={style.interaction_main}>
-        <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>
-        <Button className={[style.gray]}>임시저장</Button>
+        {!temp && <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>}
+        {temp && <Button className={[style.gray]} onClick={onNewPost}>새로 만들기</Button>}
+        <Button className={[style.gray]}>{temp ? '' : '임시'}저장</Button>
 
         <div className={style.line}></div>
 
