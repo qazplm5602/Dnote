@@ -23,9 +23,26 @@ import { AxiosError } from 'axios';
 import { useNotify } from '../Notify/NotifyContext';
 import { useSearchParams } from 'react-router-dom';
 
+type tempStatus = {
+    id: string,
+    load: boolean
+}
+
+interface tempDTO {
+    title: string,
+    tags: string[],
+    thumbnail: string,
+    content: string,
+    created: string
+}
+
 export default function Write() {
     const [ searchParams, setSearchParams ] = useSearchParams();
+
     const tempId = useMemo(() => searchParams.get("temp"), [ searchParams ]);
+    // const [ tempStatus, setTempStatus ] = useState<tempStatus>({ id: '', load: false });
+    const tempStatusRef = useRef<tempStatus>({ id: '', load: false });
+    const [ tempData, setTempData ] = useState<tempDTO | null>(null);
 
     const [title, setTitle] = useState<string>("");
     const notify = useNotify();
@@ -66,10 +83,27 @@ export default function Write() {
 
     }
 
+    const tempLoadData = async function() {
+        if (tempId === null) return;
+        tempStatusRef.current.id = tempId; // 바꿩
+
+        const result = await request<tempDTO>(`post/temp/${tempId}`);
+        setTempData(result.data);
+        setTitle(result.data.title);
+    }
+
+    // tempid 변경 감지
+    useEffect(() => {
+        if (tempId === null) return; // 없엉
+        if (tempStatusRef.current.id === tempId) return; // 불러올 필요가 없음
+        
+        tempLoadData();
+    }, [tempId]);
+
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagRef={tagRef} />
-        <EditorSection editorRef={editorRef} />
+        {(tempId === null || tempData !== null) && <EditorSection editorRef={editorRef} initValue={tempId === null ? "Hello Domi!" : tempData?.content || ""} />}
         <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} temp={tempId !== null} />
 
         <WriteTemp show={showTemp} onClose={onTempClose} />
@@ -149,7 +183,7 @@ function Interactions({ onPost, onTempLoad, onNewPost, temp }: { onPost: () => v
     </article>;
 }
 
-function EditorSection({ editorRef }: { editorRef?: React.RefObject<Editor> }) {
+function EditorSection({ editorRef, initValue }: { editorRef?: React.RefObject<Editor>, initValue: string }) {
     const notify = useNotify();
 
     const addImageBlobHook = async function(blob: File, cb: (url: string, type: string) => void) {
@@ -178,7 +212,7 @@ function EditorSection({ editorRef }: { editorRef?: React.RefObject<Editor> }) {
 
     return <article className={style.editor_container}>
         <Editor
-            initialValue="hello react editor world!"
+            initialValue={initValue}
             previewStyle="vertical"
             height="100%"
             initialEditType="markdown"
