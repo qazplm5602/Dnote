@@ -22,6 +22,7 @@ import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
 import { useNotify } from '../Notify/NotifyContext';
 import { useSearchParams } from 'react-router-dom';
+import LoadBox from '../Recycle/LoadBox';
 
 type tempStatus = {
     id: string,
@@ -94,11 +95,20 @@ export default function Write() {
 
     // tempid 변경 감지
     useEffect(() => {
-        if (tempId === null) return; // 없엉
         if (tempStatusRef.current.id === tempId) return; // 불러올 필요가 없음
-        
+        if (tempId === null) {
+            tempStatusRef.current.id = "";
+            setTitle("");
+            setTempData(null);
+        }
+
+        setTempData(null);
         tempLoadData();
     }, [tempId]);
+
+    if ((tempId !== null && tempData === null) || (tempId === null && tempData !== null)) {
+        return <LoadingScreen />;
+    }
 
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
@@ -172,10 +182,25 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
 }
 
 function Interactions({ onPost, onTempLoad, onNewPost, temp }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, temp: boolean }) {
+    const [ searchParams, setSearchParams ] = useSearchParams();
+    const onDebug = function() {
+        const tempId = searchParams.get("temp");
+        
+        if (tempId === null) {
+            setSearchParams({ temp: "asdf" });
+        } else {
+            searchParams.delete("temp");
+            setSearchParams(searchParams);
+        }
+    }
+    
     return <article className={style.interaction_main}>
         {!temp && <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>}
         {temp && <Button className={[style.gray]} onClick={onNewPost}>새로 만들기</Button>}
         <Button className={[style.gray]}>{temp ? '' : '임시'}저장</Button>
+        
+        {/* 디버그 버튼 */}
+        {/* <Button onClick={onDebug}>디버긍</Button> */}
 
         <div className={style.line}></div>
 
@@ -222,4 +247,32 @@ function EditorSection({ editorRef, initValue }: { editorRef?: React.RefObject<E
             ref={editorRef}
         />
     </article>;
+}
+
+function LoadingScreen() {
+    return <main className={`screen_container ${style.load}`}>
+        <LoadBox className={style.title_input} />
+
+        <section className={style.tags}>
+            <LoadBox className={style.tag} delay={100} />
+            <LoadBox className={style.tag} delay={200} />
+            <LoadBox className={style.tag} delay={300} />
+            <LoadBox className={style.tag} delay={400} />
+            <LoadBox className={style.tag} delay={500} />
+            <LoadBox className={style.tag} delay={600} />
+        </section>
+
+        <section className={style.editor_container}>
+            <LoadBox className={style.editor} delay={700} />
+        </section>
+
+        <section className={style.interaction_main}>
+            <LoadBox className={style.btn} delay={800} />
+            <LoadBox className={style.btn} delay={900} />
+
+            <div className={style.line}></div>
+
+            <LoadBox className={style.btn} delay={1000} />
+        </section>
+    </main>
 }

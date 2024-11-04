@@ -271,3 +271,36 @@
     transform: translate(-50%, -50%) scale(0.9);
     transition: transform 300ms;
 }
+
+/* 로딩 */
+.load > .title_input {
+    height: 35px;
+}
+
+.load > .tags {
+    margin-top: 10px;
+    gap: 7px;
+
+    display: flex;
+}
+
+.load > .tags > .tag {
+    width: 80px;
+
+    height: 30px;
+    border-radius: 30px;
+}
+
+.load > .editor_container > .editor {
+    width: 100%;
+    height: 100%;
+}
+
+.load > .interaction_main > .btn {
+    width: 100px;
+    height: 30px;
+}
+
+.load > .interaction_main > .btn:nth-child(2) {
+    width: 60px;
+}
