@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactTextareaAutosize from 'react-textarea-autosize';
-import Button from '../Recycle/Button';
+import Button, { SpinnerButton } from '../Recycle/Button';
 import IconText from '../Recycle/IconText';
 
 // 에디터
@@ -23,11 +23,17 @@ import { AxiosError } from 'axios';
 import { useNotify } from '../Notify/NotifyContext';
 import { useSearchParams } from 'react-router-dom';
 import LoadBox from '../Recycle/LoadBox';
+import Spinner from '../Recycle/Spinner';
 
 type tempStatus = {
     id: string,
     load: boolean,
     data: tempDTO | null
+}
+
+type loadData = {
+    save: boolean,
+    post: boolean
 }
 
 interface tempDTO {
@@ -49,6 +55,7 @@ export default function Write() {
     const [title, setTitle] = useState<string>("");
     const notify = useNotify();
     const [showTemp, setShowTemp] = useState(false);
+    const [loader, setLoader] = useState<loadData>({ post: false, save: false });
 
     const tagRef = useRef<string[]>([]);
     const editorRef = useRef<Editor>(null);
@@ -62,6 +69,8 @@ export default function Write() {
             notify('Error', "제목을 입력해야 합니다.", 5000);
             return;
         }
+
+        setLoader(prev => ({ ...prev, post: true }));
         
         const form = {
             title,
@@ -69,6 +78,9 @@ export default function Write() {
             content: editor.getHTML()
         }
         const response = await request("post/upload", { method: "POST", data: form }).catch(e => e as AxiosError);
+
+        setLoader(prev => ({ ...prev, post: false }));
+
         if (response instanceof AxiosError) {
             notify('Error', "업로드 실패. 나중에 다시 시도하세요.", 5000);
             return;
@@ -134,6 +146,9 @@ export default function Write() {
             return;
         }
 
+        // 로딩!!!
+        setLoader({ ...loader, save: true });
+
         const content = editor.getHTML();
         const form = {
             title,
@@ -142,8 +157,16 @@ export default function Write() {
         };
 
         const isEdit = tempId !== null;
-        const result = await request(`post/temp/${isEdit ? `edit?id=${tempId}` : 'upload'}`, { method: "POST", data: form });
+        const result = await request(`post/temp/${isEdit ? `edit?id=${tempId}` : 'upload'}`, { method: "POST", data: form }).catch(e => e as AxiosError);
         
+        setLoader(prev => ({ ...prev, save: false }));
+        
+        if (result instanceof AxiosError) {
+            notify('Error', "오류가 발생하였습니다.", 5000);
+            return;
+        }
+
+
         if (isEdit) {
             // 기존꺼 변경
             if (tempStatusRef.current.data !== null) {
@@ -190,7 +213,7 @@ export default function Write() {
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagRef={tagRef} />
         {(tempId === null || tempData !== null) && <EditorSection editorRef={editorRef} initValue={tempId === null ? "Hello Domi!" : tempData?.content || ""} />}
-        <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} onTempSave={onTempSave} temp={tempId !== null} />
+        <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} onTempSave={onTempSave} temp={tempId !== null} loading={loader} />
 
         <WriteTemp show={showTemp} onClose={onTempClose} />
     </main>;
@@ -257,7 +280,7 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
     return <ReactTextareaAutosize className={style.title_input} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
 }
 
-function Interactions({ onPost, onTempLoad, onTempSave, onNewPost, temp }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, onTempSave: () => void, temp: boolean }) {
+function Interactions({ onPost, onTempLoad, onTempSave, onNewPost, temp, loading }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, onTempSave: () => void, temp: boolean, loading: loadData }) {
     const [ searchParams, setSearchParams ] = useSearchParams();
     const onDebug = function() {
         const tempId = searchParams.get("temp");
@@ -273,14 +296,14 @@ function Interactions({ onPost, onTempLoad, onTempSave, onNewPost, temp }: { onP
     return <article className={style.interaction_main}>
         {!temp && <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>}
         {temp && <Button className={[style.gray]} onClick={onNewPost}>새로 만들기</Button>}
-        <Button className={[style.gray]} onClick={onTempSave}>{temp ? '' : '임시'}저장</Button>
+        <SpinnerButton className={[style.gray]} onClick={onTempSave} loading={loading.save}>{temp ? '' : '임시'}저장</SpinnerButton>
         
         {/* 디버그 버튼 */}
         {/* <Button onClick={onDebug}>디버긍</Button> */}
 
         <div className={style.line}></div>
 
-        <Button className={[style.send_btn]} onClick={onPost}><IconText icon={sendSvg} text='게시하기' /></Button>
+        <SpinnerButton className={[style.send_btn]} onClick={onPost} loading={loading.post}><IconText icon={sendSvg} text='게시하기' /></SpinnerButton>
     </article>;
 }
 
