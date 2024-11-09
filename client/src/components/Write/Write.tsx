@@ -26,7 +26,8 @@ import LoadBox from '../Recycle/LoadBox';
 
 type tempStatus = {
     id: string,
-    load: boolean
+    load: boolean,
+    data: tempDTO | null
 }
 
 interface tempDTO {
@@ -42,7 +43,7 @@ export default function Write() {
 
     const tempId = useMemo(() => searchParams.get("temp"), [ searchParams ]);
     // const [ tempStatus, setTempStatus ] = useState<tempStatus>({ id: '', load: false });
-    const tempStatusRef = useRef<tempStatus>({ id: '', load: false });
+    const tempStatusRef = useRef<tempStatus>({ id: '', load: false, data: null });
     const [ tempData, setTempData ] = useState<tempDTO | null>(null);
 
     const [title, setTitle] = useState<string>("");
@@ -76,12 +77,85 @@ export default function Write() {
         console.log(title, editor.getHTML(), tagRef.current);
     }
 
+    const isSameTags = function(target: string[]) {
+        const nowTag = new Set(tagRef.current);
+        const targetTag = new Set(target);
+        
+        let same = true;
+        nowTag.forEach(v => {
+            if (!targetTag.has(v)) {
+                same = false;
+                return false;
+            }
+        });
+
+        if (same)
+            targetTag.forEach(v => {
+                if (!nowTag.has(v)) {
+                    same = false;
+                    return false;
+                }
+            });
+
+        return same;
+    }
+
+    const isTempChanged = function(): boolean {
+        const editor = editorRef.current?.getInstance();
+        if (tempStatusRef.current.data === null || editor === undefined) return false;
+        
+        const origin = tempStatusRef.current.data;
+        console.log(origin.title, title);
+        console.log(origin.content, editor.getHTML());
+        return (origin.title !== title || origin.content !== editor.getHTML() || !isSameTags(origin.tags));
+    }
+
     const onTempLoad = function() {
         setShowTemp(true);
     }
     const onTempClose = () => setShowTemp(false);
     const onNewPost = function() {
+        if (isTempChanged()) {
+            const check = confirm("글이 저장되지 않았습니다. 새로 만드시겠습니까?");
+            if (!check) return;
+        }
 
+        // 그냥 temp id 빼버림
+        searchParams.delete("temp");
+        setSearchParams(searchParams);
+    }
+    const onTempSave = async function() {
+        if (editorRef.current === null) return;
+        
+        const editor = editorRef.current?.getInstance();
+
+        if (title.length === 0) {
+            notify('Error', "제목을 입력해야 합니다.", 5000);
+            return;
+        }
+
+        const content = editor.getHTML();
+        const form = {
+            title,
+            tags: tagRef.current,
+            content
+        };
+
+        const isEdit = tempId !== null;
+        const result = await request(`post/temp/${isEdit ? `edit?id=${tempId}` : 'upload'}`, { method: "POST", data: form });
+        
+        if (isEdit) {
+            // 기존꺼 변경
+            if (tempStatusRef.current.data !== null) {
+                const data = tempStatusRef.current.data;
+                data.title = title;
+                data.tags = [...tagRef.current];
+                data.content = content;
+            }
+        } else { // tempId 변경
+            const temp = result.data as string;
+            setSearchParams({ temp });
+        }
     }
 
     const tempLoadData = async function() {
@@ -91,6 +165,8 @@ export default function Write() {
         const result = await request<tempDTO>(`post/temp/${tempId}`);
         setTempData(result.data);
         setTitle(result.data.title);
+
+        tempStatusRef.current.data = result.data;
     }
 
     // tempid 변경 감지
@@ -114,7 +190,7 @@ export default function Write() {
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagRef={tagRef} />
         {(tempId === null || tempData !== null) && <EditorSection editorRef={editorRef} initValue={tempId === null ? "Hello Domi!" : tempData?.content || ""} />}
-        <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} temp={tempId !== null} />
+        <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} onTempSave={onTempSave} temp={tempId !== null} />
 
         <WriteTemp show={showTemp} onClose={onTempClose} />
     </main>;
@@ -181,7 +257,7 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
     return <ReactTextareaAutosize className={style.title_input} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
 }
 
-function Interactions({ onPost, onTempLoad, onNewPost, temp }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, temp: boolean }) {
+function Interactions({ onPost, onTempLoad, onTempSave, onNewPost, temp }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, onTempSave: () => void, temp: boolean }) {
     const [ searchParams, setSearchParams ] = useSearchParams();
     const onDebug = function() {
         const tempId = searchParams.get("temp");
@@ -197,7 +273,7 @@ function Interactions({ onPost, onTempLoad, onNewPost, temp }: { onPost: () => v
     return <article className={style.interaction_main}>
         {!temp && <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>}
         {temp && <Button className={[style.gray]} onClick={onNewPost}>새로 만들기</Button>}
-        <Button className={[style.gray]}>{temp ? '' : '임시'}저장</Button>
+        <Button className={[style.gray]} onClick={onTempSave}>{temp ? '' : '임시'}저장</Button>
         
         {/* 디버그 버튼 */}
         {/* <Button onClick={onDebug}>디버긍</Button> */}
