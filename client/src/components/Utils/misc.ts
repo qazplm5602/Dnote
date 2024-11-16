@@ -18,8 +18,9 @@ export const randomString = (length: number) => {
 
 export const dateFormat = function(date: Date): string {
   const formatDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}`;
-  const ampm = `오${date.getHours() >= 12 ? "후" : "전"}`;
-  const clock = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+  const isPm = date.getHours() >= 12;
+  const ampm = `오${isPm ? "후" : "전"}`;
+  const clock = `${(date.getHours() - (isPm ? 12 : 0)).toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
   return `${formatDate} ${ampm} ${clock}`;
 }
