@@ -1,6 +1,7 @@
 package com.domi.dnote.Controller;
 
 import com.domi.dnote.DTO.BasePostDTO;
+import com.domi.dnote.DTO.PostTempPreviewDTO;
 import com.domi.dnote.DTO.PostUploadDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.PostTemp;
@@ -124,5 +125,11 @@ public class PostTempController {
         data.setCreated(post.getCreated());
 
         return data;
+    }
+
+    @GetMapping("/list")
+    List<PostTempPreviewDTO> getMyTemps() {
+        User user = userService.getCurrentUser();
+        return postTempService.getTempsByUser(user).stream().map(PostTempPreviewDTO::toEntity).toList();
     }
 }
