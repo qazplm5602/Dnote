@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -72,7 +69,7 @@ public class PostTempController {
 
         if (postId != null) {
             Post post = postService.getPostByOwnerId(user, postId);
-            if (post.getContent().equals(postTemp.getContent())) // 이거 아마 검증이 안되는듯
+            if (!post.getContent().equals(postTemp.getContent())) // 이거 아마 검증이 안되는듯
                 throw new DomiException("POSTTEMP0", "다른 포스트 입니다.", HttpStatus.FORBIDDEN);
 
             return;

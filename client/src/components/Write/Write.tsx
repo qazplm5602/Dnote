@@ -77,7 +77,7 @@ export default function Write() {
             tags: Array.from(tags),
             content: editor.getHTML()
         }
-        const response = await request("post/upload", { method: "POST", data: form }).catch(e => e as AxiosError);
+        const response = await request<number>("post/upload", { method: "POST", data: form }).catch(e => e as AxiosError);
 
         setLoader(prev => ({ ...prev, post: false }));
 
@@ -87,6 +87,16 @@ export default function Write() {
         }
 
         console.log(title, editor.getHTML(), Array.from(tags));
+
+        // 업로드 되면 temp가 있다면 삭제 해야함
+        if (tempId !== null) {
+            const result = await request<void>(`post/temp/remove?id=${tempId}&origin=${response.data}`, { method: "DELETE" }).catch(e => e as AxiosError);
+            if (result instanceof AxiosError) {
+                notify('Error', "임시글을 삭제할 수 없습니다.", 5000);
+                return;
+            }
+        }
+
     }
 
     const isSameTags = function(target: string[]) {
