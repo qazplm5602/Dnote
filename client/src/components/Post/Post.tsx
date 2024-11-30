@@ -14,12 +14,15 @@ import shareSvg from '../../assets/icons/share.svg';
 import replySvg from '../../assets/icons/reply.svg';
 import Footer from '../Footer/Footer';
 import PostBoxRow from '../PostBox/PostBoxRow';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import LoadBox from '../Recycle/LoadBox';
 import { UserDTO } from '../LoginState/LoginState';
 import request from '../Utils/request';
 import { dateFormatNumber, numberToKorean } from '../Utils/misc';
+
+import errorSvg from '../../assets/icons/error.svg';
+import { AxiosError } from 'axios';
 
 export interface BasePostDTO {
     title: string,
@@ -37,22 +40,37 @@ export interface PostDTO extends BasePostDTO {
 }
 
 export default function Post() {
+    const { id, user } = useParams();
+    const [ error, setError ] = useState(false);
+    const onError = () => setError(true);
+
+    useEffect(() => {
+        setError(false);
+    }, [id, user]);
+
     return <>
-        <main className={`screen_container ${style.main}`}>
-            <Content />
+        {!error ? <main className={`screen_container ${style.main}`}>
+            <Content onError={onError} />
             <PopularList />
-        </main>
+        </main> : <ErrorPage />}
+        
         <Footer />
     </>;
 }
 
-function Content() {
+function Content({ onError }: { onError: () => void }) {
     const [ post, setPost ] = useState<PostDTO | null>(null);
     const { id, user } = useParams();
 
     const onPostLoad = async function(process: { alive: boolean }) {
-        const result = await request<PostDTO>(`post/info/${user}/${id}`);
+        const result = await request<PostDTO>(`post/info/${user}/${id}`).catch(e => e as AxiosError);
         if (!process.alive) return; // state 가 확실하지 않음 ㅅㄱ
+
+        if (result instanceof AxiosError) {
+            if (result.status !== 404) return; // 이거 말고는 대응 할게 없음
+            onError();
+            return;
+        }
         
         setPost(result.data);
     }
@@ -191,4 +209,17 @@ function PopularList() {
         <PostBoxRow className={style.item} />
         <PostBoxRow className={style.item} />
     </article>;
+}
+
+function ErrorPage() {
+    return <main className={`screen_container ${style.main} ${style.error}`}>
+        <img src={errorSvg} className={style.icon} />
+        
+        <h2>게시물을 찾을 수 없습니다.</h2>
+        <div className={style.sub}>삭제된 게시물이거나 잘못된 URL일 수 있습니다.</div>
+        
+        <Link to='/' className={style.goBack}>
+            <Button>홈으로</Button>
+        </Link>
+    </main>;
 }

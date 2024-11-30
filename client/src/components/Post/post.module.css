@@ -250,6 +250,33 @@
     margin-bottom: 7px;
 }
 
+/* 오류 창 */
+.main.error {
+    height: calc(100dvh - var(--header-height) - 50px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main.error > .icon {
+    height: 100px;
+}
+
+.main.error > h2 {
+    margin: 0;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.main.error > .sub {
+    font-size: 15px;
+    color: #9A9A9A;
+}
+
+.main.error > a {
+    margin-top: 13px;
+}
+
 /* 로당 */
 .main > .content.loading > .title {
     width: 500px;
