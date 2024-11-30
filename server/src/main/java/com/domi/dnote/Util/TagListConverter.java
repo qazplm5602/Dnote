@@ -15,7 +15,7 @@ public class TagListConverter implements AttributeConverter<List<String>, String
 
     @Override
     public List<String> convertToEntityAttribute(String s) {
-        if (s == null)
+        if (s == null || s.isEmpty())
             return List.of();
 
         return List.of(s.split(","));
