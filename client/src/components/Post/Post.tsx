@@ -14,6 +14,9 @@ import shareSvg from '../../assets/icons/share.svg';
 import replySvg from '../../assets/icons/reply.svg';
 import Footer from '../Footer/Footer';
 import PostBoxRow from '../PostBox/PostBoxRow';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import LoadBox from '../Recycle/LoadBox';
 
 export default function Post() {
     return <>
@@ -26,6 +29,14 @@ export default function Post() {
 }
 
 function Content() {
+    const [loading, setLoading] = useState(true);
+    const { id, user } = useParams();
+    console.log(id, user);
+
+    if (loading) {
+        return <LoadingContent />;
+    }
+
     return <article className={style.content}>
         <h2 className={style.title}>AWS를 이용해서 사이트를 배포 해보자ㅏㅏㅏ</h2>
         <Tags />
@@ -35,6 +46,28 @@ function Content() {
 
         <Interactions />
         <Chat />
+    </article>;
+}
+
+function LoadingContent() {
+    return <article className={`${style.content} ${style.loading}`}>
+        <LoadBox className={style.title} />
+        <section className={style.tags}>
+            <LoadBox className={style.tag} delay={100} />
+            <LoadBox className={style.tag} delay={200} />
+            <LoadBox className={style.tag} delay={300} />
+        </section>
+        
+        <section className={style.detail}>
+            <div className={style.left}>
+                <LoadBox className={style.user} delay={400} />
+                <LoadBox className={style.sub} delay={500} />
+            </div>
+
+            <LoadBox className={style.view} delay={600} />
+        </section>
+        
+        <section className={style.content}></section>
     </article>;
 }
 

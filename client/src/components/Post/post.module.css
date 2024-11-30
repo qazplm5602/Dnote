@@ -249,3 +249,43 @@
 .main > .popular > .item {
     margin-bottom: 7px;
 }
+
+/* 로당 */
+.main > .content.loading > .title {
+    width: 500px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.main > .content.loading > .tags {
+    margin-top: 5px;
+}
+
+.main > .content.loading > .tags > .tag {
+    width: 40px;
+}
+
+.main > .content.loading > .tags > .tag:nth-child(2) {
+    width: 80px;
+}
+
+.main > .content.loading > .tags > .tag:nth-child(3) {
+    width: 80px;
+}
+
+.main > .content.loading > .detail > .left > .user {
+    width: 80px;
+    height: 23px;
+}
+
+.main > .content.loading > .detail > .left > .sub {
+    width: 200px;
+    height: 15px;
+
+    margin-top: 5px;
+}
+
+.main > .content.loading > .content {
+    width: 100%;
+    height: 500px;
+}

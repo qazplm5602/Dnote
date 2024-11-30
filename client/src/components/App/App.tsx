@@ -59,7 +59,7 @@ function AppRouter() {
                 <Route path="/user/:id" element={<UserPage />} />
                 <Route path="/setting/*" element={<Setting />} />
                 <Route path="/write" element={<Write />} />
-                <Route path="/post/:id" element={<Post />} />
+                <Route path="/post/:user/:id" element={<Post />} />
                 <Route path="/search" element={<Search />} />
 
             </Routes>
