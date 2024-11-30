@@ -15,8 +15,26 @@ import replySvg from '../../assets/icons/reply.svg';
 import Footer from '../Footer/Footer';
 import PostBoxRow from '../PostBox/PostBoxRow';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import LoadBox from '../Recycle/LoadBox';
+import { UserDTO } from '../LoginState/LoginState';
+import request from '../Utils/request';
+import { dateFormatNumber, numberToKorean } from '../Utils/misc';
+
+export interface BasePostDTO {
+    title: string,
+    tags: string[],
+    thumbnail: string,
+    content: string,
+    created: string
+}
+
+export interface PostDTO extends BasePostDTO {
+    id: number,
+    owner: UserDTO,
+    view: number,
+    read: number
+}
 
 export default function Post() {
     return <>
@@ -29,18 +47,34 @@ export default function Post() {
 }
 
 function Content() {
-    const [loading, setLoading] = useState(true);
+    const [ post, setPost ] = useState<PostDTO | null>(null);
     const { id, user } = useParams();
-    console.log(id, user);
 
-    if (loading) {
+    const onPostLoad = async function(process: { alive: boolean }) {
+        const result = await request<PostDTO>(`post/info/${user}/${id}`);
+        if (!process.alive) return; // state 가 확실하지 않음 ㅅㄱ
+        
+        setPost(result.data);
+    }
+
+    useEffect(() => {
+        const process = { alive: true };
+
+        onPostLoad(process);
+
+        return () => {
+            process.alive = false;
+        }
+    }, [ id, user ]);
+
+    if (post === null) {
         return <LoadingContent />;
     }
 
     return <article className={style.content}>
-        <h2 className={style.title}>AWS를 이용해서 사이트를 배포 해보자ㅏㅏㅏ</h2>
-        <Tags />
-        <Detail />
+        <h2 className={style.title}>{post.title}</h2>
+        <Tags tags={post.tags} />
+        <Detail user={post.owner} time={post.created} read={post.read} view={post.view} />
         
         <ViewerContainer />
 
@@ -71,26 +105,24 @@ function LoadingContent() {
     </article>;
 }
 
-function Tags() {
+function Tags({ tags }: { tags: string[] }) {
     return <section className={style.tags}>
-        <div>#aws</div>
-        <div>#s3</div>
-        <div>#ec2</div>
+        {tags.map(v => <div>#{v}</div>)}
     </section>;
 }
 
-function Detail() {
+function Detail({ user, time, read, view }: { user: UserDTO, time: string, read: number, view: number }) {
     return <section className={style.detail}>
         <div className={style.left}>
-            <NameTag />
+            <NameTag user={user} />
             <p>
-                <div className={style.date}>2024.08.25</div>
+                <div className={style.date}>{dateFormatNumber(new Date(time))}</div>
                 <div className={style.line}></div>
-                <TimeTake />
+                <TimeTake time={read} />
             </p>
         </div>
 
-        <IconText className={style.view} icon={eyeSvg} text='1.2천명' />
+        <IconText className={style.view} icon={eyeSvg} text={`${numberToKorean(view)}명`} />
     </section>;
 }
 

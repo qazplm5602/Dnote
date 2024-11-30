@@ -24,3 +24,19 @@ export const dateFormat = function(date: Date): string {
 
   return `${formatDate} ${ampm} ${clock}`;
 }
+
+export const dateFormatNumber = function(date: Date) {
+  return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2,'0')}.${date.getDate().toString().padStart(2,'0')}`;
+}
+
+export const numberToKorean = function(value: number): string {
+  if (value >= 10000) {
+    return `${numberWithCommas(Math.round((value / 10000) * 10) / 10)}만`;
+  } if (value >= 1000) {
+    return `${Math.round((value / 1000) * 10) / 10}천`;
+  }
+
+  return value.toString();
+}
+
+export function numberWithCommas(x: number) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }

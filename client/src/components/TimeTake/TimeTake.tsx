@@ -3,6 +3,6 @@ import style from './timetake.module.css';
 
 import TimerIcon from '../../assets/icons/timer.svg';
 
-export default function TimeTake({ className }: { className?: string }) {
-    return <IconText className={style.time + ` ${className || ''}`} icon={TimerIcon} text='10분' />
+export default function TimeTake({ className, time }: { className?: string, time?: number }) {
+    return <IconText className={style.time + ` ${className || ''}`} icon={TimerIcon} text={`${time}분`} />
 }

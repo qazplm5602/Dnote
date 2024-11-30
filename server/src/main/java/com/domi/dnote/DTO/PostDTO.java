@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class PostDTO extends BasePostDTO {
     private long id;
-    private long owner;
+    private UserDTO owner;
 
     private long view;
     private int read;
@@ -19,7 +19,8 @@ public class PostDTO extends BasePostDTO {
     public static PostDTO toEntity(Post post) {
         PostDTO data = new PostDTO();
 
-        data.owner = post.getOwner().getId();
+//        data.owner = post.getOwner().getId();
+        data.owner = UserDTO.toEntity(post.getOwner());
         data.id = post.getId();
 
         data.title = post.getTitle();
