@@ -52,12 +52,12 @@ export default function Write() {
     const tempStatusRef = useRef<tempStatus>({ id: '', load: false, data: null });
     const [ tempData, setTempData ] = useState<tempDTO | null>(null);
 
+    const [ tags, setTags ] = useState<Set<string>>(new Set());
     const [title, setTitle] = useState<string>("");
     const notify = useNotify();
     const [showTemp, setShowTemp] = useState(false);
     const [loader, setLoader] = useState<loadData>({ post: false, save: false });
 
-    const tagRef = useRef<string[]>([]);
     const editorRef = useRef<Editor>(null);
 
     const onPost = async function() {
@@ -74,7 +74,7 @@ export default function Write() {
         
         const form = {
             title,
-            tags: tagRef.current,
+            tags: Array.from(tags),
             content: editor.getHTML()
         }
         const response = await request("post/upload", { method: "POST", data: form }).catch(e => e as AxiosError);
@@ -86,15 +86,14 @@ export default function Write() {
             return;
         }
 
-        console.log(title, editor.getHTML(), tagRef.current);
+        console.log(title, editor.getHTML(), Array.from(tags));
     }
 
     const isSameTags = function(target: string[]) {
-        const nowTag = new Set(tagRef.current);
         const targetTag = new Set(target);
         
         let same = true;
-        nowTag.forEach(v => {
+        tags.forEach(v => {
             if (!targetTag.has(v)) {
                 same = false;
                 return false;
@@ -103,7 +102,7 @@ export default function Write() {
 
         if (same)
             targetTag.forEach(v => {
-                if (!nowTag.has(v)) {
+                if (!tags.has(v)) {
                     same = false;
                     return false;
                 }
@@ -152,7 +151,7 @@ export default function Write() {
         const content = editor.getHTML();
         const form = {
             title,
-            tags: tagRef.current,
+            tags: Array.from(tags),
             content
         };
 
@@ -172,7 +171,7 @@ export default function Write() {
             if (tempStatusRef.current.data !== null) {
                 const data = tempStatusRef.current.data;
                 data.title = title;
-                data.tags = [...tagRef.current];
+                data.tags = Array.from(tags);
                 data.content = content;
             }
         } else { // tempId 변경
@@ -188,6 +187,7 @@ export default function Write() {
         const result = await request<tempDTO>(`post/temp/${tempId}`);
         setTempData(result.data);
         setTitle(result.data.title);
+        setTags(new Set(result.data.tags));
 
         tempStatusRef.current.data = result.data;
     }
@@ -198,6 +198,7 @@ export default function Write() {
         if (tempId === null) {
             tempStatusRef.current.id = "";
             setTitle("");
+            setTags(new Set());
             setTempData(null);
         }
 
@@ -211,7 +212,7 @@ export default function Write() {
 
     return <main className="screen_container">
         <TitleInput value={title} setValue={setTitle} />
-        <TagBox tagRef={tagRef} />
+        <TagBox tagSet={tags} setTagSet={setTags} />
         {(tempId === null || tempData !== null) && <EditorSection editorRef={editorRef} initValue={tempId === null ? "Hello Domi!" : tempData?.content || ""} />}
         <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} onTempSave={onTempSave} temp={tempId !== null} loading={loader} />
 
@@ -219,8 +220,8 @@ export default function Write() {
     </main>;
 }
 
-function TagBox({ tagRef }: { tagRef: React.MutableRefObject<string[]> }) {
-    const [tagSet, setTagSet] = useState<Set<string>>(new Set());
+function TagBox({ tagSet, setTagSet }: { tagSet: Set<string>, setTagSet: React.Dispatch<React.SetStateAction<Set<string>>> }) {
+    // const [tagSet, setTagSet] = useState<Set<string>>(new Set());
     const tags = useMemo(() => Array.from(tagSet), [tagSet]);
  
     const [tagValue, setTagValue] = useState("");
@@ -251,11 +252,6 @@ function TagBox({ tagRef }: { tagRef: React.MutableRefObject<string[]> }) {
         setTagSet(new Set([ ...tagSet, ...list.slice(0, list.length - 1).filter(v => v.length > 0) ]));
         setTagValue(list[list.length - 1]);
     }, [tagValue]);
-
-    // 부모한테 알려줘야징
-    useEffect(() => {
-            tagRef.current = tags;
-    }, [tagSet]);
 
     return <article className={style.tag_main}>
         <div className={style.title}>태그</div>
