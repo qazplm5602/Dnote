@@ -6,10 +6,7 @@ import com.domi.dnote.Service.PostLikeService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,5 +22,23 @@ public class PostLikeController {
         Post post = postService.getPostByOwnerId(user, postId);
 
         return postLikeService.getLikeCountByPost(post);
+    }
+
+    @PutMapping()
+    void setLikePost(@RequestParam("user") long targetId, @RequestParam("post") long postId) {
+        User user = userService.getCurrentUser();
+        User target = userService.getUserById(targetId);
+        Post post = postService.getPostByOwnerId(target, postId);
+
+        postLikeService.setUserPostLike(user, post, true);
+    }
+
+    @DeleteMapping()
+    void dislikePost(@RequestParam("user") long targetId, @RequestParam("post") long postId) {
+        User user = userService.getCurrentUser();
+        User target = userService.getUserById(targetId);
+        Post post = postService.getPostByOwnerId(target, postId);
+
+        postLikeService.setUserPostLike(user, post, false);
     }
 }
