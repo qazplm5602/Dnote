@@ -94,9 +94,9 @@ function Content({ onError }: { onError: () => void }) {
         <Tags tags={post.tags} />
         <Detail user={post.owner} time={post.created} read={post.read} view={post.view} />
         
-        <ViewerContainer />
+        <ViewerContainer content={post.content} />
 
-        <Interactions />
+        <Interactions title={post.title} />
         <Chat />
     </article>;
 }
@@ -144,8 +144,15 @@ function Detail({ user, time, read, view }: { user: UserDTO, time: string, read:
     </section>;
 }
 
-function ViewerContainer() {
+function ViewerContainer({ content }: { content: string }) {
+    const viewRef = useRef<Viewer>(null);
+    useEffect(() => {
+        const instance = viewRef.current?.getInstance();
+        instance.setMarkdown(content);
+    }, [content]);
+
     return <Viewer
+        ref={viewRef}
         initialValue={["![image](https://uicdn.toast.com/toastui/img/tui-editor-bi.png)", "", "# Awesome Editor!", "", "It has been _released as opensource in 2018_ and has ~~continually~~ evolved to **receive 10k GitHub ⭐️ Stars**.", "", "## Create Instance", "", "You can create an instance with the following code and use `getHtml()` and `getMarkdown()` of the [Editor](https://github.com/nhn/tui.editor).", "", "```js", "const editor = new Editor(options);", "```", "", "> See the table below for default options", "> > More API information can be found in the document", "", "| name | type | description |", "| --- | --- | --- |", "| el | `HTMLElement` | container element |", "", "## Features", "", "* CommonMark + GFM Specifications", "   * Live Preview", "   * Scroll Sync", "   * Auto Indent", "   * Syntax Highlight", "        1. Markdown", "        2. Preview", "", "## Support Wrappers", "", "> * Wrappers", ">    1. [x] React", ">    2. [x] Vue", ">    3. [ ] Ember"].join("\n")}
     />;
 }
@@ -193,10 +200,17 @@ function ChatBox() {
     </div>;
 }
 
-function Interactions() {
+function Interactions({ title }: { title: string }) {
+    const shareClick = function() {
+        navigator.share({
+            url: location.href,
+            title: `Dnote - ${title}`
+        });
+    }
+
     return <section className={style.interaction}>
         <button className={style.good}><IconText icon={goodSvg} text='20' /></button>
-        <IconButton className={[style.share]} icon={shareSvg} />
+        <IconButton className={[style.share]} icon={shareSvg} onClick={shareClick} />
     </section>;
 }
 
