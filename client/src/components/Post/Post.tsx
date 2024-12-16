@@ -23,6 +23,7 @@ import { dateFormatNumber, numberToKorean } from '../Utils/misc';
 
 import errorSvg from '../../assets/icons/error.svg';
 import { AxiosError } from 'axios';
+import PostLikeButton from './LikeButton';
 
 export interface BasePostDTO {
     title: string,
@@ -201,15 +202,20 @@ function ChatBox() {
 }
 
 function Interactions({ title }: { title: string }) {
+    const { id, user } = useParams();
+    
     const shareClick = function() {
         navigator.share({
             url: location.href,
             title: `Dnote - ${title}`
         });
     }
+    
+    // 말이 됨???
+    if (user === undefined || id === undefined) return;
 
     return <section className={style.interaction}>
-        <button className={style.good}><IconText icon={goodSvg} text='20' /></button>
+        <PostLikeButton userId={user} postId={id} />
         <IconButton className={[style.share]} icon={shareSvg} onClick={shareClick} />
     </section>;
 }

@@ -24,6 +24,15 @@ public class PostLikeController {
         return postLikeService.getLikeCountByPost(post);
     }
 
+    @GetMapping("/check")
+    boolean getCheckLikePost(@RequestParam("user") long targetId, @RequestParam("post") long postId) {
+        User user = userService.getCurrentUser();
+        User target = userService.getUserById(targetId);
+        Post post = postService.getPostByOwnerId(target, postId);
+
+        return postLikeService.hasUserLikePost(user, post);
+    }
+
     @PutMapping()
     void setLikePost(@RequestParam("user") long targetId, @RequestParam("post") long postId) {
         User user = userService.getCurrentUser();
