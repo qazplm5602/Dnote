@@ -15,10 +15,15 @@ import java.util.Optional;
 @Service
 public class PostService {
     final PostRepository postRepository;
+    final UserService userService;
 
     public Post getPostByOwnerId(User owner, long id) {
         Optional<Post> postOption = postRepository.findByOwnerAndId(owner, id);
         return postOption.orElseThrow(() -> new PostException(PostException.Type.NOT_FOUND_POST));
+    }
+
+    public Post getPostByOwnerPostId(long userId, long postId) {
+        return getPostByOwnerId(userService.getUserById(userId), postId);
     }
 
     public Post createPost(User user, PostUploadDTO form) {
