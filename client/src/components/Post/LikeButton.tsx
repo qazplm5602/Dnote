@@ -6,6 +6,7 @@ import request from '../Utils/request';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/Store';
 import { useNavigate } from 'react-router-dom';
+import { randomString } from '../Utils/misc';
 
 type LikeBtnProps = {
     userId: string,
@@ -17,6 +18,7 @@ export default function PostLikeButton({ userId, postId }: LikeBtnProps) {
     const [ count, setCount ] = useState(0);
     const logined = useSelector<RootState, boolean>(v => v.user.logined);
     const selectRef = useRef(false);
+    const processRef = useRef("");
     const navigate = useNavigate();
 
     const loadData = async function(ref: { alive: boolean }) {
@@ -45,6 +47,21 @@ export default function PostLikeButton({ userId, postId }: LikeBtnProps) {
         return response.data;
     }
 
+    const requestSetLike = function(value: boolean) {
+        selectRef.current = value;
+        const id = processRef.current = randomString(5);
+        
+        setCount(count + (value ? 1 : -1));
+        
+        request(`post/like?user=${userId}&post=${postId}`, { method: value ? "PUT" : "DELETE" })
+        .catch(() => { // 실패함
+            if (id === processRef.current) {
+                setCount((prev) => prev + (value ? -1 : 1));
+                selectRef.current = !value;
+            }
+        });
+    }
+
     const onClick = function() {
         if (loading) return;
         
@@ -53,7 +70,7 @@ export default function PostLikeButton({ userId, postId }: LikeBtnProps) {
             return;
         }
 
-        // ....
+        requestSetLike(!selectRef.current);
     }
 
     useEffect(() => {
@@ -64,6 +81,7 @@ export default function PostLikeButton({ userId, postId }: LikeBtnProps) {
 
         return () => {
             aliveRef.alive = false;
+            processRef.current = ""; // 혹시 모름
         };
     }, [ userId, postId ]);
 
