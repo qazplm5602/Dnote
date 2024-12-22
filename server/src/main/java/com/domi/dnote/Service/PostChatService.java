@@ -9,6 +9,7 @@ import com.domi.dnote.Repository.PostChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,6 +44,6 @@ public class PostChatService {
         if (timeBefore == null)
             timeBefore = LocalDateTime.now();
 
-        return postChatRepository.findByPostAndCreatedIsBefore(post, timeBefore, pageable);
+        return postChatRepository.findByPostAndCreatedIsBeforeAndReplyIsNullOrderByCreatedDesc(post, timeBefore, pageable);
     }
 }
