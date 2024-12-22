@@ -1,5 +1,6 @@
 package com.domi.dnote.Controller;
 
+import com.domi.dnote.DTO.PostChatDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.PostChat;
 import com.domi.dnote.Entity.User;
@@ -10,6 +11,11 @@ import com.domi.dnote.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
@@ -19,8 +25,16 @@ public class PostChatController {
     final UserService userService;
 
     @GetMapping("/post/{userId}/{postId}/chat")
-    void getPostChats() {
+    List<PostChatDTO> getPostChats(@RequestParam("page") int page, @RequestParam(name = "time", required = false) Long timestemp, @PathVariable("userId") long userId, @PathVariable("postId") long postId) {
+        Post post = postService.getPostByOwnerPostId(userId, postId);
+        LocalDateTime dateTime = null;
+        if (timestemp != null) {
+            dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestemp), ZoneId.systemDefault());
+        }
 
+        List<PostChat> chats = postChatService.getChatsByPost(post, page, dateTime);
+
+        return chats.stream().map(PostChatDTO::toEntity).toList();
     }
 
     @PostMapping("/post/{userId}/{postId}/chat")
