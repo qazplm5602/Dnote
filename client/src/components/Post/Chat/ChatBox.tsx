@@ -6,6 +6,7 @@ import IconText from '../../Recycle/IconText';
 
 import replySvg from '../../../assets/icons/reply.svg';
 import goodSvg from '../../../assets/icons/good.svg';
+import otherSvg from '../../../assets/icons/other.svg'
 
 
 export default function PostChatBox() {
@@ -16,6 +17,8 @@ export default function PostChatBox() {
                 <div className={style.one}></div>
                 <div className={style.date}>2024.09.13</div>
             </div>
+
+            <IconButton icon={otherSvg} className={[style.other]} />
         </section>
 
         <div className={style.content}>그냥 아무 댓글 임니다.</div>
