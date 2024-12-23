@@ -1,6 +1,7 @@
 package com.domi.dnote.DTO;
 
 import com.domi.dnote.Entity.PostChat;
+import com.domi.dnote.Service.PostChatService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
 public class PostChatDTO extends ChatBaseDTO {
     long id;
     long good; // 좋아요 수
+    int reply_count;
     PostIdDTO post;
     Long reply;
 
@@ -25,6 +27,15 @@ public class PostChatDTO extends ChatBaseDTO {
         PostChat replyChat = chat.getReply();
         if (replyChat != null)
             dto.reply = replyChat.getId();
+
+        return dto;
+    }
+
+    public static PostChatDTO toEntity(PostChat chat, PostChatService chatService) {
+        PostChatDTO dto = toEntity(chat);
+
+        if (dto.reply == null) // 답글 댓글이 아님
+            dto.reply_count = chatService.getReplyChatCount(chat);
 
         return dto;
     }

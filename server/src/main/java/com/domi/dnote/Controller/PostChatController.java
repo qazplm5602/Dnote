@@ -36,7 +36,13 @@ public class PostChatController {
 
         List<PostChat> chats = postChatService.getChatsByPost(post, page, dateTime);
 
-        return chats.stream().map(PostChatDTO::toEntity).toList();
+        return chats.stream().map(v -> PostChatDTO.toEntity(v, postChatService)).toList();
+    }
+
+    @GetMapping("/post/{userId}/{postId}/chat/count")
+    int getChatCount(@PathVariable("userId") long userId, @PathVariable("postId") long postId) {
+        Post post = postService.getPostByOwnerPostId(userId, postId);
+        return postChatService.getChatCountByPost(post);
     }
 
     @PostMapping("/post/{userId}/{postId}/chat")
@@ -71,6 +77,12 @@ public class PostChatController {
         List<PostChat> chats = postChatService.getReplyChatsByChat(reply, page, time);
         return chats.stream().map(PostChatDTO::toEntity).toList();
     }
+
+//    @GetMapping("/chat/{chatId}/reply/count")
+//    int getChatReplyCount(@PathVariable("chatId") long chatId) {
+//        PostChat reply = postChatService.getChatById(chatId);
+//        return postChatService.getReplyChatCount(reply);
+//    }
 
     @PostMapping("/chat/{chatId}/reply")
     long createChatReply(@PathVariable("chatId") long targetId, @RequestBody String content) {
