@@ -5,6 +5,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 
@@ -31,5 +34,8 @@ public class MiscUtil {
                 .filter(v -> v.startsWith(SERVER_IMAGE_PATH))
                 .map(v -> v.substring(SERVER_IMAGE_PATH.length()))
                 .toList();
+    }
+    public static LocalDateTime getDatetimeTimestemp(long time) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault());
     }
 }

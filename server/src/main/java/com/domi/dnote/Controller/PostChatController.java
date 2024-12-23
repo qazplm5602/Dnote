@@ -8,6 +8,7 @@ import com.domi.dnote.Exception.ChatException;
 import com.domi.dnote.Service.PostChatService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.UserService;
+import com.domi.dnote.Util.MiscUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class PostChatController {
         Post post = postService.getPostByOwnerPostId(userId, postId);
         LocalDateTime dateTime = null;
         if (timestemp != null) {
-            dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestemp), ZoneId.systemDefault());
+            dateTime = MiscUtil.getDatetimeTimestemp(timestemp);
         }
 
         List<PostChat> chats = postChatService.getChatsByPost(post, page, dateTime);
@@ -52,8 +53,14 @@ public class PostChatController {
     }
 
     @GetMapping("/chat/{chatId}/reply")
-    void getChatReplies() {
+    List<PostChatDTO> getChatReplies(@PathVariable("chatId") long chatId, @RequestParam("page") int page, @RequestParam(name = "time", required = false) Long timestemp) {
+        PostChat reply = postChatService.getChatById(chatId);
+        LocalDateTime time = null;
+        if (timestemp != null)
+            time = MiscUtil.getDatetimeTimestemp(timestemp);
 
+        List<PostChat> chats = postChatService.getReplyChatsByChat(reply, page, time);
+        return chats.stream().map(PostChatDTO::toEntity).toList();
     }
 
     @PostMapping("/chat/{chatId}/reply")

@@ -46,4 +46,12 @@ public class PostChatService {
 
         return postChatRepository.findByPostAndCreatedIsBeforeAndReplyIsNullOrderByCreatedDesc(post, timeBefore, pageable);
     }
+
+    public List<PostChat> getReplyChatsByChat(PostChat chat, int page, LocalDateTime timeBefore) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        if (timeBefore == null)
+            timeBefore = LocalDateTime.now();
+
+        return postChatRepository.findByReplyAndCreatedIsBeforeOrderByCreatedDesc(chat, timeBefore, pageable);
+    }
 }
