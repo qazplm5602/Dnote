@@ -39,6 +39,11 @@ export interface PostDTO extends BasePostDTO {
     read: number
 }
 
+export interface PostIdDTO {
+    id: number,
+    owner: number
+}
+
 export default function Post() {
     const { id, user } = useParams();
     const [ error, setError ] = useState(false);

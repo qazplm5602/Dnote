@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import style from '../post.module.css';
 import PostChatInput from './ChatInput';
 import PostChatList from './ChatList';
+import ChatTitle from './ChatTitle';
 
 export default function PostChatMain() {
+    const [ chatCount, setChatCount ] = useState<number | null>(null);
+
     return <section className={style.chat_main}>
-        <h2>댓글 <span>20</span></h2>
+        <ChatTitle value={chatCount} setValue={setChatCount} />
         <PostChatInput />
         <PostChatList />
     </section>;
