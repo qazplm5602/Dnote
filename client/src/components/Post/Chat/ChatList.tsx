@@ -4,8 +4,9 @@ import PostChatBox, { PostChatDTO } from "./ChatBox";
 import { MoreButton, ReplyMoreButton } from './ChatMoreButton';
 import { useParams } from 'react-router-dom';
 import request from '../../Utils/request';
+import PostChatSection from './ChatSection';
 
-export default function PostChatList() {
+export default function PostChatList({ chatSize }: { chatSize: number | null }) {
     const { id, user } = useParams();
     
     const [ loading, setLoading ] = useState(false);
@@ -30,11 +31,12 @@ export default function PostChatList() {
         nextPageLoad();
     }, [id, user]);
 
+    console.log(list.length);
     return <article className={style.list}>
-        {list.map(v => <PostChatBox data={v} />)}
+        {list.map(v => <PostChatSection key={v.id} chat={v} />)}
         {/* <PostChatBox /> */}
 
-        {/* <ReplyMoreButton />
-        <MoreButton /> */}
+        {(chatSize != null && list.length < chatSize) && <MoreButton onClick={nextPageLoad} />}
+        {/* <ReplyMoreButton /> */}
     </article>;
 }

@@ -1,7 +1,10 @@
 import style from '../post.module.css';
 
-export function MoreButton() {
-    return <button className={style.more}>더보기</button>;
+type Props = {
+    onClick?: React.MouseEventHandler<HTMLButtonElement>
+}
+export function MoreButton({ onClick }: Props) {
+    return <button className={style.more} onClick={onClick}>더보기</button>;
 }
 
 export function ReplyMoreButton() {

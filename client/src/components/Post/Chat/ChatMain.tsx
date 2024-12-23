@@ -10,6 +10,6 @@ export default function PostChatMain() {
     return <section className={style.chat_main}>
         <ChatTitle value={chatCount} setValue={setChatCount} />
         <PostChatInput />
-        <PostChatList />
+        <PostChatList chatSize={chatCount} />
     </section>;
 }
