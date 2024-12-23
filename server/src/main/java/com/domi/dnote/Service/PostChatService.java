@@ -54,4 +54,8 @@ public class PostChatService {
 
         return postChatRepository.findByReplyAndCreatedIsBeforeOrderByCreatedDesc(chat, timeBefore, pageable);
     }
+
+    public void removeChat(PostChat chat) {
+        postChatRepository.delete(chat);
+    }
 }

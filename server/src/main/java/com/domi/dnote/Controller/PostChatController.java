@@ -5,6 +5,7 @@ import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.PostChat;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Exception.ChatException;
+import com.domi.dnote.Exception.UserException;
 import com.domi.dnote.Service.PostChatService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.UserService;
@@ -48,8 +49,16 @@ public class PostChatController {
 
     // reply도 삭제 가능
     @DeleteMapping("/post/chat/{chatId}")
-    void removePostChat() {
+    void removePostChat(@PathVariable("chatId") long chatId) {
+        User user = userService.getCurrentUser();
+        PostChat chat = postChatService.getChatById(chatId);
 
+        // 주인이 아닌뎅
+        if (user != chat.getOwner()) {
+            throw new UserException(UserException.Type.NEED_PERMISSION);
+        }
+
+        postChatService.removeChat(chat);
     }
 
     @GetMapping("/chat/{chatId}/reply")
