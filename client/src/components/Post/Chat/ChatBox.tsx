@@ -19,11 +19,18 @@ export interface ChatBaseDTO {
 export interface PostChatDTO extends ChatBaseDTO {
     id: number,
     good: number,
-    reply_count: number
+    reply_count: number,
+    reply?: number
 }
 
-export default function PostChatBox({ data }: { data: PostChatDTO }) {
-    return <div className={style.box}>
+type Props = {
+    data: PostChatDTO,
+    onReplyOpen?: () => void,
+    replyOpen?: boolean
+}
+
+export default function PostChatBox({ data, replyOpen = false, onReplyOpen }: Props) {
+    return <div className={`${style.box} ${data.reply ? style.reply_left : ''}`}>
         <section className={style.detail}>
             <div className={style.info}>
                 <NameTag className={style.nametag} user={data.owner} />
@@ -37,9 +44,9 @@ export default function PostChatBox({ data }: { data: PostChatDTO }) {
         <div className={style.content}>{data.content}</div>
 
         <section className={style.interaction}>
-            <IconButton icon={replySvg} className={[style.reply]} />
+            {!data.reply && <IconButton icon={replySvg} className={[style.reply]} />}
             <button className={style.good}><IconText icon={goodSvg} text={data.good.toString()} /></button>
-            <button className={style.reply_open}>답글 {numberWithCommas(data.reply_count)}개</button>
+            {!replyOpen && !data.reply && <button className={style.reply_open} onClick={onReplyOpen}>답글 {numberWithCommas(data.reply_count)}개</button>}
         </section>
     </div>;
 }

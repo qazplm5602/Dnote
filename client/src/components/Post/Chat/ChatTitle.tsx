@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { numberWithCommas } from "../../Utils/misc"
+import { aliveType, numberWithCommas } from "../../Utils/misc"
 import { useParams } from "react-router-dom";
 import request from "../../Utils/request";
 
@@ -8,9 +8,6 @@ type ComponentProps = {
     setValue: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-type aliveType = {
-    alive: boolean
-}
 export default function ChatTitle({ value, setValue }: ComponentProps) {
     const { id, user } = useParams();
     

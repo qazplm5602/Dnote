@@ -274,19 +274,37 @@
     color: var(--text-color-black);
     font-size: 14px;
     font-weight: 500;
+
+    justify-content: center;
     
     margin-top: 20px;
+}
+
+.main > .content > .chat_main button.more > .spinner,
+.main > .content > .chat_main > .list > .reply_spinner {
+    background: radial-gradient(farthest-side, #000000 94%, #0000) top / 5px 5px no-repeat, conic-gradient(#0000 30%, #000000);
+    opacity: 0.3;
 }
 
 .main > .content > .chat_main button.more_reply {
     background-color: #EEEEEE;
     border-radius: 30px;
-
+    
     padding: 8px 15px;
     border: none;
     color: var(--text-color-black);
     font-weight: 500;
-    margin-top: 5px;
+    margin-top: 10px;
+}
+
+.main > .content > .chat_main > .list > .reply_spinner {
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+}
+
+.main > .content > .chat_main .reply_left {
+    margin-left: 15px;
 }
 
 .main > .popular > .item {
