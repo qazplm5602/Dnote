@@ -27,11 +27,12 @@ export interface PostChatDTO extends ChatBaseDTO {
 type Props = {
     data: PostChatDTO,
     onReplyOpen?: () => void,
+    onReplyInput?: () => void
     replyOpen?: boolean,
     newChat?: boolean
 }
 
-export default function PostChatBox({ data, replyOpen = false, onReplyOpen, newChat = false }: Props) {
+export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onReplyInput, newChat = false }: Props) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export default function PostChatBox({ data, replyOpen = false, onReplyOpen, newC
         <div className={style.content}>{data.content}</div>
 
         <section className={style.interaction}>
-            {!data.reply && <IconButton icon={replySvg} className={[style.reply]} />}
+            {!data.reply && <IconButton icon={replySvg} className={[style.reply]} onClick={onReplyInput} />}
             <button className={style.good}><IconText icon={goodSvg} text={data.good.toString()} /></button>
             {!replyOpen && !data.reply && <button className={style.reply_open} onClick={onReplyOpen}>답글 {numberWithCommas(data.reply_count)}개</button>}
         </section>
