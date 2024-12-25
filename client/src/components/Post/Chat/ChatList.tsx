@@ -54,6 +54,7 @@ export default function PostChatList({ chatSize, addEventRef }: Props) {
                 name: loginUser.name
             },
             good: 0,
+            my_good: false,
             reply_count: 0,
             reply: undefined,
             newChat: true

@@ -36,6 +36,7 @@ export default function PostChatSection({ chat }: Props) {
                 name: loginUser.name
             },
             good: 0,
+            my_good: false,
             reply_count: 0,
             reply: chat.id
         };

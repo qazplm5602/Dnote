@@ -8,6 +8,7 @@ import com.domi.dnote.Repository.PostChatLikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -18,6 +19,7 @@ public class PostChatLikeService {
         return postChatLikeRepository.countByUserAndChat(user, chat) > 0;
     }
 
+    @Transactional
     public void setLikeByUser(User user, PostChat chat, boolean active) {
         boolean currentLike = isLikeByUser(user, chat);
         if (currentLike == active) {
