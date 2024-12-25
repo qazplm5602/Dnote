@@ -6,12 +6,26 @@ import { useParams } from 'react-router-dom';
 import request from '../../Utils/request';
 import PostChatSection from './ChatSection';
 import { aliveType } from '../../Utils/misc';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../Redux/Store';
+import { LoginState } from '../../Redux/LoginStateSlice';
 
-export default function PostChatList({ chatSize }: { chatSize: number | null }) {
+export type ChatAddEventCb = (id: number, content: string) => void;
+type Props =  {
+    chatSize: number | null,
+    addEventRef: React.MutableRefObject<ChatAddEventCb | undefined>
+}
+
+export interface PostChatNewDTO extends PostChatDTO {
+    newChat?: boolean    
+}
+
+export default function PostChatList({ chatSize, addEventRef }: Props) {
+    const loginUser = useSelector<RootState, LoginState>(v => v.user);
     const { id, user } = useParams();
     
     const [ loading, setLoading ] = useState(false);
-    const [ list, setList ] = useState<PostChatDTO[]>([]);
+    const [ list, setList ] = useState<PostChatNewDTO[]>([]);
     const pageRef = useRef(-1);
     const firstLoadTimeRef = useRef(new Date());
 
@@ -27,6 +41,26 @@ export default function PostChatList({ chatSize }: { chatSize: number | null }) 
         setList(prev => [...prev, ...response.data]);
         setLoading(false);
     }
+    const onNewChat: ChatAddEventCb = function(id, content) {
+        if (!loginUser.logined) return; // 로그인 중이 아니면 추가할 수 없음음
+
+        const newChat:PostChatNewDTO = {
+            id,
+            created: new Date().toString(),
+            content,
+            owner: {
+                id: loginUser.id,
+                avatar: loginUser.avatar,
+                name: loginUser.name
+            },
+            good: 0,
+            reply_count: 0,
+            reply: undefined,
+            newChat: true
+        };
+
+        setList(prev => [newChat, ...prev]);
+    }
  
     useEffect(() => {
         const aliveRef = { alive: true };
@@ -41,6 +75,10 @@ export default function PostChatList({ chatSize }: { chatSize: number | null }) 
             aliveRef.alive = false;
         }
     }, [id, user]);
+    
+    useEffect(() => {
+        addEventRef.current = onNewChat;
+    }, []);
 
     return <article className={style.list}>
         {list.map(v => <PostChatSection key={v.id} chat={v} />)}

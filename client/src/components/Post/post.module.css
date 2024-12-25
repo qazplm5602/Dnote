@@ -133,7 +133,13 @@
     color: #88D57A;
 }
 
-.main > .content > .chat_main > .input_container {
+.main > .content > .chat_main > .input_container > .send {
+    display: flex;
+    transition: background-color 300ms;
+}
+
+.main > .content > .chat_main > .input_container > .send:disabled {
+    background-color: #dadada;
 }
 
 .main > .content > .chat_main > .input_container > textarea {

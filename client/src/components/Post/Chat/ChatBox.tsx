@@ -9,6 +9,7 @@ import goodSvg from '../../../assets/icons/good.svg';
 import otherSvg from '../../../assets/icons/other.svg'
 import { UserDTO } from '../../LoginState/LoginState';
 import { dateFormatNumber, numberWithCommas } from '../../Utils/misc';
+import { useEffect, useRef } from 'react';
 
 export interface ChatBaseDTO {
     owner: UserDTO,
@@ -26,11 +27,19 @@ export interface PostChatDTO extends ChatBaseDTO {
 type Props = {
     data: PostChatDTO,
     onReplyOpen?: () => void,
-    replyOpen?: boolean
+    replyOpen?: boolean,
+    newChat?: boolean
 }
 
-export default function PostChatBox({ data, replyOpen = false, onReplyOpen }: Props) {
-    return <div className={`${style.box} ${data.reply ? style.reply_left : ''}`}>
+export default function PostChatBox({ data, replyOpen = false, onReplyOpen, newChat = false }: Props) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!newChat || ref.current === null) return;
+        ref.current.scrollIntoView({ behavior: "smooth", block: 'center' });
+    }, [ newChat ]);
+
+    return <div ref={ref} className={`${style.box} ${data.reply ? style.reply_left : ''}`}>
         <section className={style.detail}>
             <div className={style.info}>
                 <NameTag className={style.nametag} user={data.owner} />

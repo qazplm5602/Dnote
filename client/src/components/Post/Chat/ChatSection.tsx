@@ -5,8 +5,12 @@ import PostChatBox, { PostChatDTO } from "./ChatBox";
 import request from "../../Utils/request";
 import { ReplyMoreButton } from "./ChatMoreButton";
 import Spinner from "../../Recycle/Spinner";
+import { PostChatNewDTO } from './ChatList';
 
-export default function PostChatSection({ chat }: { chat: PostChatDTO }) {
+type Props = {
+    chat: PostChatNewDTO,
+}
+export default function PostChatSection({ chat }: Props) {
     const [ loading, setLoading ] = useState(false);
     const [ replies, setReplies ] = useState<PostChatDTO[]>([]);
     const firstLoadTimeRef = useRef(new Date());
@@ -29,9 +33,8 @@ export default function PostChatSection({ chat }: { chat: PostChatDTO }) {
         pageRef.current = -1;
     }, [ chat ]);
     
-
     return <>
-        <PostChatBox data={chat} replyOpen={pageRef.current >= 0} onReplyOpen={nextPageLoad} />
+        <PostChatBox data={chat} replyOpen={pageRef.current >= 0} onReplyOpen={nextPageLoad} newChat={chat.newChat} />
 
         {/* 답글 리스트 */}
         {replies.map(v => <PostChatBox key={v.id} data={v} />)}

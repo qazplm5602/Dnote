@@ -41,6 +41,14 @@ export const numberToKorean = function(value: number): string {
 
 export function numberWithCommas(x: number) { return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
 
+export function IsStringBlank(value: string): boolean {
+  for (const element of value) {
+    if (element !== ' ') return false;
+  }
+
+  return true;
+}
+
 export type aliveType = {
   alive: boolean
 }

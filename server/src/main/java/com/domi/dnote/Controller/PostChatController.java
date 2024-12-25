@@ -10,6 +10,8 @@ import com.domi.dnote.Service.PostChatService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.UserService;
 import com.domi.dnote.Util.MiscUtil;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +48,7 @@ public class PostChatController {
     }
 
     @PostMapping("/post/{userId}/{postId}/chat")
-    long createPostChat(@PathVariable("userId") long postOwnerId, @PathVariable("postId") long postId, @RequestBody String content) {
+    long createPostChat(@PathVariable("userId") long postOwnerId, @PathVariable("postId") long postId, @RequestBody @Valid @NotBlank String content) {
         User user = userService.getCurrentUser();
         Post post = postService.getPostByOwnerPostId(postOwnerId, postId);
 
