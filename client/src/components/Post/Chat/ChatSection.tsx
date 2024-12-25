@@ -10,6 +10,7 @@ import PostChatInput from './ChatInput';
 import { RootState } from '../../Redux/Store';
 import { LoginState } from '../../Redux/LoginStateSlice';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
     chat: PostChatNewDTO,
@@ -22,6 +23,7 @@ export default function PostChatSection({ chat }: Props) {
     const firstLoadTimeRef = useRef(new Date());
     const pageRef = useRef(-1);
     const loginUser = useSelector<RootState, LoginState>(v => v.user);
+    const navigate = useNavigate();
 
     const newReplyChat: ChatAddEventCb = function(id, content) {
         const newChat: PostChatDTO = {
@@ -53,6 +55,10 @@ export default function PostChatSection({ chat }: Props) {
         setLoading(false);
     }
     const onInputShow = function() {
+        if (!loginUser.logined) {
+            navigate("/login");
+            return;
+        }
         setShowInput(true);
     }
     const onInputClose = function() {

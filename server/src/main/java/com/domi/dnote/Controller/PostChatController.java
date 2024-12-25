@@ -6,6 +6,7 @@ import com.domi.dnote.Entity.PostChat;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Exception.ChatException;
 import com.domi.dnote.Exception.UserException;
+import com.domi.dnote.Service.PostChatLikeService;
 import com.domi.dnote.Service.PostChatService;
 import com.domi.dnote.Service.PostService;
 import com.domi.dnote.Service.UserService;
@@ -25,6 +26,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class PostChatController {
     final PostChatService postChatService;
+    final PostChatLikeService postChatLikeService;
     final PostService postService;
     final UserService userService;
 
@@ -38,7 +40,10 @@ public class PostChatController {
 
         List<PostChat> chats = postChatService.getChatsByPost(post, page, dateTime);
 
-        return chats.stream().map(v -> PostChatDTO.toEntity(v, postChatService)).toList();
+        return chats.stream()
+                .map(v -> PostChatDTO.toEntity(v, postChatLikeService, postChatService))
+                .peek(v -> v.loadMyLike(userService, postChatService, postChatLikeService))
+                .toList();
     }
 
     @GetMapping("/post/{userId}/{postId}/chat/count")
@@ -77,7 +82,10 @@ public class PostChatController {
             time = MiscUtil.getDatetimeTimestemp(timestemp);
 
         List<PostChat> chats = postChatService.getReplyChatsByChat(reply, page, time);
-        return chats.stream().map(PostChatDTO::toEntity).toList();
+        return chats.stream()
+                .map(v -> PostChatDTO.toEntity(v, postChatLikeService))
+                .peek(v -> v.loadMyLike(userService, postChatService, postChatLikeService))
+                .toList();
     }
 
 //    @GetMapping("/chat/{chatId}/reply/count")
