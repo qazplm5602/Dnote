@@ -85,5 +85,5 @@ export default function PostLikeButton({ userId, postId }: LikeBtnProps) {
         };
     }, [ userId, postId ]);
 
-    return <button className={style.good}><IconText icon={goodSvg} text={String(count)} onClick={onClick} /></button>;
+    return <button className={style.good} onClick={onClick}><IconText icon={goodSvg} text={String(count)} /></button>;
 }
