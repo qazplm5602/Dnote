@@ -39,7 +39,7 @@ export const contextStateSlice = createSlice({
         hide: function(state) {
             return { ...state, show: false };
         }
-    }
+    },
 });
 
 export const setMenuShow = contextStateSlice.actions.showMenu;

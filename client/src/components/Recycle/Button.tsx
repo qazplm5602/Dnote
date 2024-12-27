@@ -6,10 +6,10 @@ export default function Button({ children, className = [], onClick, disabled = f
     return <button className={className.join(' ')} onClick={onClick} disabled={disabled}>{children}</button>;
 }
 
-export function IconButton({ icon, children, className = [], onClick }: { icon: string, children?: React.ReactNode, className?: string[], onClick?: React.MouseEventHandler<HTMLButtonElement> }) {
+export function IconButton({ icon, children, className = [], onClick, domiRef }: { icon: string, children?: React.ReactNode, className?: string[], onClick?: React.MouseEventHandler<HTMLButtonElement>, domiRef?: React.RefObject<HTMLButtonElement> }) {
     className.push(style.icon_btn);
     
-    return <button className={className.join(' ')} onClick={onClick}>
+    return <button ref={domiRef} className={className.join(' ')} onClick={onClick}>
         <img className={style.ico} src={icon} />
         {children}
     </button>

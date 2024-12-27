@@ -13,7 +13,7 @@
     right: 30px;
     bottom: 5px;
 
-    transform: translateY(100%);
+    transform: translate(20px, 20px);
 
     width: 150px;
     height: max-content;
@@ -59,12 +59,12 @@
     /* 애니메이션 */
     &.enter {
         opacity: 0;
-        transform: translateY(100%) scale(0.9);
+        transform: translate(20px, 20px) scale(0.9);
     }
 
     &.enter_active {
         opacity: 1;
-        transform: translateY(100%) scale(1);
+        transform: translate(20px, 20px) scale(1);
         transition: transform 300ms, opacity 300ms;
     }
 
@@ -74,7 +74,7 @@
 
     &.exit_active {
         opacity: 0;
-        transform: translateY(100%) scale(0.9);
+        transform: translate(20px, 20px) scale(0.9);
         transition: transform 300ms, opacity 300ms;
     }
 }

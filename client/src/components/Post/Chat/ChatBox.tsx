@@ -7,7 +7,6 @@ import IconText from '../../Recycle/IconText';
 import replySvg from '../../../assets/icons/reply.svg';
 import goodSvg from '../../../assets/icons/good.svg';
 import linGoodSvg from '../../../assets/icons/line-good.svg';
-import otherSvg from '../../../assets/icons/other.svg'
 import { UserDTO } from '../../LoginState/LoginState';
 import { dateFormatNumber, numberWithCommas, randomString } from '../../Utils/misc';
 import { useEffect, useRef, useState } from 'react';
@@ -15,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../Redux/Store';
 import { useNavigate } from 'react-router-dom';
 import request from '../../Utils/request';
+import PostChatOther from './ChatOther';
 
 export interface ChatBaseDTO {
     owner: UserDTO,
@@ -87,7 +87,7 @@ export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onRe
                 <div className={style.date}>{dateFormatNumber(new Date(data.created))}</div>
             </div>
 
-            <IconButton icon={otherSvg} className={[style.other]} />
+            <PostChatOther chatId={data.id} ownerId={data.owner.id} />
         </section>
 
         <div className={style.content}>{data.content}</div>
