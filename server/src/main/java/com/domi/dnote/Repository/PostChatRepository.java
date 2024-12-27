@@ -18,4 +18,5 @@ public interface PostChatRepository extends JpaRepository<PostChat, Long> {
     public List<PostChat> findByReplyAndCreatedIsBeforeOrderByCreatedDesc(PostChat reply, LocalDateTime created, Pageable pageable);
     public int countByPostAndReplyIsNull(Post post);
     public int countByReply(PostChat reply);
+    public void deleteByReply(PostChat reply);
 }

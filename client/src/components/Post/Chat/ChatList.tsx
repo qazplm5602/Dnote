@@ -11,16 +11,18 @@ import { RootState } from '../../Redux/Store';
 import { LoginState } from '../../Redux/LoginStateSlice';
 
 export type ChatAddEventCb = (id: number, content: string) => void;
+export type ChatRemoveEventCb = (id: number) => void;
 type Props =  {
     chatSize: number | null,
-    addEventRef: React.MutableRefObject<ChatAddEventCb | undefined>
+    addEventRef: React.MutableRefObject<ChatAddEventCb | undefined>,
+    onChatRemove?: ChatRemoveEventCb
 }
 
 export interface PostChatNewDTO extends PostChatDTO {
-    newChat?: boolean    
+    newChat?: boolean
 }
 
-export default function PostChatList({ chatSize, addEventRef }: Props) {
+export default function PostChatList({ chatSize, addEventRef, onChatRemove }: Props) {
     const loginUser = useSelector<RootState, LoginState>(v => v.user);
     const { id, user } = useParams();
     
@@ -62,6 +64,18 @@ export default function PostChatList({ chatSize, addEventRef }: Props) {
 
         setList(prev => [newChat, ...prev]);
     }
+    const onRemoveChat = function(chatId: number) {
+        setList(prev => {
+            const idx = prev.findIndex(v => v.id === chatId);
+            if (idx === -1) return prev;
+            
+            prev.splice(idx, 1);
+            return [...prev];
+        });
+
+        if (onChatRemove)   
+            onChatRemove(chatId);
+    }
  
     useEffect(() => {
         const aliveRef = { alive: true };
@@ -82,7 +96,7 @@ export default function PostChatList({ chatSize, addEventRef }: Props) {
     }, []);
 
     return <article className={style.list}>
-        {list.map(v => <PostChatSection key={v.id} chat={v} />)}
+        {list.map(v => <PostChatSection key={v.id} chat={v} onRemove={() => onRemoveChat(v.id)} />)}
         {/* <PostChatBox /> */}
 
         {(chatSize != null && list.length < chatSize) && <MoreButton onClick={() => nextPageLoad({alive: true})} loading={loading} />}

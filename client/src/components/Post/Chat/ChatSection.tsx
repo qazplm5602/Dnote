@@ -14,8 +14,9 @@ import { useNavigate } from 'react-router-dom';
 
 type Props = {
     chat: PostChatNewDTO,
+    onRemove?: () => void
 }
-export default function PostChatSection({ chat }: Props) {
+export default function PostChatSection({ chat, onRemove: onMainChatRemoved }: Props) {
     const [ chatCopy, setChatCopy ] = useState(chat);
     const [ loading, setLoading ] = useState(false);
     const [ replies, setReplies ] = useState<PostChatDTO[]>([]);
@@ -86,7 +87,7 @@ export default function PostChatSection({ chat }: Props) {
     }, [ chat ]);
     
     return <>
-        <PostChatBox data={chatCopy} replyOpen={pageRef.current >= 0} onReplyOpen={nextPageLoad} onReplyInput={onInputShow} newChat={chat.newChat} />
+        <PostChatBox data={chatCopy} replyOpen={pageRef.current >= 0} onReplyOpen={nextPageLoad} onReplyInput={onInputShow} newChat={chat.newChat} onRemove={onMainChatRemoved} />
         {showInput && <PostChatInput reply={chat.id} onChatAdd={newReplyChat} onClose={onInputClose} />}
 
         {/* 답글 리스트 */}

@@ -62,6 +62,9 @@ public class PostChatService {
     }
 
     public void removeChat(PostChat chat) {
+        if (chat.getReply() == null) // 그럼 이 댓글에 답글 한것도 있을 수 있음
+            postChatRepository.deleteByReply(chat);
+
         postChatRepository.delete(chat);
     }
 }

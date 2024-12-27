@@ -7,6 +7,7 @@ import ChatTitle from './ChatTitle';
 export default function PostChatMain() {
     const [ chatCount, setChatCount ] = useState<number | null>(null);
     const chatAddEventRef = useRef<ChatAddEventCb>();
+
     const onChatAdd: ChatAddEventCb = function(id, content) {
         if (chatCount)
             setChatCount(chatCount + 1);
@@ -15,9 +16,13 @@ export default function PostChatMain() {
             chatAddEventRef.current(id, content);
     }
 
+    const onChatRemove = function() {
+        setChatCount(prev => prev ? prev - 1 : prev);
+    }
+
     return <section className={style.chat_main}>
         <ChatTitle value={chatCount} setValue={setChatCount} />
         <PostChatInput onChatAdd={onChatAdd} />
-        <PostChatList chatSize={chatCount} addEventRef={chatAddEventRef} />
+        <PostChatList chatSize={chatCount} addEventRef={chatAddEventRef} onChatRemove={onChatRemove} />
     </section>;
 }

@@ -14,6 +14,7 @@ import com.domi.dnote.Util.MiscUtil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -61,6 +62,7 @@ public class PostChatController {
     }
 
     // reply도 삭제 가능
+    @Transactional
     @DeleteMapping("/post/chat/{chatId}")
     void removePostChat(@PathVariable("chatId") long chatId) {
         User user = userService.getCurrentUser();
