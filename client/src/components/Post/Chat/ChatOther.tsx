@@ -13,18 +13,16 @@ import { useNotify } from '../../Notify/NotifyContext';
 type Props = {
     chatId: number,
     ownerId: number,
-    onRemove?: () => void
+    onRemove?: () => void,
+    onEdit?: () => void
 }
-export default function PostChatOther({ chatId, ownerId, onRemove: onChatRemove }: Props) {
+export default function PostChatOther({ chatId, ownerId, onRemove: onChatRemove, onEdit }: Props) {
     const user = useSelector<RootState, LoginState>(v => v.user);
     const dispatch = useDispatch();
     const nodeRef = useRef<HTMLButtonElement>(null);
     const notify = useNotify();
 
-    const onEdit = function() {
-        console.log("onEdit");
-    }
-    const onRemove = async function() {
+    const onRemove = function() {
         const result = confirm("해당 댓글을 삭제 하시겠습니까?");
         if (!result) return;
         
@@ -46,11 +44,15 @@ export default function PostChatOther({ chatId, ownerId, onRemove: onChatRemove 
             top: nodeRef.current.offsetTop - window.scrollY,
         }
 
+        const menus = [
+            { text: "삭제", callback: onRemove},
+        ];
+        
+        if (onEdit)
+            menus.push({ text: "수정", callback: onEdit});
+
         dispatch(setMenuShow({
-            menus: [
-                { text: "수정", callback: onEdit},
-                { text: "삭제", callback: onRemove},
-            ],
+            menus,
             pos
         }));
     }

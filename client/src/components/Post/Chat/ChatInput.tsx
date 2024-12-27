@@ -13,10 +13,11 @@ import { ChatAddEventCb } from './ChatList';
 type Props = {
     onChatAdd: ChatAddEventCb,
     onClose?: () => void,
-    reply?: number
+    reply?: number,
+    edit?: number
 }
 
-export default function PostChatInput({ onChatAdd, onClose, reply }: Props) {
+export default function PostChatInput({ onChatAdd, onClose, reply, edit }: Props) {
     const logined = useSelector<RootState, boolean>(v => v.user.logined);
     const { id, user } = useParams();
     const [ loading, setLoading ] = useState(false);
@@ -33,8 +34,15 @@ export default function PostChatInput({ onChatAdd, onClose, reply }: Props) {
             return;
         }
 
+        // url 설정
+        let url = `/post/${user}/${id}/chat`;
+        if (reply)
+            url = `chat/${reply}/reply`;
+        else if (edit)
+            url = `chat/${edit}/edit`;
+        
         setLoading(true);
-        const response = await request<number>(reply ? `chat/${reply}/reply` : `/post/${user}/${id}/chat`, { method: "POST", data: content.trim(), headers: { "Content-Type": "text/plain" } }).catch(e => e as AxiosError);
+        const response = await request<number>(url, { method: "POST", data: content.trim(), headers: { "Content-Type": "text/plain" } }).catch(e => e as AxiosError);
         setLoading(false);
         if (response instanceof AxiosError) {
             notify('Error', "댓글을 달 수 없습니다. 나중에 다시 시도하세요.", 5000);
@@ -50,13 +58,13 @@ export default function PostChatInput({ onChatAdd, onClose, reply }: Props) {
             if (onClose)
                 onClose();
         }
-    }, [reply, logined]);
+    }, [reply, edit, logined]);
     
     return <article className={`${style.input_container} ${reply ? style.reply_left : ''}`}>
-        <textarea placeholder={logined ? `${reply ? "답글 할 " : ""}내용을 입력하세요.` : '로그인 후 이용 가능합니다.'} disabled={!logined} value={content} onChange={onChangeContent}></textarea>
+        <textarea placeholder={logined ? `${reply ? "답글 할 " : ""}${edit ? "수정 할 " : ""}내용을 입력하세요.` : '로그인 후 이용 가능합니다.'} disabled={!logined} value={content} onChange={onChangeContent}></textarea>
         <section className={style.interaction}>
             <SpinnerButton loading={loading} className={[style.send]} onClick={onChatSend}>전송</SpinnerButton>
-            {reply && <Button className={[style.close]} onClick={onClose}>닫기</Button>}
+            {(reply || edit) && <Button className={[style.close]} onClick={onClose}>닫기</Button>}
         </section>
     </article>;
 }

@@ -106,4 +106,16 @@ public class PostChatController {
 
         return postChatService.createPostChat(replyChat.getPost(), user, content, replyChat);
     }
+
+    @PostMapping("/chat/{chatId}/edit")
+    void editChatContent(@PathVariable long chatId, @RequestBody @Valid @NotBlank String content) {
+        User user = userService.getCurrentUser();
+        PostChat chat = postChatService.getChatById(chatId);
+
+        if (user != chat.getOwner()) {
+            throw new UserException(UserException.Type.NEED_PERMISSION);
+        }
+
+        postChatService.editContentChat(chat, content);
+    }
 }

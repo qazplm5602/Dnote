@@ -67,4 +67,8 @@ public class PostChatService {
 
         postChatRepository.delete(chat);
     }
+    public void editContentChat(PostChat chat, String content) {
+        chat.setContent(content);
+        postChatRepository.save(chat);
+    }
 }

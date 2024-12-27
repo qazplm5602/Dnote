@@ -15,6 +15,7 @@ import { RootState } from '../../Redux/Store';
 import { useNavigate } from 'react-router-dom';
 import request from '../../Utils/request';
 import PostChatOther from './ChatOther';
+import PostChatInput from './ChatInput';
 
 export interface ChatBaseDTO {
     owner: UserDTO,
@@ -43,9 +44,11 @@ export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onRe
     const ref = useRef<HTMLDivElement>(null);
     const logined = useSelector<RootState, boolean>(v => v.user.logined);
     const [ goodCount, setGoodCount ] = useState(data.good);
+    const [ content, setContent ] = useState(data.content);
     const goodActiveRef = useRef(data.my_good);
     const goodProcessRef = useRef("");
     const navigate = useNavigate();
+    const [ isEdit, setIsEdit ] = useState(false);
 
     const onGoodClick = function() {
         if (!logined) {
@@ -68,6 +71,16 @@ export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onRe
         goodActiveRef.current = changeActive;
         setGoodCount(goodCount + (changeActive ? 1 : - 1));
     }
+    const onClickEdit = function() {
+        setIsEdit(true);
+    }
+    const onChatEdited = function(_: number, content: string) {
+        setIsEdit(false);
+        setContent(content);
+    }
+    const onEditClose = function() {
+        setIsEdit(false);
+    }
 
     useEffect(() => {
         if (!newChat || ref.current === null) return;
@@ -75,6 +88,7 @@ export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onRe
     }, [ newChat ]);
     
     useEffect(() => {
+        setContent(data.content);
         setGoodCount(data.good);
         goodProcessRef.current = "";
         goodActiveRef.current = data.my_good;
@@ -88,10 +102,11 @@ export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onRe
                 <div className={style.date}>{dateFormatNumber(new Date(data.created))}</div>
             </div>
 
-            <PostChatOther chatId={data.id} ownerId={data.owner.id} onRemove={onRemove} />
+            <PostChatOther chatId={data.id} ownerId={data.owner.id} onRemove={onRemove} onEdit={onClickEdit} />
         </section>
 
-        <div className={style.content}>{data.content}</div>
+        {!isEdit && <div className={style.content}>{content}</div>}
+        {isEdit && <PostChatInput onChatAdd={onChatEdited} onClose={onEditClose} edit={data.id} />}
 
         <section className={style.interaction}>
             {!data.reply && <IconButton icon={replySvg} className={[style.reply]} onClick={onReplyInput} />}
