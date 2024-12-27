@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface PostChatLikeRepository extends JpaRepository<PostChatLike, PostChatLikeId> {
     byte countByUserAndChat(User user, PostChat chat);
     void deleteByUserAndChat(User user, PostChat chat);
-    int countByChat(PostChat chat);
+int countByChat(PostChat chat);
 }

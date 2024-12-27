@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginStateReducer from "./LoginStateSlice.tsx";
+import contextMenuStateReducer from "./ContextMenuStateSlice.tsx";
 
 export const store = configureStore({
     reducer: {
-        user: loginStateReducer
+        user: loginStateReducer,
+        contextMenu: contextMenuStateReducer
     }
 })
 
