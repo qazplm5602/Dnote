@@ -34,11 +34,12 @@ type Props = {
     data: PostChatDTO,
     onReplyOpen?: () => void,
     onReplyInput?: () => void
+    onRemove?: () => void,
     replyOpen?: boolean,
     newChat?: boolean
 }
 
-export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onReplyInput, newChat = false }: Props) {
+export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onReplyInput, newChat = false, onRemove }: Props) {
     const ref = useRef<HTMLDivElement>(null);
     const logined = useSelector<RootState, boolean>(v => v.user.logined);
     const [ goodCount, setGoodCount ] = useState(data.good);
@@ -87,7 +88,7 @@ export default function PostChatBox({ data, replyOpen = false, onReplyOpen, onRe
                 <div className={style.date}>{dateFormatNumber(new Date(data.created))}</div>
             </div>
 
-            <PostChatOther chatId={data.id} ownerId={data.owner.id} />
+            <PostChatOther chatId={data.id} ownerId={data.owner.id} onRemove={onRemove} />
         </section>
 
         <div className={style.content}>{data.content}</div>

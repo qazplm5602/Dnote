@@ -65,6 +65,18 @@ export default function PostChatSection({ chat }: Props) {
     const onInputClose = function() {
         setShowInput(false);
     }
+    const onReplyChatRemoved = function(chatId: number) {
+        setReplies(prev => {
+            const idx = prev.findIndex(v => v.id === chatId);
+            if (idx === -1) {
+                return prev; // 그냥 못찾음
+            }
+
+            prev.splice(idx, 1);
+            return [...prev];
+        });
+        setChatCopy(prev2 => ({ ...prev2, reply_count: prev2.reply_count - 1 }));
+    }
 
     useEffect(() => {
         setChatCopy(chat);
@@ -78,7 +90,7 @@ export default function PostChatSection({ chat }: Props) {
         {showInput && <PostChatInput reply={chat.id} onChatAdd={newReplyChat} onClose={onInputClose} />}
 
         {/* 답글 리스트 */}
-        {replies.map(v => <PostChatBox key={v.id} data={v} />)}
+        {replies.map(v => <PostChatBox key={v.id} data={v} onRemove={() => onReplyChatRemoved(v.id)} />)}
         {(pageRef.current !== -1 && !loading && replies.length < chatCopy.reply_count) && <ReplyMoreButton onClick={nextPageLoad} />}
         {loading && <Spinner className={`${style.reply_left} ${style.reply_spinner}`} />}
         {replies.length > 0 && <div style={{marginBottom: '25px'}}></div>}
