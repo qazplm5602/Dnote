@@ -20,6 +20,7 @@ import LoginState from "../LoginState/LoginState";
 import LoginSuccess from "../Login/Process/LoginSuccess";
 import Logout from "../Login/Process/Logout";
 import NotifyContext from "../Notify/NotifyContext";
+import ContextMenu from "../ContextMenu/ContextMenu";
 
 export default function App() {
     
@@ -28,6 +29,7 @@ export default function App() {
             <NotifyContext>
                 
                 <LoginState />
+                <ContextMenu />
                 <Header />
                 <AppRouter />
 
