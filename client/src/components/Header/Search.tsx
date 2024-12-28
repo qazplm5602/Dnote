@@ -1,10 +1,17 @@
 import style from './header.module.css';
-import SearchInput from "../Search/Input/Input";
-import { useRef, useState } from 'react';
+import SearchInput, { useCurrentSearchQuery } from "../Search/Input/Input";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 export default function HeaderSearch() {
     const [ show, setShow ] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const search_query = useCurrentSearchQuery();
+    useEffect(() => {
+        if (search_query !== '')
+            setShow(true);
+    }, [ search_query ]);
 
     const onInputBlur = function() {
         if (inputRef.current !== null && inputRef.current.value !== "") {

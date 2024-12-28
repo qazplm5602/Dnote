@@ -4,8 +4,20 @@ import style from './search.module.css';
 import arrowIcon from '../../assets/icons/ic-round-navigate-before.svg';
 import PostBox from '../PostBox/PostBox';
 import Footer from '../Footer/Footer';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+
+const ITEM_SIZE = 16; // 한 페이지에 16개
 
 export default function Search() {
+    const [ searchParams, setSearchParams ] = useSearchParams();
+    const page = useMemo(() => searchParams.get("page"), [searchParams]);
+    const query = useMemo(() => searchParams.get("query"), [searchParams]);
+
+    useEffect(() => {
+        console.log("state change", page, query);
+    }, [page, query]);
+
     return <>
         <main className={`screen_container ${style.main}`}>
             <Head />
