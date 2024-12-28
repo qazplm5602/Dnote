@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../Redux/Store";
 import { LoginState } from "../Redux/LoginStateSlice";
+import HeaderSearch from "./Search";
 
 export default function Header() {
     const user = useSelector<RootState, LoginState>(v => v.user);
@@ -40,7 +41,8 @@ export default function Header() {
         </Link>
         
         <section className={style.menu}>
-            <img className={style.search} src={SearchIcon} />
+            {/* <img className={style.search} src={SearchIcon} /> */}
+            <HeaderSearch />
 
             <div className={style.line}></div>
 

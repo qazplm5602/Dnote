@@ -39,50 +39,6 @@
     margin-top: 20px;
 }
 
-.search_main > .search_box {
-    width: 100%;
-    height: 45px;
-    border-radius: 50px;
-
-    padding: 10px 15px;
-    gap: 0 10px;
-
-    display: flex;
-    align-items: center;
-    
-    background-color: #EEEEF0;
-}
-
-.search_main > .search_box > .icon {
-    height: 20px;
-}
-
-.search_main > .search_box > .clear {
-    border: none;
-    background-color: transparent;
-    display: flex;
-
-    padding: 0;
-
-    width: 15px;
-    height: 15px;
-}
-
-.search_main > .search_box > .clear > img {
-    width: 100%;
-    height: 100%;
-}
-
-.search_main > .search_box > input {
-    font-size: 16px;
-
-    flex-grow: 1;
-    background-color: transparent;
-    border: none;
-
-    outline: none;
-}
-
 .search_main > .popular_tags {
     display: flex;
     margin-top: 3px;

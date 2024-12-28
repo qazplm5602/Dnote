@@ -2,11 +2,10 @@ import style from './home.module.css';
 import { useEffect, useMemo, useState } from 'react';
 
 import Logo from '../../assets/Dnote.svg'
-import SearchIcon from '../../assets/icons/ic-search.svg';
-import CloseIcon from '../../assets/icons/ic-close-solid.svg';
 import PostBox from '../PostBox/PostBox';
 import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
 import Footer from '../Footer/Footer';
+import SearchInput from '../Search/Input/Input';
 
 export default function Home() {
     return <main>
@@ -83,20 +82,9 @@ function Title() {
 
 function SearchSection() {
     return <section className={style.search_main}>
-        <SearchBox />
+        <SearchInput />
         <PopularTags />
     </section>;
-}
-
-function SearchBox() {
-    return <div className={style.search_box}>
-        <img className={style.icon} src={SearchIcon} />
-        <input type="text" placeholder='검색' />
-        
-        <button className={style.clear}>
-            <img src={CloseIcon} />
-        </button>
-    </div>;
 }
 
 function PopularTags() {

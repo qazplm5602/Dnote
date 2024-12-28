@@ -54,7 +54,36 @@
 }
 
 .main > .menu > .search {
-    height: 30px;
+    height: 35px;
+    width: 300px;
+    transition: width 500ms;
+}
+
+.main > .menu > .search.hide {
+    width: calc(15px + 13px * 2);
+    cursor: pointer;
+}
+
+.main > .menu > .search > .input {
+    height: 35px;
+    padding: 6px 13px;
+    gap: 0 6px;
+    
+    overflow: hidden;
+    transition: background-color 500ms;
+}
+
+.main > .menu > .search.hide > .input {
+    background-color: transparent;
+}
+
+.main > .menu > .search > .input > input {
+    font-size: 15px;
+    width: 0;
+}
+
+.main > .menu > .search > .input img {
+    height: 15px;
 }
 
 .main > .account_menu {
