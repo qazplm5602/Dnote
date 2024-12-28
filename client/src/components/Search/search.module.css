@@ -63,6 +63,11 @@
     width: 32px;
 }
 
+.main > .pagination > button.active {
+    background-color: #161616;
+    color: white;
+}
+
 .main > .list {
     margin: 15px 0;
     display: flex;

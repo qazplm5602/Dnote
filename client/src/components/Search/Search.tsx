@@ -45,7 +45,7 @@ function SortSection() {
 
 function Pagination() {
     return <section className={style.pagination}>
-        <button>1</button>
+        <button className={style.active}>1</button>
         <button>2</button>
         <button>3</button>
         <button>4</button>

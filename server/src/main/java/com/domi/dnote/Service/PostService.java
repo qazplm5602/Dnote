@@ -3,12 +3,17 @@ package com.domi.dnote.Service;
 import com.domi.dnote.DTO.PostUploadDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.User;
+import com.domi.dnote.Enums.PostSort;
 import com.domi.dnote.Exception.PostException;
 import com.domi.dnote.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -50,5 +55,25 @@ public class PostService {
 
     public Post save(Post post) {
         return postRepository.save(post);
+    }
+
+    public Page<Post> searchPost(List<String> keywords, List<String> tags, PostSort sortType, byte page) {
+        String keyword = String.join(" ", keywords);
+        String tag = String.join(" ", tags);
+        Pageable pageable = PageRequest.of(page, 16);
+
+        switch (sortType) {
+            case Relation -> {
+                return postRepository.getSearchKeywordOrTagsOrderRelation(keyword, tag, pageable);
+            }
+            case Latest -> {
+                return postRepository.getSearchKeywordOrTagsOrderLatest(keyword, tag, pageable);
+            }
+            case Popular -> {
+                return postRepository.getSearchKeywordOrTagsOrderPopular(keyword, tag, pageable);
+            }
+
+            case null, default ->  throw new RuntimeException(); // 이럴리가 없는데..
+        }
     }
 }
