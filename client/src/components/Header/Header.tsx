@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import style from './header.module.css';
 
 import Logo from '../../assets/Dnote.svg'
-import SearchIcon from '../../assets/icons/ic-outline-search.svg';
 import GearIcon from '../../assets/icons/gear.svg';
 import LogoutIcon from '../../assets/icons/logout.svg';
 import UserIcon from '../../assets/icons/user.svg';
@@ -46,7 +45,7 @@ export default function Header() {
 
             <div className={style.line}></div>
 
-            {user.logined && <NameTag onClick={onNameClick} user={{ id: -1, avatar: user.avatar, name: user.name }} />}
+            {user.logined && <NameTag onClick={onNameClick} user={{ id: -1, avatar: user.avatar, name: user.name }} link={false} />}
 
             {!user.logined && <Button className={[style.link_btn].join(' ')} text='로그인' link='/login' />}
             {!user.logined && <Button className={[style.link_btn, style.register].join(' ')} text='회원가입' link='/signup' />}

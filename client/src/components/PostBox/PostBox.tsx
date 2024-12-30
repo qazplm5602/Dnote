@@ -47,9 +47,7 @@ export default function PostBox({ className, post = testPostInit }: { className?
         </Link>
 
         <div className={style.detail}>
-            <Link to={'#'}>
-                <NameTag className={style.profile} user={post.owner} />
-            </Link>
+            <NameTag className={style.profile} user={post.owner} />
             <div className={style.line}></div>
             <div className={style.date}>{dateFormatNumber(new Date(post.created))}</div>
             <div className={style.line}></div>

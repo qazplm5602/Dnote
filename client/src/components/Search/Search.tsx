@@ -42,7 +42,6 @@ export default function Search() {
     useEffect(() => {
         const aliveRef = { alive: true };
             
-        console.log("state change", page, query);
         if (lastQueryRef.current !== query) {
             setTotal(-1);
             lastQueryRef.current = query;

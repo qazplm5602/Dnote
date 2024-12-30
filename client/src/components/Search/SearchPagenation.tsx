@@ -21,8 +21,6 @@ export default function SearchPagination({ total }: Props) {
     const startNum = Math.max(0, Math.max(0, Math.floor((page - 1) / PAGE_BTN_SIZE)) * PAGE_BTN_SIZE) + 1;
     const endNum = Math.min(maxNum, startNum + PAGE_BTN_SIZE - 1);
 
-    console.log(startNum, endNum);
-
     const btns = useMemo(() => {
         const result: number[] = [];
 

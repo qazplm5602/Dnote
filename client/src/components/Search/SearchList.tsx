@@ -4,7 +4,6 @@ import PostBox from '../PostBox/PostBox';
 import { PostDTO } from '../Post/Post';
 
 export default function SearchList({ data }: { data: PostDTO[] }) {
-    console.log(data);
     return <section className={style.list}>
         {data.map(v => <PostBox key={v.id} className={style.item} post={v} />)}
     </section>;

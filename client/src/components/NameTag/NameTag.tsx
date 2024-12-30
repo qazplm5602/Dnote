@@ -1,10 +1,23 @@
-import TestImage from '../../assets/image0.jpg';
 import { UserDTO } from '../LoginState/LoginState';
 import style from './nametag.module.css';
 
 import avatarIcon from '../../assets/avatar.svg';
+import { Link } from 'react-router-dom';
 
-export default function NameTag({ className, onClick, user }: { className?: string, user: UserDTO, onClick?: React.MouseEventHandler<HTMLElement> }) {
+type Props = {
+    className?: string,
+    user: UserDTO,
+    onClick?: React.MouseEventHandler<HTMLElement>,
+    link?: boolean
+}
+
+export default function NameTag({ link = true, ...props }: Props) {
+    return link ? <Link to={`/user/${props.user.id}`}>
+        <NameTagBox {...props} />
+    </Link> : <NameTagBox {...props} />;
+}
+
+function NameTagBox({ className, onClick, user }: Props) {
     return <section onClick={onClick} className={(className || '') + ` ${style.nametag}`}>
         <img src={getProfileURL(user?.avatar || null)} />
         <span>{user?.name || "--"}</span>
