@@ -4,37 +4,56 @@ import ExampleImg from '../../assets/exmaple.png';
 import NameTag from '../NameTag/NameTag';
 import TimeTake from '../TimeTake/TimeTake';
 import { Link } from 'react-router-dom';
+import { PostDTO } from '../Post/Post';
+import { dateFormatNumber } from '../Utils/misc';
 
-export default function PostBox({ className }: { className?: string }) {
+const testPostInit: PostDTO = {
+    id: 10,
+    content: "그래서 결론적으로 궁시렁~ 혀야ㅗㄹㅇ녀호ㅕㅇㄹ홍ㄹ허ㅏㄴㅇㄹ혀ㅏㄴㅇ론아ㅓㅣ혼일호닝호",
+    created: "Mon Dec 30 2024 12:47:18 GMT+0900",
+    owner: {
+        avatar: null,
+        id: 1,
+        name: "더미"
+    },
+    read: 0,
+    tags: [ "react", "mysql", "web" ],
+    thumbnail: "",
+    title: "react도 하면서 mysql도 하는 방법 알려드림니다.",
+    view: 10
+}
+
+export default function PostBox({ className, post = testPostInit }: { className?: string, post?: PostDTO }) {
     const classList = [style.item];
+    const postUrl = `/post/${post.owner.id}/${post.id}`;
+
     if (className)
         classList.push(className);
 
     return <div className={classList.join(' ')}>
-        <Link to={'#'}>
+        <Link to={postUrl}>
             <img className={style.thumbnail} src={ExampleImg} />
         </Link>
         
         <ul className={style.tags}>
-            <div>#mysql</div>
-            <div>#react</div>
+            {post.tags.map(v => <div key={v}>#{v}</div>)}
         </ul>
 
-        <Link to={'#'}>
-            <h3>react도 하면서 mysql도 하는 방법 알려드림니다.</h3>
+        <Link to={postUrl}>
+            <h3>{post.title}</h3>
         </Link>
-        <Link to={'#'}>
-            <div className={style.subtext}>그래서 결론적으로 궁시렁~ 혀야ㅗㄹㅇ녀호ㅕㅇㄹ홍ㄹ허ㅏㄴㅇㄹ혀ㅏㄴㅇ론아ㅓㅣ혼일호닝호</div>
+        <Link to={postUrl}>
+            <div className={style.subtext}>{post.content}</div>
         </Link>
 
         <div className={style.detail}>
             <Link to={'#'}>
-                <NameTag className={style.profile} />
+                <NameTag className={style.profile} user={post.owner} />
             </Link>
             <div className={style.line}></div>
-            <div className={style.date}>2024.08.25</div>
+            <div className={style.date}>{dateFormatNumber(new Date(post.created))}</div>
             <div className={style.line}></div>
-            <TimeTake />
+            <TimeTake time={post.read} />
         </div>
     </div>;
 }
