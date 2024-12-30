@@ -8,6 +8,7 @@ import {  useSearchOption } from './SearchHooks';
 import SearchHead from './SearchHead';
 import SearchPagination from './SearchPagenation';
 import SearchList, { SearchListPre } from './SearchList';
+import { aliveType } from '../Utils/misc';
 
 interface PostSearchResultDTO {
     total: number,
@@ -22,13 +23,15 @@ export default function Search() {
     const [ total, setTotal ] = useState(-1);
     const [ list, setList  ] = useState<PostDTO[]>([]);
 
-    const loadData = async function() {
+    const loadData = async function(aliveRef: aliveType) {
         setLoading(true);
         const response = await request<PostSearchResultDTO>("post/search", { params: {
             page: Number(page) - 1,
             sort,
             query
         } });
+        if (!aliveRef.alive) return;
+
         setLoading(false);
 
         const data = response.data;
@@ -37,13 +40,19 @@ export default function Search() {
     }
 
     useEffect(() => {
+        const aliveRef = { alive: true };
+            
         console.log("state change", page, query);
         if (lastQueryRef.current !== query) {
             setTotal(-1);
             lastQueryRef.current = query;
         }
 
-        loadData();
+        loadData(aliveRef);
+
+        return () => {
+            aliveRef.alive = false;
+        }
     }, [page, query, sort]);
 
     return <>
