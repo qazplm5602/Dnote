@@ -68,6 +68,10 @@
     display: block;
 }
 
+.main > .pagination > button.icon.revert > img {
+    transform: rotateZ(180deg);
+}
+
 .main > .pagination > button.icon {
     padding: 9px;
     width: 32px;
@@ -76,6 +80,15 @@
 .main > .pagination > button.active {
     background-color: #161616;
     color: white;
+}
+
+.main > .pagination > button.pre {
+    padding: 0;
+}
+
+.main > .pagination > button.pre > .pre_box {
+    width: 32px;
+    height: 30px;
 }
 
 .main > .list {

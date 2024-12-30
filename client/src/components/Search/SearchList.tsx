@@ -20,5 +20,13 @@ export function SearchListPre() {
         <PostBoxPre delay={500} />
         <PostBoxPre delay={600} />
         <PostBoxPre delay={700} />
+        <PostBoxPre delay={800} />
+        <PostBoxPre delay={900} />
+        <PostBoxPre delay={1000} />
+        <PostBoxPre delay={1100} />
+        <PostBoxPre delay={1200} />
+        <PostBoxPre delay={1300} />
+        <PostBoxPre delay={1400} />
+        <PostBoxPre delay={1500} />
     </section>;
 }

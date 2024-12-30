@@ -1,15 +1,13 @@
 import style from './search.module.css';
 
 import Footer from '../Footer/Footer';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PostDTO } from '../Post/Post';
 import request from '../Utils/request';
 import {  useSearchOption } from './SearchHooks';
 import SearchHead from './SearchHead';
 import SearchPagination from './SearchPagenation';
 import SearchList, { SearchListPre } from './SearchList';
-
-const ITEM_SIZE = 16; // 한 페이지에 16개
 
 interface PostSearchResultDTO {
     total: number,
@@ -19,8 +17,9 @@ interface PostSearchResultDTO {
 export default function Search() {
     const { page, query, sort } = useSearchOption();
 
+    const lastQueryRef = useRef("");
     const [ loading, setLoading ] = useState(true);
-    const [ total, setTotal ] = useState(0);
+    const [ total, setTotal ] = useState(-1);
     const [ list, setList  ] = useState<PostDTO[]>([]);
 
     const loadData = async function() {
@@ -39,14 +38,19 @@ export default function Search() {
 
     useEffect(() => {
         console.log("state change", page, query);
+        if (lastQueryRef.current !== query) {
+            setTotal(-1);
+            lastQueryRef.current = query;
+        }
+
         loadData();
     }, [page, query, sort]);
 
     return <>
         <main className={`screen_container ${style.main}`}>
-            <SearchHead total={total} loading={loading} />
+            <SearchHead total={total} />
             {loading ? <SearchListPre /> : <SearchList data={list} />}
-            <SearchPagination />
+            <SearchPagination total={total} />
         </main>
         <Footer />
     </>;
