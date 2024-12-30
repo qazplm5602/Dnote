@@ -52,6 +52,11 @@ public class UserController {
         oAuth2SuccessService.onAuthenticationSuccess(request, response, authentication, false);
     }
 
+    @PostMapping("/login/refresh")
+    String refreshAccessToken(@RequestBody String refreshToken) {
+        return userService.renewAccessTokenByRefreshToken(refreshToken);
+    }
+
     @GetMapping("/@me")
     UserDTO getCurrentUser() {
         User user = userService.getCurrentUser();

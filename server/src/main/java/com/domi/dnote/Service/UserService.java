@@ -1,8 +1,10 @@
 package com.domi.dnote.Service;
 
 import com.domi.dnote.Entity.User;
+import com.domi.dnote.Exception.TokenException;
 import com.domi.dnote.Exception.UserException;
 import com.domi.dnote.Repository.UserRepository;
+import com.domi.dnote.Util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     final UserRepository userRepository;
     final PasswordEncoder passwordEncoder;
+    final TokenProvider tokenProvider;
 
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
@@ -28,6 +31,13 @@ public class UserService {
 
     public User getUserByVerifyToken(String token) {
         return userRepository.findByVerify(token).orElse(null);
+    }
+
+    public String renewAccessTokenByRefreshToken(String refreshToken) {
+        if (!tokenProvider.hasRefreshToken(refreshToken))
+            throw new TokenException(TokenException.Type.NOT_REFRESH_TOKEN);
+
+        return tokenProvider.copyAccessToken(refreshToken);
     }
 
     public User save(User user) {

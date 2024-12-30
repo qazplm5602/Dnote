@@ -64,6 +64,11 @@ public class TokenProvider {
                 .compact();
     }
 
+    public String copyAccessToken(String token) {
+        Authentication authentication = getAuthentication(token);
+        return generateToken(authentication, false);
+    }
+
     public Authentication getAuthentication(String token) {
         Claims claims = parseClaims(token);
         List<SimpleGrantedAuthority> authorities = getAuthorities(claims);
