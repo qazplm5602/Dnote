@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { setLoad, setLogin, LoginStateDTO } from "../Redux/LoginStateSlice.tsx";
 import { useEffect } from "react";
 import useSWR from "swr";
+import request from "../Utils/request.ts";
 
 export interface UserDTO {
     id: number,
@@ -11,20 +12,15 @@ export interface UserDTO {
 
 const fetcher = async (url: string) => {
     const access = localStorage.getItem("accessToken");
-    const refresh = localStorage.getItem("refreshToken");
-    
-    if (access === null) return;
+    if (access === null) // 토큰이 없지롱.
+        return;
 
-    return await fetch(url, {
-        headers: {
-            Authorization: `Barer ${access}`
-        }        
-    }).then(v => v.json());
+    return (await request<UserDTO>(url)).data;
 }
 
 export default function LoginState() {
     const dispatch = useDispatch();
-    const { data, error, isLoading } = useSWR<UserDTO>("/api/user/@me", fetcher);
+    const { data, error, isLoading } = useSWR<UserDTO | undefined>("user/@me", fetcher);
 
     useEffect(() => {
         dispatch(setLoad(isLoading));
