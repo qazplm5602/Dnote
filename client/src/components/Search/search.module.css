@@ -18,60 +18,6 @@
     width: 100px;
 }
 
-.main > .pagination {
-    display: flex;
-    justify-content: center;
-
-    gap: 0 6px;
-
-    height: 30px;
-}
-
-.main > .pagination > button {
-    height: 100%;
-    
-    font-size: 15px;
-    font-weight: 500;
-
-    border: none;
-    padding: 5px 12px;
-    border-radius: 5px;
-
-    background-color: transparent;
-}
-
-.main > .pagination > button:hover {
-    background-color: #F1F1F1;
-}
-
-.main > .pagination > button.icon > img {
-    height: 100%;
-    display: block;
-}
-
-.main > .pagination > button.icon.revert > img {
-    transform: rotateZ(180deg);
-}
-
-.main > .pagination > button.icon {
-    padding: 9px;
-    width: 32px;
-}
-
-.main > .pagination > button.active {
-    background-color: #161616;
-    color: white;
-}
-
-.main > .pagination > button.pre {
-    padding: 0;
-}
-
-.main > .pagination > button.pre > .pre_box {
-    width: 32px;
-    height: 30px;
-}
-
 /* 검색 인풋 */
 .search_box {
     width: 100%;
