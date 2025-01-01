@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/Store';
 import { LoginState } from '../Redux/LoginStateSlice';
 import PostBoxPre from '../PostBox/PostBoxPre';
+import UserPageContentPreview from './ContentPreview';
 
 interface SocialDTO {
     github: string | null,
@@ -55,7 +56,7 @@ export default function UserPage() {
         profileLoad();
     }, [ userId ]);
 
-    if (status == LoadStatus.Loading) {
+    if (status == LoadStatus.Loading || userId === undefined) {
         return <main>
             <ProfileLoading />
             <Footer />
@@ -65,8 +66,8 @@ export default function UserPage() {
     return <main>
         <Profile id={userId} data={profile} />
         <LinkList social={profile?.social} />
-        <PopularContent />
-        <LatestConent />
+        <UserPageContentPreview title='인기있는 콘텐츠' user={userId} size={4} sort={0} />
+        <UserPageContentPreview title='최근 콘텐츠' user={userId} size={4} sort={1} />
         <Footer />
     </main>;
 }
