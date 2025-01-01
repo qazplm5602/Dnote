@@ -1,4 +1,5 @@
 import LoadBox from '../Recycle/LoadBox';
+import TypeSelect from '../Recycle/TypeSelect/TypeSelect';
 import { numberWithCommas } from '../Utils/misc';
 import style from './search.module.css';
 import { useChangeSearchOption, useSearchOption } from './SearchHooks';
@@ -13,9 +14,9 @@ export default function SearchHead({ total }: { total: number }) {
 }
 
 const sortButtons = [
-    "연관",
-    "최신",
-    "인기",
+    "연관순",
+    "최신순",
+    "인기순",
 ];
 
 function SortSection() {
@@ -28,7 +29,5 @@ function SortSection() {
         });
     }
 
-    return <section className={style.sort}>
-        {sortButtons.map((v, i) => <button className={(i.toString() === sort) ? style.active : ''} onClick={() => changeSort(i)} key={v}>{v}순</button>)}
-    </section>;
+    return <TypeSelect list={sortButtons} current={Number(sort)} onSelect={changeSort} />;
 }

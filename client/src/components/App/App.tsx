@@ -21,6 +21,7 @@ import LoginSuccess from "../Login/Process/LoginSuccess";
 import Logout from "../Login/Process/Logout";
 import NotifyContext from "../Notify/NotifyContext";
 import ContextMenu from "../ContextMenu/ContextMenu";
+import UserContents from "../UserContents/UserContents";
 
 export default function App() {
     
@@ -59,6 +60,7 @@ function AppRouter() {
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/user/:id" element={<UserPage />} />
+                <Route path="/user/:id/content" element={<UserContents />} />
                 <Route path="/setting/*" element={<Setting />} />
                 <Route path="/write" element={<Write />} />
                 <Route path="/post/:user/:id" element={<Post />} />
