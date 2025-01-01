@@ -1,10 +1,13 @@
 package com.domi.dnote.Controller;
 
 import com.domi.dnote.DTO.PostDTO;
+import com.domi.dnote.DTO.PostPageResultDTO;
 import com.domi.dnote.DTO.PostUploadDTO;
+import com.domi.dnote.DTO.PostUserParamDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
+import com.domi.dnote.Enums.PostSort;
 import com.domi.dnote.Exception.DomiException;
 import com.domi.dnote.Exception.PostException;
 import com.domi.dnote.Service.FileService;
@@ -13,11 +16,15 @@ import com.domi.dnote.Service.TempAttachService;
 import com.domi.dnote.Service.UserService;
 import com.domi.dnote.Util.MiscUtil;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +50,22 @@ public class PostController {
         Post post = postService.getPostByOwnerId(user, postId);
 
         return PostDTO.toEntity(post);
+    }
+
+    @GetMapping("/user/{user}")
+    PostPageResultDTO getUserPosts(@ModelAttribute @Valid PostUserParamDTO form) {
+        User user = userService.getUserById(form.getUser());
+        Pageable page = PageRequest.of(form.getPage(), form.getSize());
+
+        PostSort sortType = PostSort.Popular;
+        switch (form.getSort()) {
+            case 0 -> sortType = PostSort.Popular;
+            case 1 -> sortType = PostSort.Latest;
+            case 2 -> sortType = PostSort.Oldest;
+        }
+
+        Page<Post> posts = postService.getPostsByUser(user, page, sortType);
+        return PostPageResultDTO.toEntity(posts);
     }
 
     @PostMapping("/upload")

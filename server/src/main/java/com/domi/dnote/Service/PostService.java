@@ -76,4 +76,19 @@ public class PostService {
             case null, default ->  throw new RuntimeException(); // 이럴리가 없는데..
         }
     }
+
+    public Page<Post> getPostsByUser(User user, Pageable pageable, PostSort sortType) {
+        switch (sortType) {
+            case Popular -> {
+                return postRepository.findByOwnerOrderByViewCountDesc(user, pageable);
+            }
+            case Latest -> {
+                return postRepository.findByOwnerOrderByCreatedDesc(user, pageable);
+            }
+            case Oldest -> {
+                return postRepository.findByOwnerOrderByCreatedAsc(user, pageable);
+            }
+            default -> throw new RuntimeException();
+        }
+    }
 }

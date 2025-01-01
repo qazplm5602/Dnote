@@ -57,4 +57,9 @@ public interface PostRepository extends JpaRepository<Post, PostId> {
         ORDER BY view_count DESC
     """, nativeQuery = true)
     Page<Post> getSearchKeywordOrTagsOrderPopular(@Param("keyword") String keyword, @Param("tag") String tag, Pageable pageable);
+
+    // 유저로 포스트 가져옴
+    Page<Post> findByOwnerOrderByViewCountDesc(User owner, Pageable pageable); // 인기
+    Page<Post> findByOwnerOrderByCreatedDesc(User owner, Pageable pageable); // 최신
+    Page<Post> findByOwnerOrderByCreatedAsc(User owner, Pageable pageable); // 오래된거
 }

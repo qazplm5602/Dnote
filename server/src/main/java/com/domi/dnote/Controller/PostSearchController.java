@@ -2,7 +2,7 @@ package com.domi.dnote.Controller;
 
 import com.domi.dnote.DTO.PostDTO;
 import com.domi.dnote.DTO.PostSearchParamDTO;
-import com.domi.dnote.DTO.PostSearchResultDTO;
+import com.domi.dnote.DTO.PostPageResultDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Enums.PostSort;
 import com.domi.dnote.Service.PostService;
@@ -21,7 +21,7 @@ public class PostSearchController {
     private final PostService postService;
 
     @GetMapping("")
-    PostSearchResultDTO getSearchResult(@ModelAttribute @Valid PostSearchParamDTO form) {
+    PostPageResultDTO getSearchResult(@ModelAttribute @Valid PostSearchParamDTO form) {
         List<String> keywords = new ArrayList<>();
         List<String> tags = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class PostSearchController {
 
         Page<Post> postPage = postService.searchPost(keywords, tags, sortType, form.getPage());
 
-        var dto = new PostSearchResultDTO();
+        var dto = new PostPageResultDTO();
         dto.setTotal(postPage.getTotalElements());
         dto.setPosts(postPage.get().map(PostDTO::toEntity).toList());
 
