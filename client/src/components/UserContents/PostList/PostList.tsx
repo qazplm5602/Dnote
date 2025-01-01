@@ -6,18 +6,19 @@ import PostBoxPre from "../../PostBox/PostBoxPre";
 
 type Props = {
     data: PostDTO[] | null,
-    className?: string
+    className?: string,
+    showUser?: boolean
 }
 
-export default function PostList({ data, className }: Props) {
+export default function PostList({ data, className, showUser = true }: Props) {
     return <section className={`${style.list} ${className || ''}`}>
-        { data ? <PostResult data={data} /> : <PostPre /> }
+        { data ? <PostResult data={data} user={showUser} /> : <PostPre /> }
     </section>;
 }
 
-function PostResult({ data }: { data: PostDTO[] }) {
+function PostResult({ data, user }: { data: PostDTO[], user: boolean }) {
     return <>
-        {data.map(v => <PostBox key={v.id} className={style.item} post={v} />)}
+        {data.map(v => <PostBox key={v.id} className={style.item} post={v} user={user} />)}
     </>;
 }
 

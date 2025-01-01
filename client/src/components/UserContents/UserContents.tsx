@@ -75,7 +75,7 @@ export default function UserContents() {
 
     return <main>
         <Header name={username} />
-        <PostList data={list} className={'screen_container'} />
+        <PostList data={list} className={'screen_container'} showUser={false} />
         <Pagenation total={total} page={Number(page)} size={ITEM_SIZE} onSetPage={onSetPage} />
 
         <Footer />

@@ -23,7 +23,13 @@ const testPostInit: PostDTO = {
     view: 10
 }
 
-export default function PostBox({ className, post = testPostInit }: { className?: string, post?: PostDTO }) {
+type Props = {
+    className?: string,
+    post?: PostDTO,
+    user?: boolean
+}
+
+export default function PostBox({ className, post = testPostInit, user = true }: Props) {
     const classList = [style.item];
     const postUrl = `/post/${post.owner.id}/${post.id}`;
 
@@ -47,8 +53,8 @@ export default function PostBox({ className, post = testPostInit }: { className?
         </Link>
 
         <div className={style.detail}>
-            <NameTag className={style.profile} user={post.owner} />
-            <div className={style.line}></div>
+            {user && <NameTag className={style.profile} user={post.owner} />}
+            {user && <div className={style.line}></div>}
             <div className={style.date}>{dateFormatNumber(new Date(post.created))}</div>
             <div className={style.line}></div>
             <TimeTake time={post.read} />
