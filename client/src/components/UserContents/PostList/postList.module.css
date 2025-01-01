@@ -1,0 +1,30 @@
+.list {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.list > .item {
+  width: 23.8888888888%;
+}
+@media screen and (max-width: 1234px) {
+  .list > .item {
+    width: 23.55555%;
+  }
+}
+@media screen and (max-width: 953px) {
+  .list > .item {
+    width: 31.33333%;
+  }
+}
+@media screen and (max-width: 700px) {
+  .list > .item {
+    width: 48%;
+  }
+}
+@media screen and (max-width: 470px) {
+  .list > .item {
+    width: 100%;
+  }
+}
+/*# sourceMappingURL=postList.module.css.map */

@@ -7,8 +7,8 @@ import request from '../Utils/request';
 import {  useSearchOption } from './SearchHooks';
 import SearchHead from './SearchHead';
 import SearchPagination from './SearchPagenation';
-import SearchList, { SearchListPre } from './SearchList';
 import { aliveType } from '../Utils/misc';
+import PostList from '../UserContents/PostList/PostList';
 
 interface PostSearchResultDTO {
     total: number,
@@ -57,7 +57,7 @@ export default function Search() {
     return <>
         <main className={`screen_container ${style.main}`}>
             <SearchHead total={total} />
-            {loading ? <SearchListPre /> : <SearchList data={list} />}
+            <PostList data={loading ? null : list} />
             <SearchPagination total={total} />
         </main>
         <Footer />
