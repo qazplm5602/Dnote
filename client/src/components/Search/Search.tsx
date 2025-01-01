@@ -10,7 +10,7 @@ import SearchPagination from './SearchPagenation';
 import { aliveType } from '../Utils/misc';
 import PostList from '../UserContents/PostList/PostList';
 
-interface PostSearchResultDTO {
+export interface PostPageResultDTO {
     total: number,
     posts: PostDTO[]
 }
@@ -25,7 +25,7 @@ export default function Search() {
 
     const loadData = async function(aliveRef: aliveType) {
         setLoading(true);
-        const response = await request<PostSearchResultDTO>("post/search", { params: {
+        const response = await request<PostPageResultDTO>("post/search", { params: {
             page: Number(page) - 1,
             sort,
             query
