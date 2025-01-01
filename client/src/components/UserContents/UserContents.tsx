@@ -11,6 +11,7 @@ import { aliveType } from '../Utils/misc';
 import { PostDTO } from '../Post/Post';
 import request from '../Utils/request';
 import { PostPageResultDTO } from '../Search/Search';
+import { ProfileDTO } from '../UserPage/UserPage';
 
 const ITEM_SIZE = 16;
 
@@ -19,6 +20,7 @@ export default function UserContents() {
     const { sort, page } = useSearchOption();
     const [ total, setTotal ] = useState(-1);
     const [ list, setList ] = useState<PostDTO[] | null>(null);
+    const [ username, setUsername ] = useState<string | null>(null);
     const setSearchPage = useChangeSearchOption();
 
     const userId = Number(user);
@@ -38,6 +40,13 @@ export default function UserContents() {
         setTotal(result.data.total);
     }
 
+    const loadUserData = async function(aliveRef: aliveType) {
+        const result = await request<ProfileDTO>(`profile/${user}`);
+        if (!aliveRef.alive) return;
+
+        setUsername(result.data.user.name);
+    }
+
     const onSetPage = function(page: number) {
         setSearchPage({ page: page.toString() });
     }
@@ -54,11 +63,18 @@ export default function UserContents() {
     }, [ sort, page, user ]);
 
     useEffect(() => {
+        const aliveRef = { alive: true };
+
         setTotal(-1);
+        loadUserData(aliveRef);
+
+        return () => {
+            aliveRef.alive = false;
+        }
     }, [ user ]);
 
     return <main>
-        <Header />
+        <Header name={username} />
         <PostList data={list} className={'screen_container'} />
         <Pagenation total={total} page={Number(page)} size={ITEM_SIZE} onSetPage={onSetPage} />
 
