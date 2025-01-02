@@ -7,25 +7,43 @@ import Input from '../Recycle/Input';
 
 import GithubIcon from '../../assets/icons/github.svg';
 import EmailIcon from '../../assets/icons/email.svg';
+import { useEffect, useState } from 'react';
+import { ProfileDTO } from '../UserPage/UserPage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../Redux/Store';
+import Spinner from '../Recycle/Spinner';
+import request from '../Utils/request';
+import { LoginStateDTO } from '../Redux/LoginStateSlice';
+import SettingProfileOption from './AvaterOption/AvaterOption';
 
 export default function SettingGeneric() {
+    const user = useSelector<RootState, LoginStateDTO>(v => v.user);
+    const [ avater, setAvater ] = useState<string | null>(null);
+    const [ profile, setProfile ] = useState<ProfileDTO | null>(null);
+
+    const loadProfile = async function() {
+        const result = await request<ProfileDTO>(`profile/${user.id}`);
+        setProfile(result.data);
+    }
+
+    useEffect(() => {
+        if (!user.logined || profile !== null) return;
+        
+        setAvater(user.avatar);
+        loadProfile();
+        
+    }, [ user, profile ]);
+
+    if (profile === null) {
+        return <Loading />;
+    }
+
     return <article className={style.main}>
-        <ProfileOption />
+        <SettingProfileOption avater={avater} />
         <InputField title='이름' />
         <InputField title='소개' />
         <LinkOption />
     </article>;
-}
-
-function ProfileOption() {
-    return <section className={style.profile}>
-        <h3>프로필 이미지</h3>
-
-        <section className={style.group}>
-            <img className={style.avater} src={Avater} />
-            <Button className={[style.upload_btn]}>업로드<span>권장 사이즈 512x512</span></Button>
-        </section>
-    </section>;
 }
 
 function InputField({ title }: { title: string }) {
@@ -55,4 +73,10 @@ function LinkInput({ icon, placeholder }: { icon: string, placeholder?: string }
         <img src={icon} />
         <Input type='text' placeholder={placeholder} className={input_style.input} />
     </div>;
+}
+
+function Loading() {
+    return <article className={style.main}>
+        <Spinner className={style.spinner} />
+    </article>;
 }

@@ -101,7 +101,7 @@
 }
 
 .interaction_main > .gray {
-    background-color: #D1D1D1;
+    background-color: var(--gray-color);
 }
 
 .interaction_main > .line {
