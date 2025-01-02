@@ -5,9 +5,9 @@ import SettingPassword from './SettingPassword';
 import SettingSecurity from './SettingSecurity';
 
 export default function Setting() {
-    return <main className={`screen_container ${style.main}`}>
-        <h2 className={style.title}>설정</h2>
-        <section className={style.screen}>
+    return <main className={style.main}>
+        <h2 className={`screen_container ${style.title}`}>설정</h2>
+        <section className={`screen_container ${style.screen}`}>
             <Menu />
             <Routes>
                 <Route path='/' element={<SettingGeneric />} />

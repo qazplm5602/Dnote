@@ -53,14 +53,23 @@ export default function Post() {
         setError(false);
     }, [id, user]);
 
-    return <>
-        {!error ? <main className={`screen_container ${style.main}`}>
+    // return <>
+    //     {!error ? <main className={`screen_container ${style.main}`}>
+    //         <Content onError={onError} />
+    //         <PopularList />
+    //     </main> : <ErrorPage />}
+        
+    //     <Footer />
+    // </>;
+
+    return <main>
+        {!error ? <section className={`screen_container ${style.main}`}>
             <Content onError={onError} />
             <PopularList />
-        </main> : <ErrorPage />}
-        
+        </section> : <ErrorPage />}
+
         <Footer />
-    </>;
+    </main>;
 }
 
 function Content({ onError }: { onError: () => void }) {

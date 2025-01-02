@@ -22,6 +22,7 @@ import Logout from "../Login/Process/Logout";
 import NotifyContext from "../Notify/NotifyContext";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import UserContents from "../UserContents/UserContents";
+import { useEffect, useRef } from "react";
 
 export default function App() {
     
@@ -41,9 +42,23 @@ export default function App() {
 
 function AppRouter() {
     const location = useLocation();
+    const scrollYRef = useRef(0);
+
+    const onExit = function(element: HTMLElement) {
+        element.style.top = `calc(-${scrollYRef.current}px + var(--header-height))`;
+    }
+
+    useEffect(() => {
+        const onScroll = function() {
+            scrollYRef.current = window.scrollY;
+        }
+
+        window.addEventListener("scroll", onScroll);
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
     return <TransitionGroup >
-        <CSSTransition key={location.pathname} classNames={{
+        <CSSTransition key={location.pathname} onExit={onExit} classNames={{
             enter: style.enter,
             enterActive: style.enter_active,
             exit: style.exit,
