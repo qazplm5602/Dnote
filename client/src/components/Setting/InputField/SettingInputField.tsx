@@ -5,6 +5,10 @@ import input_style from '../../Recycle/input.module.css';
 import { useEffect, useState } from 'react';
 import { IsStringBlank } from '../../Utils/misc';
 import { useNotify } from '../../Notify/NotifyContext';
+import request from '../../Utils/request';
+import { useSWRConfig } from 'swr';
+import { USER_CACHE_KEY } from '../../LoginState/LoginState';
+import { AxiosError } from 'axios';
 
 type Props = {
     title: string
@@ -17,6 +21,7 @@ export default function SettingInputField({ title, defaultValue, payload, blank 
     const [ value, setValue ] = useState("");
     const [ loading, setLoading ] = useState(false);
     const notify = useNotify();
+    const { mutate } = useSWRConfig();
 
     const onInputChange = function(e: React.ChangeEvent<HTMLInputElement>) {
         setValue(e.target.value);
@@ -28,11 +33,25 @@ export default function SettingInputField({ title, defaultValue, payload, blank 
         }
 
         setLoading(true);
+        let data: string | null = value;
+        if (IsStringBlank(data)) {
+            data = null;
+        }
+
+        const result = await request(`profile/${payload}`, { method: "POST", headers: { "Content-Type": "text/plain" }, data }).catch(e => e as AxiosError);
+        setLoading(false);
         
+        if (result instanceof AxiosError) {
+            notify('Error', `변경할 수 없습니다. 나중에 다시 시도하세요.`, 5000);            
+            return;
+        }
+
+        if (refresh)
+            mutate(USER_CACHE_KEY);
     }
 
     useEffect(() => {
-        setValue(defaultValue);
+        setValue(defaultValue || "");
     }, [ defaultValue ]);
 
     return <section className={style.input_field}>

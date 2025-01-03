@@ -7,6 +7,8 @@ import com.domi.dnote.Enums.FileGroup;
 import com.domi.dnote.Exception.ProfileException;
 import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,5 +57,25 @@ public class ProfileController {
 
         userService.save(user);
         return newAvatar;
+    }
+
+    @PostMapping("/name")
+    void changeName(@RequestBody @Valid @NotBlank String name) {
+        User user = userService.getCurrentUser();
+        user.setName(name);
+        userService.save(user);
+    }
+
+    @PostMapping("/info")
+    void changeInfo(@RequestBody(required = false) String info) {
+        User user = userService.getCurrentUser();
+        if (info == null && user.getProfile() == null) {
+            return; // 할게 없음.. (이미 null임)
+        }
+
+        Profile profile = user.getProfileForce();
+        profile.setInfo(info);
+
+        userService.save(user);
     }
 }
