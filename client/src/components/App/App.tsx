@@ -45,7 +45,8 @@ function AppRouter() {
     const scrollYRef = useRef(0);
 
     const onExit = function(element: HTMLElement) {
-        element.style.top = `calc(-${scrollYRef.current}px + var(--header-height))`;
+        if (element)
+            element.style.top = `calc(-${scrollYRef.current}px + var(--header-height))`;
     }
 
     useEffect(() => {

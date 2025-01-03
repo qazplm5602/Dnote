@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { useSWRConfig } from "swr";
+import { USER_CACHE_KEY } from "../../LoginState/LoginState";
 
 export const ACCESS_KEY = "accessToken";
 export const REFRESH_KEY = "refreshToken";
@@ -19,7 +20,7 @@ export default function LoginSuccess() {
             removeCookie(ACCESS_KEY);
             removeCookie(REFRESH_KEY);
 
-            mutate("/api/user/@me"); // 새로고침
+            mutate(USER_CACHE_KEY); // 새로고침
         } else {
             console.error("access / refresh 토큰을 찾을 수 없습니다.");
         }

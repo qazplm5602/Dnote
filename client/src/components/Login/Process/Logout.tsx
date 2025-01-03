@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSWRConfig } from "swr";
 import { ACCESS_KEY, REFRESH_KEY } from "./LoginSuccess";
 import { useNavigate } from "react-router-dom";
+import { USER_CACHE_KEY } from "../../LoginState/LoginState";
 
 export default function Logout() {
     const { mutate } = useSWRConfig();
@@ -11,7 +12,7 @@ export default function Logout() {
         localStorage.removeItem(ACCESS_KEY);
         localStorage.removeItem(REFRESH_KEY);
 
-        mutate("/api/user/@me");
+        mutate(USER_CACHE_KEY);
         navigate("/");
     }
     
