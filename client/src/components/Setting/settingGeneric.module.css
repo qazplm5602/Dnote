@@ -41,6 +41,10 @@
     font-weight: 500;
 }
 
+.main > .profile > .group > .file {
+    display: none;
+}
+
 .main > .input_field {
     
 }
