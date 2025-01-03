@@ -15,10 +15,10 @@ export function IconButton({ icon, children, className = [], onClick, domiRef }:
     </button>
 }
 
-export function SpinnerButton({ children, className = [], spinnerClass, loading, onClick }: { children: React.ReactNode, className?: string[], spinnerClass?: string, loading: boolean, onClick?: React.MouseEventHandler<HTMLButtonElement> }) {
+export function SpinnerButton({ children, className = [], spinnerClass, loading, onClick, disabled = false }: { children: React.ReactNode, className?: string[], spinnerClass?: string, loading: boolean, onClick?: React.MouseEventHandler<HTMLButtonElement>, disabled?: boolean }) {
     className.push(style.spinner_btn);
     
-    return <Button className={className} disabled={loading} onClick={onClick}>
+    return <Button className={className} disabled={loading || disabled} onClick={onClick}>
         {loading && <Spinner className={`${style.spinner} ${spinnerClass || ''}`} />}
         {children}
     </Button>;
