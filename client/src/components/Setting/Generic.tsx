@@ -1,7 +1,6 @@
 import style from './settingGeneric.module.css';
 import input_style from '../Recycle/input.module.css';
 
-import Avater from '../../assets/image0.jpg';
 import Button from '../Recycle/Button';
 import Input from '../Recycle/Input';
 
@@ -39,7 +38,7 @@ export default function SettingGeneric() {
     }
 
     return <article className={style.main}>
-        <SettingProfileOption avater={avater} />
+        <SettingProfileOption avater={avater} setAvatar={setAvater} />
         <InputField title='이름' />
         <InputField title='소개' />
         <LinkOption />

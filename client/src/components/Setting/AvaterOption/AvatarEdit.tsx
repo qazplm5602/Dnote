@@ -6,11 +6,13 @@ import zoomIco from '../../../assets/icons/zoom.svg';
 import crawlIco from '../../../assets/icons/crawl.svg';
 import { useRef, useState } from 'react';
 import { useNotify } from '../../Notify/NotifyContext';
-import request from '../../Utils/request';
+import request, { ErrorResponse } from '../../Utils/request';
+import { AxiosError } from 'axios';
 
 type Props = {
     image: File,
-    onClose?: () => void
+    onClose?: () => void,
+    onChangeAvatar?: (url: string) => void
 }
 export default function SettingAvatarEdit(props: Props) {
     return <section className={style.main}>
@@ -18,7 +20,7 @@ export default function SettingAvatarEdit(props: Props) {
     </section>
 }
 
-function Dialog({ image, onClose }: Props) {
+function Dialog({ image, onClose, onChangeAvatar }: Props) {
     const [ scale, setScale ] = useState(100);
     const [ loading, setLoading ] = useState(false);
     const editor = useRef<AvatarEditor>(null);
@@ -36,8 +38,20 @@ function Dialog({ image, onClose }: Props) {
 
         const form = new FormData();
         form.append("file", blob);
-        
-        const result = await request("profile/avatar", { method: "POST", data: form });
+
+        const result = await request<string>("profile/avatar", { method: "POST", data: form }).catch(e => e as AxiosError<ErrorResponse>);
+        if (result instanceof AxiosError) {
+            const data = result.response?.data;
+            if (data?.code === "PROFILE1") {
+                notify('Error', data.message, 5000);
+            } else {
+                notify('Error', "아바타를 업로드 할 수 없습니다. 나중에 다시 시도하세요.", 5000);
+            }
+            return;
+        }
+
+        if (onChangeAvatar)
+            onChangeAvatar(result.data);
     }
     const onSave = function() {
         const canvas = editor.current?.getImageScaledToCanvas();

@@ -18,9 +18,11 @@ const fetcher = async (url: string) => {
     return (await request<UserDTO>(url)).data;
 }
 
+export const USER_CACHE_KEY = "user/@me";
+
 export default function LoginState() {
     const dispatch = useDispatch();
-    const { data, error, isLoading } = useSWR<UserDTO | undefined>("user/@me", fetcher);
+    const { data, error, isLoading } = useSWR<UserDTO | undefined>(USER_CACHE_KEY, fetcher);
 
     useEffect(() => {
         dispatch(setLoad(isLoading));

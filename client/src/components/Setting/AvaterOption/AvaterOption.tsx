@@ -1,18 +1,21 @@
 import { getProfileURL } from '../../NameTag/NameTag';
 import Button from '../../Recycle/Button';
 import style from '../settingGeneric.module.css';
-import AvatarEditor from 'react-avatar-editor'
 import SettingAvatarEdit from './AvatarEdit';
 import { useRef, useState } from 'react';
 import { useNotify } from '../../Notify/NotifyContext';
+import { useSWRConfig } from 'swr';
+import { USER_CACHE_KEY } from '../../LoginState/LoginState';
 
 type Props = {
-    avater: string | null
+    avater: string | null,
+    setAvatar: React.Dispatch<React.SetStateAction<string | null>>
 };
-export default function SettingProfileOption({ avater }: Props) {
+export default function SettingProfileOption({ avater, setAvatar }: Props) {
     const [ uploadImage, setUploadImage ] = useState<File | null>(null);
     const fileRef = useRef<HTMLInputElement>(null);
     const notify = useNotify();
+    const { mutate } = useSWRConfig()
 
     const onUploadClick = function() {
         fileRef.current?.click();
@@ -33,7 +36,11 @@ export default function SettingProfileOption({ avater }: Props) {
     const onAvatarEditClose = function() {
         setUploadImage(null);
     }
-    
+    const onChangeAvatar = function(image: string) {
+        onAvatarEditClose();
+        setAvatar(image);
+        mutate(USER_CACHE_KEY);
+    }
 
     return <section className={style.profile}>
     <h3>프로필 이미지</h3>
@@ -44,6 +51,6 @@ export default function SettingProfileOption({ avater }: Props) {
         <Button className={[style.upload_btn]} onClick={onUploadClick}>업로드<span>권장 사이즈 512x512</span></Button>
     </section>
 
-    {uploadImage && <SettingAvatarEdit image={uploadImage} onClose={onAvatarEditClose} />}
+    {uploadImage && <SettingAvatarEdit image={uploadImage} onClose={onAvatarEditClose} onChangeAvatar={onChangeAvatar} />}
 </section>;
 }
