@@ -30,6 +30,15 @@ public class User {
     String verify; // null 이면 인증 되어있음 , 토큰이면 인증해야됨
 
     @JoinColumn(nullable = true)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     Profile profile;
+
+    public Profile getProfileForce() {
+        if (profile == null) {
+            profile = new Profile();
+            profile.setUser(this);
+        }
+
+        return profile;
+    }
 }

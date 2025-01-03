@@ -6,6 +6,7 @@ import zoomIco from '../../../assets/icons/zoom.svg';
 import crawlIco from '../../../assets/icons/crawl.svg';
 import { useRef, useState } from 'react';
 import { useNotify } from '../../Notify/NotifyContext';
+import request from '../../Utils/request';
 
 type Props = {
     image: File,
@@ -26,14 +27,17 @@ function Dialog({ image, onClose }: Props) {
     const onScaleChange = function(e: React.ChangeEvent<HTMLInputElement>) {
         setScale(Number(e.target.value));
     }
-    const imageUploadToServer = function(blob: Blob | null) {
+    const imageUploadToServer = async function(blob: Blob | null) {
         if (blob === null) {
             setLoading(false);
             notify('Error', "이미지 변환 중 오류가 발생하였습니다.", 5000);
             return;
         }
 
-        // ... 백엔드 구현 뒤
+        const form = new FormData();
+        form.append("file", blob);
+        
+        const result = await request("profile/avatar", { method: "POST", data: form });
     }
     const onSave = function() {
         const canvas = editor.current?.getImageScaledToCanvas();
