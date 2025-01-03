@@ -14,6 +14,7 @@ import Spinner from '../Recycle/Spinner';
 import request from '../Utils/request';
 import { LoginStateDTO } from '../Redux/LoginStateSlice';
 import SettingProfileOption from './AvaterOption/AvaterOption';
+import SettingInputField from './InputField/SettingInputField';
 
 export default function SettingGeneric() {
     const user = useSelector<RootState, LoginStateDTO>(v => v.user);
@@ -39,21 +40,10 @@ export default function SettingGeneric() {
 
     return <article className={style.main}>
         <SettingProfileOption avater={avater} setAvatar={setAvater} />
-        <InputField title='이름' />
-        <InputField title='소개' />
+        <SettingInputField title='이름' payload='name' defaultValue={profile.user.name} refresh={true} />
+        <SettingInputField title='소개' payload='info' defaultValue={profile.info} blank={true} />
         <LinkOption />
     </article>;
-}
-
-function InputField({ title }: { title: string }) {
-    return <section className={style.input_field}>
-        <h3>{title}</h3>
-        
-        <section className={style.in}>
-            <Input type='text' className={input_style.input} />
-            <Button className={[style.btn]}>변경하기</Button>
-        </section>
-    </section>
 }
 
 function LinkOption() {
