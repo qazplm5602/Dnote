@@ -64,7 +64,7 @@ public class ProfileController {
     @PostMapping("/name")
     void changeName(@RequestBody @Valid @NotBlank String name) {
         User user = userService.getCurrentUser();
-        user.setName(name);
+        user.setName(name.trim().replaceAll("\\s+", " ")); // 양옆 공백 지우고 사이에 공백 여러개는 한개로 바꿈
         userService.save(user);
     }
 

@@ -48,6 +48,8 @@ export default function SettingInputField({ title, defaultValue, payload, blank 
 
         if (refresh)
             mutate(USER_CACHE_KEY);
+
+        notify("Success", "변경되었습니다.", 5000);
     }
 
     useEffect(() => {
