@@ -49,6 +49,10 @@ export function IsStringBlank(value: string): boolean {
   return true;
 }
 
+export const validateStringId = (input: string): boolean => {
+  return /^[A-Za-z0-9]*$/.test(input);
+};
+
 export type aliveType = {
   alive: boolean
 }

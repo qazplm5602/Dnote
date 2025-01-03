@@ -21,7 +21,7 @@ import { LoginState } from '../Redux/LoginStateSlice';
 import PostBoxPre from '../PostBox/PostBoxPre';
 import UserPageContentPreview from './ContentPreview';
 
-interface SocialDTO {
+export interface SocialDTO {
     github: string | null,
     email: string | null
 }

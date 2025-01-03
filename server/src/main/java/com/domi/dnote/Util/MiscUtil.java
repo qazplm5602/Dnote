@@ -24,6 +24,14 @@ public class MiscUtil {
                 .toString();
     }
 
+    public static boolean validateEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$");
+    }
+
+    public static boolean validateId(String id) {
+        return id.matches("^[A-Za-z0-9]*$");
+    }
+
     static final String SERVER_IMAGE_PATH = "/file/attachment/";
     public static List<String> getImageUrls(String content) {
         Document document = Jsoup.parse(content);

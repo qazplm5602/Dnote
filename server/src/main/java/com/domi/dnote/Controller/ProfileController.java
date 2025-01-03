@@ -1,12 +1,14 @@
 package com.domi.dnote.Controller;
 
 import com.domi.dnote.DTO.ProfileDTO;
+import com.domi.dnote.DTO.ProfileSocialVO2;
 import com.domi.dnote.Entity.Profile;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
 import com.domi.dnote.Exception.ProfileException;
 import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.UserService;
+import com.domi.dnote.Util.MiscUtil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +77,40 @@ public class ProfileController {
 
         Profile profile = user.getProfileForce();
         profile.setInfo(info);
+
+        userService.save(user);
+    }
+
+    @PostMapping("/social")
+    void changeSocial(@RequestBody ProfileSocialVO2 form) {
+        User user = userService.getCurrentUser();
+        Profile profile = user.getProfile();
+
+        boolean allNull = Objects.equals(form.getGithub(), "") && Objects.equals(form.getEmail(), "");
+        if (allNull && profile == null) return; // 할게 없음
+
+        if (profile == null)
+            profile = user.getProfileForce();
+
+        String github = form.getGithub();
+        if (github != null) {
+            if (github.isEmpty())
+                github = null;
+            else if (!MiscUtil.validateId(github))
+                throw new ProfileException(ProfileException.Type.NOT_INPUT_ACCOUNT_ID);
+
+            profile.setGithub(github);
+        }
+
+        String email = form.getEmail();
+        if (email != null) {
+            if (email.isEmpty())
+                email = null;
+            else if (!MiscUtil.validateEmail(email))
+                throw new ProfileException(ProfileException.Type.NOT_INPUT_EMAIL);
+
+            profile.setEmail(email);
+        }
 
         userService.save(user);
     }
