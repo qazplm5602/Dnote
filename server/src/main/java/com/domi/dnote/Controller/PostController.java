@@ -187,4 +187,9 @@ public class PostController {
         post.setViewCount(post.getViewCount() + 1); // 카운팅
         postService.save(post);
     }
+
+    @DeleteMapping("/view")
+    void removeViewToken(@RequestBody String token) {
+        viewTokens.remove(token);
+    }
 }
