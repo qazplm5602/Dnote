@@ -23,6 +23,7 @@ import errorSvg from '../../assets/icons/error.svg';
 import { AxiosError } from 'axios';
 import PostLikeButton from './LikeButton';
 import PostChatMain from './Chat/ChatMain';
+import PostViewCounter from './ViewSys/ViewCounter';
 
 export interface BasePostDTO {
     title: string,
@@ -109,6 +110,7 @@ function Content({ onError }: { onError: () => void }) {
         <Detail user={post.owner} time={post.created} read={post.read} view={post.view} />
         
         <ViewerContainer content={post.content} />
+        <PostViewCounter />
 
         <Interactions title={post.title} />
         <PostChatMain />
