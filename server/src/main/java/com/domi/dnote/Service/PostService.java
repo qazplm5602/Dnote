@@ -91,4 +91,8 @@ public class PostService {
             default -> throw new RuntimeException();
         }
     }
+
+    public List<Post> getPostsByDateAfter(LocalDateTime date) {
+        return postRepository.findByCreatedAfter(date);
+    }
 }
