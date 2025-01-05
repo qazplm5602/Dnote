@@ -28,6 +28,10 @@ public class UserService {
     public boolean checkUserPassword(User user, String inputPassword) {
         return passwordEncoder.matches(inputPassword, user.getPassword());
     }
+    public void changeUserPassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 
     public User getUserByVerifyToken(String token) {
         return userRepository.findByVerify(token).orElse(null);

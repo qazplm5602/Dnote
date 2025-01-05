@@ -1,11 +1,13 @@
 package com.domi.dnote.Controller;
 
+import com.domi.dnote.DTO.PasswordChangeFormDTO;
 import com.domi.dnote.DTO.ProfileDTO;
 import com.domi.dnote.DTO.ProfileSocialVO2;
 import com.domi.dnote.Entity.Profile;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
 import com.domi.dnote.Exception.ProfileException;
+import com.domi.dnote.Exception.UserException;
 import com.domi.dnote.Service.FileService;
 import com.domi.dnote.Service.UserService;
 import com.domi.dnote.Util.MiscUtil;
@@ -113,5 +115,20 @@ public class ProfileController {
         }
 
         userService.save(user);
+    }
+
+    @PostMapping("/password")
+    void changePassword(@RequestBody @Valid PasswordChangeFormDTO form) {
+        User user = userService.getCurrentUser();
+        if (user.getPassword() == null) { // 소셜 계정은 안됨
+            throw new ProfileException(ProfileException.Type.NOT_INPUT_ACCOUNT_ID);
+        }
+
+        // 비번 틀림
+        if (!userService.checkUserPassword(user, form.getCurrentPassword())) {
+            throw new UserException(UserException.Type.FAILED_LOGIN);
+        }
+
+        userService.changeUserPassword(user, form.getNewPassword());
     }
 }
