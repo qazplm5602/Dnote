@@ -21,3 +21,34 @@
 
     margin-left: 10px;
 }
+
+.item > .detail {
+    flex-grow: 1;
+}
+
+/* pre */
+.item.pre .thumbnail {
+    width: 117px;
+    height: 60px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.item.pre .title {
+    width: 80%;
+    height: 18px;
+}
+
+.item.pre .tags {
+    display: flex;
+    margin-top: 6px;
+}
+
+.item.pre .tags > .tag {
+    width: 50px;
+    height: 12px;
+}
+
+.item.pre .tags > .tag:nth-child(1) {
+    width: 25px;
+}

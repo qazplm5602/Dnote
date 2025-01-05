@@ -11,7 +11,6 @@ import Button, { IconButton } from '../Recycle/Button';
 import eyeSvg from '../../assets/icons/eyes.svg';
 import shareSvg from '../../assets/icons/share.svg';
 import Footer from '../Footer/Footer';
-import PostBoxRow from '../PostBox/PostBoxRow';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import LoadBox from '../Recycle/LoadBox';
@@ -24,6 +23,7 @@ import { AxiosError } from 'axios';
 import PostLikeButton from './LikeButton';
 import PostChatMain from './Chat/ChatMain';
 import PostViewCounter from './ViewSys/ViewCounter';
+import PostPopularList from './PopularList/PopularList';
 
 export interface BasePostDTO {
     title: string,
@@ -66,7 +66,7 @@ export default function Post() {
     return <main>
         {!error ? <section className={`screen_container ${style.main}`}>
             <Content onError={onError} />
-            <PopularList />
+            <PostPopularList />
         </section> : <ErrorPage />}
 
         <Footer />
@@ -190,17 +190,6 @@ function Interactions({ title }: { title: string }) {
         <PostLikeButton userId={user} postId={id} />
         <IconButton className={[style.share]} icon={shareSvg} onClick={shareClick} />
     </section>;
-}
-
-function PopularList() {
-    return <article className={style.popular}>
-        <h2>인기있는 콘텐츠</h2>
-
-        <PostBoxRow className={style.item} />
-        <PostBoxRow className={style.item} />
-        <PostBoxRow className={style.item} />
-        <PostBoxRow className={style.item} />
-    </article>;
 }
 
 function ErrorPage() {
