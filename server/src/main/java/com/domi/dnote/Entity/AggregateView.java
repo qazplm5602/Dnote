@@ -7,15 +7,14 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@IdClass(AggregateViewId.class)
 @Table(name = "post_aggregated_views")
 public class AggregateView {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-
     long postId;
 
     long view_count;
 
+    @Id
     LocalDateTime created;
 }
