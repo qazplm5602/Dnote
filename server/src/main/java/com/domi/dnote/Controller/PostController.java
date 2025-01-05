@@ -1,9 +1,6 @@
 package com.domi.dnote.Controller;
 
-import com.domi.dnote.DTO.PostDTO;
-import com.domi.dnote.DTO.PostPageResultDTO;
-import com.domi.dnote.DTO.PostUploadDTO;
-import com.domi.dnote.DTO.PostUserParamDTO;
+import com.domi.dnote.DTO.*;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
@@ -25,15 +22,15 @@ import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,6 +40,9 @@ public class PostController {
     final UserService userService;
     final FileService fileService;
     final TempAttachService tempAttachService;
+
+    final int VIEW_ACCEPT_TIME = 10; // 10초 이후 view 카운팅
+    Map<String, PostViewTokenDTO> viewTokens = new HashMap<>();
 
     @GetMapping("/info/{user}/{id}")
     PostDTO getPostInfo(@PathVariable("user") long userId, @PathVariable("id") long postId) {
@@ -151,5 +151,40 @@ public class PostController {
         }
 
         tempAttachService.removeFiles(addImages);
+    }
+
+    // view
+    @PutMapping("/view")
+    String getViewToken(@RequestParam("user") long userId, @RequestParam("post") long postId) {
+        User user = userService.getUserById(userId);
+        postService.getPostByOwnerId(user, postId); // 게시물 있는지만 확인
+
+        String token = MiscUtil.randomString(30);
+        PostViewTokenDTO form = new PostViewTokenDTO(userId, postId, LocalDateTime.now());
+        viewTokens.put(token, form);
+
+        return token;
+    }
+
+    @PostMapping("/view")
+    void addViewCount(@RequestBody String token) {
+        PostViewTokenDTO form = viewTokens.get(token);
+        if (form == null)
+            throw new DomiException("POSTVIEW0", "private domi error", HttpStatus.FORBIDDEN);
+
+        // 시간 확인
+        Duration durationTime = Duration.between(form.getCreatedAt(), LocalDateTime.now());
+        if (durationTime.getSeconds() < VIEW_ACCEPT_TIME)
+            throw new DomiException("POSTVIEW1", "private domi error", HttpStatus.FORBIDDEN);
+
+        // 게시물 불러오깅
+        User user = userService.getUserById(form.getUserId());
+        Post post = postService.getPostByOwnerId(user, form.getPostId());
+
+        // 토큰 지우고
+        viewTokens.remove(token);
+
+        post.setViewCount(post.getViewCount() + 1); // 카운팅
+        postService.save(post);
     }
 }
