@@ -22,10 +22,11 @@ public class PostViewSaveScheducle {
     final AggregateViewService aggregateViewService;
     final PostService postService;
 
-//    @PostConstruct
-//    void testInit() {
-//        startSavePostView();
-//    }
+    @PostConstruct
+    void testInit() {
+        startSavePostView();
+//        aggregateViewService.getPopularPosts();
+    }
 
     @Scheduled(cron = "0 0 * * * *") // 시간 당
     @Transactional

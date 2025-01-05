@@ -13,6 +13,9 @@ public class AggregateView {
     @Id
     long postId;
 
+    @Id
+    long ownerId;
+
     long view_count;
 
     @Id
