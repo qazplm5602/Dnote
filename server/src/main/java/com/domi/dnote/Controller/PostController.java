@@ -7,10 +7,7 @@ import com.domi.dnote.Enums.FileGroup;
 import com.domi.dnote.Enums.PostSort;
 import com.domi.dnote.Exception.DomiException;
 import com.domi.dnote.Exception.PostException;
-import com.domi.dnote.Service.FileService;
-import com.domi.dnote.Service.PostService;
-import com.domi.dnote.Service.TempAttachService;
-import com.domi.dnote.Service.UserService;
+import com.domi.dnote.Service.*;
 import com.domi.dnote.Util.MiscUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
@@ -40,6 +37,7 @@ public class PostController {
     final UserService userService;
     final FileService fileService;
     final TempAttachService tempAttachService;
+    final AggregateViewService aggregateViewService;
 
     final int VIEW_ACCEPT_TIME = 10; // 10초 이후 view 카운팅
     Map<String, PostViewTokenDTO> viewTokens = new HashMap<>();
@@ -191,5 +189,33 @@ public class PostController {
     @DeleteMapping("/view")
     void removeViewToken(@RequestBody String token) {
         viewTokens.remove(token);
+    }
+
+    // 인기 post
+    @GetMapping("/popular")
+    List<PostDTO> getPopularPosts(@RequestParam(name = "size", required = false) Byte size, @RequestParam(name = "random", required = false) Boolean random) {
+        List<PostPopularityDTO> posts = aggregateViewService.getPopularPosts();
+
+        if (random != null) {
+            List<PostPopularityDTO> origin = posts;
+            posts = new ArrayList<>(origin); // 복사
+
+            for (int i = 0; i < posts.size(); i++) {
+                int idx = MiscUtil.randomInt(0, posts.size() - 1);
+                int idx2 = MiscUtil.randomInt(0, posts.size() - 1);
+                Collections.swap(posts, idx, idx2);
+            }
+        }
+
+        if (size != null) {
+            List<PostPopularityDTO> origin = posts;
+            posts = new ArrayList<>();
+
+            for (byte i = 0; i < size; i++) {
+                posts.add(origin.get(i));
+            }
+        }
+
+        return posts.stream().map(v -> PostDTO.toEntity(v.getPost())).toList();
     }
 }

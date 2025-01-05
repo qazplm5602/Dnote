@@ -32,6 +32,11 @@ public class MiscUtil {
         return id.matches("^[A-Za-z0-9]*$");
     }
 
+    public static int randomInt(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
+    }
+
     static final String SERVER_IMAGE_PATH = "/file/attachment/";
     public static List<String> getImageUrls(String content) {
         Document document = Jsoup.parse(content);

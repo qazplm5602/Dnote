@@ -46,5 +46,8 @@ public class PostViewSaveScheducle {
     void startRefreshPopularPosts() {
         log.info("Start Refreshing Popular Posts....");
         aggregateViewService.refreshPopularPosts();
+
+        var popularPosts = aggregateViewService.getPopularPosts();
+        log.info("Finish Load Popular Posts. Length: {}", popularPosts.size());
     }
 }
