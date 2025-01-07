@@ -83,7 +83,8 @@ export default function Write() {
         const form = {
             title,
             tags: Array.from(tags),
-            content: editor.getHTML()
+            content: editor.getHTML(),
+            thumbnail
         }
         const response = await request<number>("post/upload", { method: "POST", data: form }).catch(e => e as AxiosError);
 
@@ -138,7 +139,7 @@ export default function Write() {
         const origin = tempStatusRef.current.data;
         console.log(origin.title, title);
         console.log(origin.content, editor.getHTML());
-        return (origin.title !== title || origin.content !== editor.getHTML() || !isSameTags(origin.tags));
+        return (origin.title !== title || origin.content !== editor.getHTML() || !isSameTags(origin.tags) || origin.thumbnail !== thumbnail);
     }
 
     const onTempLoad = function() {
@@ -172,7 +173,8 @@ export default function Write() {
         const form = {
             title,
             tags: Array.from(tags),
-            content
+            content,
+            thumbnail
         };
 
         const isEdit = tempId !== null;
@@ -208,6 +210,7 @@ export default function Write() {
         setTempData(result.data);
         setTitle(result.data.title);
         setTags(new Set(result.data.tags));
+        setThumbnail(result.data.thumbnail);
 
         tempStatusRef.current.data = result.data;
     }
@@ -219,6 +222,7 @@ export default function Write() {
             tempStatusRef.current.id = "";
             setTitle("");
             setTags(new Set());
+            setThumbnail(null);
             setTempData(null);
         }
 

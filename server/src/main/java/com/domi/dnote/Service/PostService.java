@@ -41,9 +41,9 @@ public class PostService {
                 .title(form.getTitle())
                 .content(form.getContent())
                 .contentPreview(createContentPreview(form.getContent()))
+                .thumbnail(form.getThumbnail())
                 .tags(form.getTags())
                 .readTime(calculateReadTime(form.getContent()))
-                .thumbnail(null)
                 .viewCount(0)
                 .created(LocalDateTime.now())
                 .build();

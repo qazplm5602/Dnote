@@ -11,6 +11,7 @@ import com.domi.dnote.Exception.DomiException;
 import com.domi.dnote.Exception.UserException;
 import com.domi.dnote.Service.*;
 import com.domi.dnote.Util.MiscUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class PostTempController {
 
     @Transactional
     @PostMapping("/upload")
-    String postTempUpload(@RequestBody PostUploadDTO form) {
+    String postTempUpload(@RequestBody @Valid PostUploadDTO form) {
         User user = userService.getCurrentUser();
         String tempId = MiscUtil.randomString(10);
 
@@ -42,7 +43,7 @@ public class PostTempController {
                 .tags(form.getTags())
                 .content(form.getContent())
                 .user(user)
-                .thumbnail(null)
+                .thumbnail(form.getThumbnail())
                 .created(LocalDateTime.now())
                 .build();
 
@@ -51,6 +52,10 @@ public class PostTempController {
         // 임시 저장 파일 해제하기
         List<String> tempIds = MiscUtil.getImageUrls(form.getContent());
         tempAttachService.removeFiles(tempIds);
+
+        String thumbnail = form.getThumbnail();
+        if (thumbnail != null)
+            tempAttachService.removeFiles(Collections.singletonList(thumbnail)); // 섬네일
 
         return tempId;
     }
@@ -82,8 +87,15 @@ public class PostTempController {
                 fileService.removeFile(FileGroup.Attachment, fileId);
             } catch (DomiException ignored) {}
         }
+
+        String thumbnail = postTemp.getThumbnail();
+        if (thumbnail != null)
+            try {
+                fileService.removeFile(FileGroup.Attachment, thumbnail);
+            } catch (DomiException ignored) {}
     }
 
+    @Transactional
     @PostMapping("/edit")
     void postTempEdit(@RequestParam("id") String tempId, @RequestBody PostUploadDTO form) {
         User user = userService.getCurrentUser();
@@ -96,9 +108,19 @@ public class PostTempController {
         // 이미지 변경 적용
         postController.imageDiffApply(postTemp.getContent(), form.getContent());
 
+        String prevThumbnail = postTemp.getThumbnail();
+        String nowThumbnail = form.getThumbnail();
+        if (!Objects.equals(prevThumbnail, nowThumbnail)) {
+            if (prevThumbnail != null)
+                fileService.removeFile(FileGroup.Attachment, prevThumbnail);
+            if (nowThumbnail != null)
+                tempAttachService.removeFiles(Collections.singletonList(nowThumbnail)); // 올리는 썸네일은 temp에서 삭제
+        }
+
         postTemp.setTitle(form.getTitle());
         postTemp.setTags(form.getTags());
         postTemp.setContent(form.getContent());
+        postTemp.setThumbnail(form.getThumbnail());
 
         postTempService.save(postTemp);
     }

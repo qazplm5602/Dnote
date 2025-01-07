@@ -68,13 +68,18 @@ public class PostController {
 
     @PostMapping("/upload")
     @Transactional
-    long uploadPost(@RequestBody PostUploadDTO form) {
+    long uploadPost(@RequestBody @Valid PostUploadDTO form) {
         User user = userService.getCurrentUser();
         Post newPost = postService.createPost(user, form);
 
         // 임시 저장 파일 해제하기
         List<String> tempIds = MiscUtil.getImageUrls(form.getContent());
         tempAttachService.removeFiles(tempIds);
+
+        // 섬네일 임시 저장 파일 해제
+        String thumbnail = form.getThumbnail();
+        if (thumbnail != null)
+            tempAttachService.removeFiles(Collections.singletonList(thumbnail));
 
         return newPost.getId();
     }
@@ -95,6 +100,12 @@ public class PostController {
                 fileService.removeFile(FileGroup.Attachment, imageId);
             } catch (DomiException ignored) {}
         }
+
+        String thumbnail = post.getThumbnail();
+        if (thumbnail != null)
+            try {
+                fileService.removeFile(FileGroup.Attachment, thumbnail);
+            } catch (DomiException ignored) {}
     }
 
     @Transactional
@@ -105,11 +116,21 @@ public class PostController {
 
         imageDiffApply(post.getContent(), form.getContent());
 
+        String prevThumbnail = post.getThumbnail();
+        String nowThumbnail = form.getThumbnail();
+        if (!Objects.equals(prevThumbnail, nowThumbnail)) {
+            if (prevThumbnail != null)
+                fileService.removeFile(FileGroup.Attachment, prevThumbnail);
+            if (nowThumbnail != null)
+                tempAttachService.removeFiles(Collections.singletonList(nowThumbnail)); // 올리는 썸네일은 temp에서 삭제
+        }
+
         post.setTitle(form.getTitle());
         post.setTags(form.getTags());
         post.setContent(form.getContent());
         post.setContentPreview(postService.createContentPreview(form.getContent()));
         post.setReadTime(postService.calculateReadTime(form.getContent()));
+        post.setThumbnail(form.getThumbnail());
 
         postService.save(post);
     }
