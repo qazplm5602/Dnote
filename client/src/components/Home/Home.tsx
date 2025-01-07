@@ -3,9 +3,9 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Logo from '../../assets/Dnote.svg'
 import PostBox from '../PostBox/PostBox';
-import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
 import Footer from '../Footer/Footer';
 import SearchInput from '../Search/Input/Input';
+import HomePopularPost from './PopularPost';
 
 export default function Home() {
     return <main>
@@ -16,7 +16,7 @@ export default function Home() {
         <div className={style.highlight_bg}></div>
         <HighlightSection />
         
-        <PopularPostSection />
+        <HomePopularPost />
 
         <Footer />
     </main>;
@@ -115,11 +115,4 @@ function HighlightList() {
         <PostBox />
         <PostBox />
     </section>;
-}
-
-function PopularPostSection() {
-    return <HeadMenuList title='최근 트렌드' menu='더보기' to='/post/popular' className={`screen_container ${style.popular_list}`}>
-        <PostBox />
-        <PostBox />
-    </HeadMenuList>
 }
