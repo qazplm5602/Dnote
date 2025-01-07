@@ -23,6 +23,7 @@ import NotifyContext from "../Notify/NotifyContext";
 import ContextMenu from "../ContextMenu/ContextMenu";
 import UserContents from "../UserContents/UserContents";
 import { useEffect, useRef } from "react";
+import PostPopular from "../PostPopular/PostPopular";
 
 export default function App() {
     
@@ -80,6 +81,7 @@ function AppRouter() {
                 <Route path="/setting/*" element={<Setting />} />
                 <Route path="/write" element={<Write />} />
                 <Route path="/post/:user/:id" element={<Post />} />
+                <Route path="/post/popular" element={<PostPopular />} />
                 <Route path="/search" element={<Search />} />
 
             </Routes>

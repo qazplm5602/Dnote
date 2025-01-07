@@ -1,0 +1,13 @@
+.header {
+    display: flex;
+    align-items: center;
+
+    gap: 0 8px;
+
+    & > .icon {
+        height: 33px;
+    }
+    & > h1 {
+        margin: 0;
+    }
+}

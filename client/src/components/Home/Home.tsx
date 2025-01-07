@@ -118,7 +118,7 @@ function HighlightList() {
 }
 
 function PopularPostSection() {
-    return <HeadMenuList title='인기 있는 Post' menu='더보기' to='/' className={`screen_container ${style.popular_list}`}>
+    return <HeadMenuList title='최근 트렌드' menu='더보기' to='/post/popular' className={`screen_container ${style.popular_list}`}>
         <PostBox />
         <PostBox />
     </HeadMenuList>
