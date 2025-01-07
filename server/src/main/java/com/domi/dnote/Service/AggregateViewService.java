@@ -60,16 +60,20 @@ public class AggregateViewService {
             PostPopularityDTO dto = new PostPopularityDTO(post, calculatePopularity(view, post));
             popularities.add(dto);
 
-            if (MAX_ITEM < ++i)
-                break;
+//            if (MAX_ITEM < ++i)
+//                break;
         }
 
         popularities.sort((a, b) -> {
             return Float.compare(b.getPopularity(), a.getPopularity());
         });
 
-        cachePostPopularises = popularities;
-//
+        // 갯수만큼 자름
+        cachePostPopularises = new ArrayList<>();
+        for (int j = 0; j < Math.min(popularities.size(), MAX_ITEM); j++) {
+            cachePostPopularises.add(popularities.get(j));
+        }
+
 //        for (PostPopularityDTO popularity : popularities) {
 //            System.out.println("post: " + popularity.getPost().getId() + ", popularity: " + popularity.getPopularity());
 //        }
