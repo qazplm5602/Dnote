@@ -1,5 +1,6 @@
 .title_input {
     background-color: transparent;
+    display: block;
     
     width: 100%;
     /* min-height: 31px; */

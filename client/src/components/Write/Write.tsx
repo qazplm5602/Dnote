@@ -229,7 +229,7 @@ export default function Write() {
         return <LoadingScreen />;
     }
 
-    return <main className="screen_container">
+    return <main>
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagSet={tags} setTagSet={setTags} />
         {(tempId === null || tempData !== null) && <EditorSection editorRef={editorRef} initValue={tempId === null ? "Hello Domi!" : tempData?.content || ""} />}
@@ -273,7 +273,7 @@ function TagBox({ tagSet, setTagSet }: { tagSet: Set<string>, setTagSet: React.D
         setTagValue(list[list.length - 1]);
     }, [tagValue]);
 
-    return <article className={style.tag_main}>
+    return <article className={`screen_container ${style.tag_main}`}>
         <div className={style.title}>태그</div>
 
         <section className={style.tags}>
@@ -293,7 +293,7 @@ function Tag({ text, onDelete }: { text: string, onDelete: () => void }) {
 function TitleInput({ value, setValue }: { value: string, setValue: React.Dispatch<React.SetStateAction<string>> }) {
     const onValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value);
 
-    return <ReactTextareaAutosize className={style.title_input} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
+    return <ReactTextareaAutosize className={`screen_container ${style.title_input}`} value={value} onChange={onValueChange} placeholder="제목을 입력하세요." />
 }
 
 function Interactions({ onPost, onTempLoad, onTempSave, onNewPost, temp, loading }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, onTempSave: () => void, temp: boolean, loading: loadData }) {
@@ -309,7 +309,7 @@ function Interactions({ onPost, onTempLoad, onTempSave, onNewPost, temp, loading
         }
     }
     
-    return <article className={style.interaction_main}>
+    return <article className={`screen_container ${style.interaction_main}`}>
         {!temp && <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>}
         {temp && <Button className={[style.gray]} onClick={onNewPost}>새로 만들기</Button>}
         <SpinnerButton className={[style.gray]} onClick={onTempSave} loading={loading.save}>{temp ? '' : '임시'}저장</SpinnerButton>
@@ -350,7 +350,7 @@ function EditorSection({ editorRef, initValue }: { editorRef?: React.RefObject<E
         });
     }, [ editorRef ]);
 
-    return <article className={style.editor_container}>
+    return <article className={`screen_container ${style.editor_container}`}>
         <Editor
             initialValue={initValue}
             previewStyle="vertical"
