@@ -36,6 +36,9 @@ public class Post {
     @JoinColumn(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @JoinColumn(nullable = false, columnDefinition = "TEXT")
+    private String contentPreview; // 콘텐츠 미리보기
+
     @JoinColumn(nullable = false)
     private int readTime; // 읽는데 걸리는 시간
 

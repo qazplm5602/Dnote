@@ -7,6 +7,7 @@ import com.domi.dnote.Enums.PostSort;
 import com.domi.dnote.Exception.PostException;
 import com.domi.dnote.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,7 @@ public class PostService {
                 .id(postId + 1)
                 .title(form.getTitle())
                 .content(form.getContent())
+                .contentPreview(createContentPreview(form.getContent()))
                 .tags(form.getTags())
                 .readTime(-1)
                 .thumbnail(null)
@@ -94,5 +96,12 @@ public class PostService {
 
     public List<Post> getPostsByDateAfter(LocalDateTime date) {
         return postRepository.findByCreatedAfter(date);
+    }
+
+    public String createContentPreview(String html) {
+        String content = Jsoup.parse(html).text();
+
+        int maxLength = 100; // 최대 100자리까지
+        return content.substring(0, maxLength).trim();
     }
 }

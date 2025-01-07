@@ -108,6 +108,7 @@ public class PostController {
         post.setTitle(form.getTitle());
         post.setTags(form.getTags());
         post.setContent(form.getContent());
+        post.setContentPreview(postService.createContentPreview(form.getContent()));
 
         postService.save(post);
     }
