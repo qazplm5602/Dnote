@@ -58,6 +58,7 @@ export default function Write() {
 
     const [ tags, setTags ] = useState<Set<string>>(new Set());
     const [title, setTitle] = useState<string>("");
+    const [thumbnail, setThumbnail] = useState<string | null>(null);
     const notify = useNotify();
     const [showTemp, setShowTemp] = useState(false);
     const [loader, setLoader] = useState<loadData>({ post: false, save: false });
@@ -233,7 +234,7 @@ export default function Write() {
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagSet={tags} setTagSet={setTags} />
         {(tempId === null || tempData !== null) && <EditorSection editorRef={editorRef} initValue={tempId === null ? "Hello Domi!" : tempData?.content || ""} />}
-        <WriteThumbnailBox />
+        <WriteThumbnailBox value={thumbnail} setValue={setThumbnail} />
         <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} onTempSave={onTempSave} temp={tempId !== null} loading={loader} />
 
         <WriteTemp show={showTemp} onClose={onTempClose} />

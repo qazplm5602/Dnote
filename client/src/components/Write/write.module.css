@@ -146,6 +146,8 @@
 
     overflow: hidden;
     cursor: pointer;
+
+    background-color: #F9F9F9;
 }
 
 .thumbnail_main > .box > .bg {
@@ -170,8 +172,21 @@
     justify-content: center;
 }
 
+.thumbnail_main > .box:not(:hover) > .edit {
+    display: none;
+}
+
 .thumbnail_main > .box > .edit > img {
     width: 30px;
+}
+
+.thumbnail_main > .box > .pre {
+    width: 100%;
+    height: 100%;
+}
+
+.thumbnail_main > .file_selector {
+    display: none;
 }
 
 .thumbnail_main > .box.empty {
@@ -179,8 +194,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    background-color: #F9F9F9;
 }
 
 .thumbnail_main > .box.empty > img {
