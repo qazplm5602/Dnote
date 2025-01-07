@@ -9,6 +9,7 @@
 .main > .popular {
     width: 330px;
     margin-left: 40px;
+    flex-shrink: 0;
 }
 
 .main > .popular > h2 {

@@ -21,9 +21,12 @@ import WriteTemp from './WriteTemp';
 import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
 import { useNotify } from '../Notify/NotifyContext';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import LoadBox from '../Recycle/LoadBox';
 import Spinner from '../Recycle/Spinner';
+import { useSelector } from 'react-redux';
+import { RootState } from '../Redux/Store';
+import { LoginState } from '../Redux/LoginStateSlice';
 
 type tempStatus = {
     id: string,
@@ -58,6 +61,9 @@ export default function Write() {
     const [showTemp, setShowTemp] = useState(false);
     const [loader, setLoader] = useState<loadData>({ post: false, save: false });
 
+    const user = useSelector<RootState, LoginState>(v => v.user);
+    const navigate = useNavigate();
+
     const editorRef = useRef<Editor>(null);
 
     const onPost = async function() {
@@ -86,7 +92,7 @@ export default function Write() {
             return;
         }
 
-        console.log(title, editor.getHTML(), Array.from(tags));
+        // console.log(title, editor.getHTML(), Array.from(tags));
 
         // 업로드 되면 temp가 있다면 삭제 해야함
         if (tempId !== null) {
@@ -97,6 +103,8 @@ export default function Write() {
             }
         }
 
+        // 게시물로 이동
+        navigate(`/post/${user.id}/${response.data}`);
     }
 
     const isSameTags = function(target: string[]) {

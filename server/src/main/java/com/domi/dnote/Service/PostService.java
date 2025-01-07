@@ -42,7 +42,7 @@ public class PostService {
                 .content(form.getContent())
                 .contentPreview(createContentPreview(form.getContent()))
                 .tags(form.getTags())
-                .readTime(-1)
+                .readTime(calculateReadTime(form.getContent()))
                 .thumbnail(null)
                 .viewCount(0)
                 .created(LocalDateTime.now())
@@ -101,7 +101,16 @@ public class PostService {
     public String createContentPreview(String html) {
         String content = Jsoup.parse(html).text();
 
-        int maxLength = 100; // 최대 100자리까지
+        int maxLength = 150; // 최대 100자리까지
         return content.substring(0, Math.min(content.length(), maxLength)).trim();
+    }
+
+    public int calculateReadTime(String html) {
+        String content = Jsoup.parse(html).text();
+
+        int wordCount = content.split("").length;
+        int readSpeed = 250; // 분당 읽는 시간 (1분당 250단어)
+
+        return wordCount / readSpeed;
     }
 }

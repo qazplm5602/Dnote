@@ -109,6 +109,7 @@ public class PostController {
         post.setTags(form.getTags());
         post.setContent(form.getContent());
         post.setContentPreview(postService.createContentPreview(form.getContent()));
+        post.setReadTime(postService.calculateReadTime(form.getContent()));
 
         postService.save(post);
     }
