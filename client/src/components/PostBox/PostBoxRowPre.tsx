@@ -7,7 +7,7 @@ type Props = {
     delay?: number
 }
 export default function PostBoxRowPre({ className, delay }: Props) {
-    return <div className={`${style.item} ${style.pre} ${className || ''}`}>
+    return <div className={`${defaultStyle.item} ${style.item} ${style.pre} ${className || ''}`}>
         <div className={style.detail}>
             <LoadBox className={style.title} delay={delay} />
 

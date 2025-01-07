@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import defaultStyle from './postbox.module.css';
 import style from './postboxrow.module.css';
 
-import ExampleImg from '../../assets/exmaple.png';
 import { PostDTO } from '../Post/Post';
+import { getThumbnailUrl } from './PostBox';
 
 export default function PostBoxRow({ className, post }: { className?: string, post: PostDTO }) {
     const classList = [defaultStyle.item, style.item];
@@ -24,7 +24,7 @@ export default function PostBoxRow({ className, post }: { className?: string, po
         </div>
 
         <Link to={url}>
-            <img className={`${defaultStyle.thumbnail} ${style.thumbnail}`} src={ExampleImg} />
+            <img className={`${defaultStyle.thumbnail} ${style.thumbnail}`} src={getThumbnailUrl(post.thumbnail)} />
         </Link>
     </div>;
 }

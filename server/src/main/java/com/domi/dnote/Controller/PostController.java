@@ -234,7 +234,7 @@ public class PostController {
             List<PostPopularityDTO> origin = posts;
             posts = new ArrayList<>();
 
-            for (byte i = 0; i < size; i++) {
+            for (byte i = 0; i < Math.min(origin.size(), size); i++) {
                 posts.add(origin.get(i));
             }
         }

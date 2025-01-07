@@ -38,7 +38,7 @@ export default function PostBox({ className, post = testPostInit, user = true }:
 
     return <div className={classList.join(' ')}>
         <Link to={postUrl}>
-            <img className={style.thumbnail} src={ExampleImg} />
+            <img className={style.thumbnail} src={getThumbnailUrl(post.thumbnail)} />
         </Link>
         
         <ul className={style.tags}>
@@ -60,4 +60,8 @@ export default function PostBox({ className, post = testPostInit, user = true }:
             <TimeTake time={post.read} />
         </div>
     </div>;
+}
+
+export function getThumbnailUrl(id: string | null) {
+    return id ? `/file/attachment/${id}` : ExampleImg;
 }
