@@ -48,8 +48,8 @@ export default function PostBox({ className, post = testPostInit, user = true }:
         <Link to={postUrl}>
             <h3>{post.title}</h3>
         </Link>
-        <Link to={postUrl}>
-            <div className={style.subtext}>{post.content}</div>
+        <Link to={postUrl} className={style.subtext}>
+            <div>{post.content}</div>
         </Link>
 
         <div className={style.detail}>

@@ -102,6 +102,6 @@ public class PostService {
         String content = Jsoup.parse(html).text();
 
         int maxLength = 100; // 최대 100자리까지
-        return content.substring(0, maxLength).trim();
+        return content.substring(0, Math.min(content.length(), maxLength)).trim();
     }
 }

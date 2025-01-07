@@ -15,7 +15,7 @@ public class PostPageResultDTO {
     public static PostPageResultDTO toEntity(Page<Post> data) {
         PostPageResultDTO dto = new PostPageResultDTO();
         dto.total = data.getTotalElements();
-        dto.posts = data.getContent().stream().map(PostDTO::toEntity).collect(Collectors.toList());
+        dto.posts = data.getContent().stream().map(PostPreviewDTO::toEntity).collect(Collectors.toList());
 
         return dto;
     }

@@ -2,6 +2,8 @@
     width: 300px;
     height: 350px;
 
+    display: flex;
+    flex-direction: column;
     /* border: 1px solid red; */
 }
 
@@ -38,7 +40,24 @@
     color: var(--text-color-black);
 }
 
-.item > a > .subtext {
+.item > a.subtext {
+    flex-shrink: 1;
+    overflow: hidden;
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: box;
+
+    overflow:hidden;
+    vertical-align:top;
+    text-overflow: ellipsis;
+    word-break:break-all;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:5;
+    line-clamp:5;
+}
+
+.item > .subtext > div {
     font-size: 13px;
     
     margin-top: 5px;

@@ -1,6 +1,6 @@
 package com.domi.dnote.Controller;
 
-import com.domi.dnote.DTO.PostDTO;
+import com.domi.dnote.DTO.PostPreviewDTO;
 import com.domi.dnote.DTO.PostSearchParamDTO;
 import com.domi.dnote.DTO.PostPageResultDTO;
 import com.domi.dnote.Entity.Post;
@@ -49,7 +49,7 @@ public class PostSearchController {
 
         var dto = new PostPageResultDTO();
         dto.setTotal(postPage.getTotalElements());
-        dto.setPosts(postPage.get().map(PostDTO::toEntity).toList());
+        dto.setPosts(postPage.get().map(PostPreviewDTO::toEntity).toList());
 
         return dto;
     }

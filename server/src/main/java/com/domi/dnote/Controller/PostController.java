@@ -217,6 +217,6 @@ public class PostController {
             }
         }
 
-        return posts.stream().map(v -> PostDTO.toEntity(v.getPost())).toList();
+        return posts.stream().map(v -> PostPreviewDTO.toEntity(v.getPost())).toList();
     }
 }
