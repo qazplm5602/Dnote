@@ -27,6 +27,7 @@ import Spinner from '../Recycle/Spinner';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/Store';
 import { LoginState } from '../Redux/LoginStateSlice';
+import WriteThumbnailBox from './ThumbnailBox';
 
 type tempStatus = {
     id: string,
@@ -232,6 +233,7 @@ export default function Write() {
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagSet={tags} setTagSet={setTags} />
         {(tempId === null || tempData !== null) && <EditorSection editorRef={editorRef} initValue={tempId === null ? "Hello Domi!" : tempData?.content || ""} />}
+        <WriteThumbnailBox />
         <Interactions onPost={onPost} onTempLoad={onTempLoad} onNewPost={onNewPost} onTempSave={onTempSave} temp={tempId !== null} loading={loader} />
 
         <WriteTemp show={showTemp} onClose={onTempClose} />
