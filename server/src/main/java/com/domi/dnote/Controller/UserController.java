@@ -1,16 +1,20 @@
 package com.domi.dnote.Controller;
 
+import com.domi.dnote.DTO.DomiWebAccountDTO;
 import com.domi.dnote.DTO.LoginDTO;
 import com.domi.dnote.DTO.TokenDTO;
 import com.domi.dnote.DTO.UserDTO;
 import com.domi.dnote.Entity.CustomUserDetails;
+import com.domi.dnote.Entity.Role;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Exception.DomiException;
 import com.domi.dnote.Exception.UserException;
+import com.domi.dnote.Service.DomiWebService;
 import com.domi.dnote.Service.OAuth2SuccessService;
 import com.domi.dnote.Service.UserService;
 import com.domi.dnote.Util.TokenProvider;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ import java.io.IOException;
 public class UserController {
     final UserService userService;
     final OAuth2SuccessService oAuth2SuccessService;
+    final DomiWebService domiWebService;
 
     @PostMapping("/login")
     void LoginUser(@RequestBody LoginDTO data, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,6 +60,35 @@ public class UserController {
     @PostMapping("/login/refresh")
     String refreshAccessToken(@RequestBody String refreshToken) {
         return userService.renewAccessTokenByRefreshToken(refreshToken);
+    }
+
+    @GetMapping("/login/domiweb")
+    void userLoginByDomiWeb(@CookieValue("PHPSESSID") Cookie cookie, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        DomiWebAccountDTO account = domiWebService.getAccountInfo(cookie.getValue());
+
+        if (account == null) {
+            response.sendRedirect("/login");
+            return; // domiWeb 로그인 안됨 ㄷㄷ
+        }
+
+        User user = userService.getUserByEmail(account.getEmail());
+        if (user == null) { // 새로운 회원임
+            user = User.builder()
+                    .email(account.getEmail())
+                    .name(account.getName())
+                    .role(Role.USER)
+                    .password(null)
+                    .verify(null)
+                    .build();
+
+            userService.save(user); // 회원가입 해버림
+        }
+
+//        로그인 ㄱㄱㄱ
+        CustomUserDetails userDetails = new CustomUserDetails(user, null, null);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, userDetails.getAuthorities());
+
+        oAuth2SuccessService.onAuthenticationSuccess(request, response, authentication, true);
     }
 
     @GetMapping("/@me")

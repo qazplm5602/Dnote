@@ -23,6 +23,6 @@ public class DomiWebException extends DomiException {
     }
 
     public DomiWebException(Type type) {
-        super("POST"+type.id, type.message, type.status);
+        super("DOMIWEB"+type.id, type.message, type.status);
     }
 }

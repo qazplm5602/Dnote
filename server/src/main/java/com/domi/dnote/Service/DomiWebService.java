@@ -2,6 +2,7 @@ package com.domi.dnote.Service;
 
 import com.domi.dnote.DTO.DomiWebAccountDTO;
 import com.domi.dnote.Exception.DomiWebException;
+import org.springframework.stereotype.Service;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,7 +11,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.regex.Pattern;
 
+@Service
 public class DomiWebService {
     private static final String URL = "http://localhost/bbs/ajax.dnotelogin.php";
     private static final String PACKET_NAME = "---||DOMI-PACKET||---";
@@ -62,7 +65,7 @@ public class DomiWebService {
             bufferedReader.close();
 
             String response = stringBuffer.toString();
-            String[] datas = response.split(PACKET_NAME);
+            String[] datas = response.split(Pattern.quote(PACKET_NAME));
             if (datas.length < 2) // 응답이 이상한데?? (이메일, 닉넴)
                 throw new DomiWebException(DomiWebException.Type.SERVER_BAD_RESPONSE);
 
