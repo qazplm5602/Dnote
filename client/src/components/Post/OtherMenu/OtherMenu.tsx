@@ -24,7 +24,7 @@ export default function PostOtherMenu() {
     if (id === undefined || user === undefined || !loginUser.logined || loginUser.id !== Number(user)) return;
 
     const onEdit = function() {
-        
+        navigate(`/write?post=${id}`);
     }
     const onRemove = function() {
         const accept = confirm("게시물을 삭제하시겠습니까?");
