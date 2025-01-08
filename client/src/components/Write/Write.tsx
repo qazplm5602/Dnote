@@ -89,7 +89,7 @@ export default function Write() {
         const form = {
             title,
             tags: Array.from(tags),
-            content: editor.getHTML(),
+            content: editor.getMarkdown(),
             thumbnail
         }
         const response = await request<number>(`post/${postId !== null ? `edit/${postId}` : 'upload'}`, { method: "POST", data: form }).catch(e => e as AxiosError);
@@ -101,7 +101,7 @@ export default function Write() {
             return;
         }
 
-        // console.log(title, editor.getHTML(), Array.from(tags));
+        // console.log(title, editor.getMarkdown(), Array.from(tags));
 
         // 업로드 되면 temp가 있다면 삭제 해야함
         if (tempId !== null) {
@@ -144,15 +144,15 @@ export default function Write() {
         
         const origin = tempStatusRef.current.data;
         console.log(origin.title, title);
-        console.log(origin.content, editor.getHTML());
-        return (origin.title !== title || origin.content !== editor.getHTML() || !isSameTags(origin.tags) || origin.thumbnail !== thumbnail);
+        console.log(origin.content, editor.getMarkdown());
+        return (origin.title !== title || origin.content !== editor.getMarkdown() || !isSameTags(origin.tags) || origin.thumbnail !== thumbnail);
     }
 
     const isPostChanged = function() {
         const editor = editorRef.current?.getInstance();
         if (postData === null || editor === undefined) return false;
 
-        return postData.title !== title || postData.thumbnail !== thumbnail || postData.content !== editor.getHTML() || !isSameTags(postData.tags);
+        return postData.title !== title || postData.thumbnail !== thumbnail || postData.content !== editor.getMarkdown() || !isSameTags(postData.tags);
     }
 
     const onTempLoad = function() {
@@ -183,7 +183,7 @@ export default function Write() {
         // 로딩!!!
         setLoader({ ...loader, save: true });
 
-        const content = editor.getHTML();
+        const content = editor.getMarkdown();
         const form = {
             title,
             tags: Array.from(tags),

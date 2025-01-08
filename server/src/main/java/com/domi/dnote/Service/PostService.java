@@ -6,7 +6,11 @@ import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.PostSort;
 import com.domi.dnote.Exception.PostException;
 import com.domi.dnote.Repository.PostRepository;
+import com.domi.dnote.Util.MarkdownUtil;
 import lombok.RequiredArgsConstructor;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.jsoup.Jsoup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -98,15 +102,21 @@ public class PostService {
         return postRepository.findByCreatedAfter(date);
     }
 
-    public String createContentPreview(String html) {
-        String content = Jsoup.parse(html).text();
+    public String createContentPreview(String markdown) {
+        // 마크다운 -> html
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(markdown);
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+
+        String html = renderer.render(document);
+        String content = Jsoup.parse(html).text(); // html에서 text만
 
         int maxLength = 150; // 최대 100자리까지
         return content.substring(0, Math.min(content.length(), maxLength)).trim();
     }
 
     public int calculateReadTime(String html) {
-        String content = Jsoup.parse(html).text();
+        String content = MarkdownUtil.extractText(html);
 
         int wordCount = content.split("").length;
         int readSpeed = 250; // 분당 읽는 시간 (1분당 250단어)

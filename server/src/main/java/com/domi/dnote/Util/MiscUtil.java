@@ -1,5 +1,7 @@
 package com.domi.dnote.Util;
 
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -39,11 +41,15 @@ public class MiscUtil {
 
     static final String SERVER_IMAGE_PATH = "/file/attachment/";
     public static List<String> getImageUrls(String content) {
-        Document document = Jsoup.parse(content);
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(content);
 
-        Elements elements = document.select("img");
-        return elements.stream()
-                .map(v -> v.attr("src"))
+        ImageLinkExtractor imagelinkExtractor = new ImageLinkExtractor();
+        document.accept(imagelinkExtractor);
+
+        List<String> imageLinks = imagelinkExtractor.getImageLinks();
+
+        return imageLinks.stream()
                 .filter(v -> v.startsWith(SERVER_IMAGE_PATH))
                 .map(v -> v.substring(SERVER_IMAGE_PATH.length()))
                 .toList();
