@@ -24,6 +24,7 @@ import PostLikeButton from './LikeButton';
 import PostChatMain from './Chat/ChatMain';
 import PostViewCounter from './ViewSys/ViewCounter';
 import PostPopularList from './PopularList/PopularList';
+import PostOtherMenu from './OtherMenu/OtherMenu';
 
 export interface BasePostDTO {
     title: string,
@@ -189,6 +190,7 @@ function Interactions({ title }: { title: string }) {
     return <section className={style.interaction}>
         <PostLikeButton userId={user} postId={id} />
         <IconButton className={[style.share]} icon={shareSvg} onClick={shareClick} />
+        <PostOtherMenu />
     </section>;
 }
 
