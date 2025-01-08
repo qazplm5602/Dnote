@@ -27,16 +27,20 @@ export default async function  request<T>(path: string, option: AxiosRequestConf
     if (response instanceof AxiosError) {
         // 리프레시 토큰
         const refreshToken = localStorage.getItem(REFRESH_KEY);
-        
-        if (response.response?.data?.code === "TOKEN3" && refreshToken !== null) { // 토큰 만료
-            refreshTakeProcess = tryRequestAccessToken(refreshToken);
-            await refreshTakeProcess; // 될때까지 대기...
-            refreshTakeProcess = null;
+
+        if (response.response?.data?.code === "TOKEN3") {
+            if (refreshToken !== null) { // 토큰 만료
+                refreshTakeProcess = tryRequestAccessToken(refreshToken);
+                await refreshTakeProcess; // 될때까지 대기...
+                refreshTakeProcess = null;
+            } else { // 아니 리프레시 토큰은 없는데 에세스 토큰은 만료됨 ㅋㅋ
+                localStorage.removeItem(ACCESS_KEY);
+            }
 
             // 다시 불러와
             return await request(path, option);
         }
-
+        
         throw response;
     }
 
