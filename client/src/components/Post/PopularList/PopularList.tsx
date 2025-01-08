@@ -10,7 +10,7 @@ export default function PostPopularList() {
     const [ list, setList ] = useState<PostDTO[] | null>(null);
     
     const loadData = async function(aliveRef: aliveType) {
-        const result = await request<PostDTO[]>("post/popular?size=5&random");
+        const result = await request<PostDTO[]>("post/popular?size=5&random=1");
         if (!aliveRef.alive) return;
 
         setList(result.data);
