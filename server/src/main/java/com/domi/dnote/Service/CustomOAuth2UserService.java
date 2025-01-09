@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 로그인 / 회원가입
         User user = getUserOrRegister(oAuth2UserInfo);
+        if (user.isBan())
+            throw new OAuth2AuthenticationException(new OAuth2Error("ACCOUNT_BANNED"), "[account_banned]");
 
         return new CustomUserDetails(user, oAuth2UserAttributes, userNameAttributeName);
     }

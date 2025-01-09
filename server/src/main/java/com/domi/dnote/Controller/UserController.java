@@ -24,6 +24,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,8 +47,11 @@ public class UserController {
             throw new UserException(UserException.Type.FAILED_LOGIN);
         }
 
-        if (user.isBan()) // 차단됨
-            throw new UserException(UserException.Type.BAN_ACCOUNT);
+        if (user.isBan()) { // 차단됨
+//            throw new UserException(UserException.Type.BAN_ACCOUNT);
+            redirectErrorLogin(response, "차단된 계정입니다.");
+            return;
+        }
 
         // 이메일 인증??
         if (user.getVerify() != null) {
@@ -87,6 +92,11 @@ public class UserController {
             userService.save(user); // 회원가입 해버림
         }
 
+        if (user.isBan()) {
+            redirectErrorLogin(response, "차단된 계정입니다.");
+            return;
+        }
+
 //        로그인 ㄱㄱㄱ
         CustomUserDetails userDetails = new CustomUserDetails(user, null, null);
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), null, userDetails.getAuthorities());
@@ -98,5 +108,9 @@ public class UserController {
     UserDTO getCurrentUser() {
         User user = userService.getCurrentUser();
         return UserDTO.toEntity(user);
+    }
+
+    void redirectErrorLogin(HttpServletResponse response, String msg) throws IOException {
+        response.sendRedirect("/login?error=" + URLEncoder.encode(msg, StandardCharsets.UTF_8));
     }
 }

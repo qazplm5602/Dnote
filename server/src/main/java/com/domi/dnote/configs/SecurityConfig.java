@@ -3,6 +3,7 @@ package com.domi.dnote.configs;
 import com.domi.dnote.Filter.CustomAuthenticationEntryPoint;
 import com.domi.dnote.Filter.TokenAuthenticationFilter;
 import com.domi.dnote.Service.CustomOAuth2UserService;
+import com.domi.dnote.Service.OAuth2FailureService;
 import com.domi.dnote.Service.OAuth2SuccessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessService oAuth2SuccessService;
+    private final OAuth2FailureService oAuth2FailureService;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
     @Bean
@@ -62,6 +64,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth ->
                         oauth.userInfoEndpoint(c -> c.userService(oAuth2UserService))
                                 .successHandler(oAuth2SuccessService)
+                                .failureHandler(oAuth2FailureService)
                 )
 
                 .exceptionHandling(exceptions ->
