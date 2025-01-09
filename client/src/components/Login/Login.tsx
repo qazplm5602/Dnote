@@ -1,7 +1,7 @@
 import style from './login.module.css';
 import Logo from '../../assets/Dnote.svg';
 import Input from '../Recycle/Input';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import AppleIcon from '../../assets/icons/social/apple.svg';
 import DiscordIcon from '../../assets/icons/social/discord.svg';
@@ -19,9 +19,11 @@ export default function Login() {
             로그인
         </h2>
         <div className={style.subtitle}>로그인 한번으로 모든 서비스를 이용해보세요!</div>
-    
+
         {/* <IdPasswordSection /> */}
         <LoginDomiWebButton />
+
+        <ErrorBox />
 
         <div className={style.text_line}>
             <div>다른 방법으로 로그인</div>
@@ -117,4 +119,11 @@ function InputBox({ type, placeholder, data, onChange, onBlur }: { type: React.H
         <Input type={type} placeholder={placeholder} className={data.error ? style.error : ''} onChange={onChange} onBlur={onBlur} />
         <div className={style.errorT}>{data.text}</div>
     </>;
+}
+
+function ErrorBox() {
+    const [searchParams, _] = useSearchParams();
+    const message = searchParams.get("error");
+
+    return message && <div className={style.error}>{message}</div>
 }

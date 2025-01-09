@@ -6,6 +6,8 @@
     
     width: 100%;
     height: calc(100vh - var(--header-height));
+
+    margin-top: -40px;
 }
 
 .main > .title {
@@ -149,9 +151,12 @@
 }
 
 .main .domi_web {
+    margin-top: 60px;
+}
+
+.main .domi_web > .box {
     width: auto;
     height: 70px;
-    margin-top: 20px;
 
     border-radius: 50px;
 
@@ -164,14 +169,14 @@
     /* background-color: #86cc7a; */
 }
 
-.main .domi_web > .icon {
+.main .domi_web > .box > .icon {
     width: 55px;
     height: 55px;
     border-radius: 50%;
     background-color: white;
 }
 
-.main .domi_web > .text {
+.main .domi_web > .box > .text {
     padding: 0 15px;
     color: white;
 
@@ -179,10 +184,24 @@
     font-weight: 400;
 }
 
-.main .domi_web > .text > span {
+.main .domi_web > .box > .text > span {
     font-weight: bold;
 }
 
-.main .domi_web > .text > span > span {
+.main .domi_web > .box > .text > span > span {
     color: rgb(0, 0, 0);
+}
+
+.main > .error {
+    padding: 8px 15px;
+    border-radius: 5px;
+
+    margin-top: 10px;
+    
+    color: white;
+    font-size: 14px;
+
+    max-width: 400px;
+
+    background-color: var(--red-color);
 }
