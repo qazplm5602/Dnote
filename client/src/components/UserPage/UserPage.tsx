@@ -1,15 +1,12 @@
 import Footer from '../Footer/Footer';
 import style from './userpage.module.css';
 
-import Avater from '../../assets/image0.jpg';
 import IconText from '../Recycle/IconText';
 import HeartIcon from '../../assets/icons/heart.svg';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import GithubIcon from '../../assets/icons/github.svg';
 import EmailIcon from '../../assets/icons/email.svg';
-import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
-import PostBox from '../PostBox/PostBox';
 import { useEffect, useRef, useState } from 'react';
 import request from '../Utils/request';
 import { UserDTO } from '../LoginState/LoginState';
@@ -18,7 +15,6 @@ import LoadBox from '../Recycle/LoadBox';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/Store';
 import { LoginState } from '../Redux/LoginStateSlice';
-import PostBoxPre from '../PostBox/PostBoxPre';
 import UserPageContentPreview from './ContentPreview';
 import { randomString } from '../Utils/misc';
 
@@ -30,7 +26,8 @@ export interface SocialDTO {
 export interface ProfileDTO {
     user: UserDTO,
     social: SocialDTO,
-    info: string
+    info: string,
+    banned: boolean
 }
 
 enum LoadStatus {
@@ -67,7 +64,8 @@ export default function UserPage() {
     return <main>
         <Profile id={userId} data={profile} />
         <LinkList social={profile?.social} />
-        <UserPageContentPreview title='인기있는 콘텐츠' user={userId} size={4} sort={0} />
+        {profile?.banned && <BanBanner />}
+        <UserPageContentPreview title='인기있는 콘텐츠' user={userId} size={4} sort={0} className={style.first} />
         <UserPageContentPreview title='최근 콘텐츠' user={userId} size={4} sort={1} />
         <Footer />
     </main>;
@@ -89,6 +87,7 @@ function Profile({ id, data }: { id: string | undefined, data: ProfileDTO | null
 
 function FollowSection({ id }: { id?: string }) {
     const user = useSelector<RootState, LoginState>(v => v.user);
+    const navigate = useNavigate();
     
     const [ followed, setFollowed ] = useState(false);
     const [ loading, setLoading ] = useState(true);
@@ -116,6 +115,11 @@ function FollowSection({ id }: { id?: string }) {
     }
 
     const onFollow = function() {
+        if (!user.logined) {
+            navigate("/login");
+            return;
+        }
+
         if (loading || followProcessRef.current !== null) return;
 
         const processId = followProcessRef.current = randomString(3);
@@ -205,4 +209,8 @@ function FollowLoading() {
     return <section className={style.right}>
         <LoadBox className={style.follow_loading} />
     </section>;
+}
+
+function BanBanner() {
+    return <article className={`screen_container ${style.ban_banner}`}>이 사용자는 차단되었습니다.</article>;
 }

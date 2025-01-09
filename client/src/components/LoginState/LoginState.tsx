@@ -2,7 +2,8 @@ import { useDispatch } from "react-redux";
 import { setLoad, setLogin, LoginStateDTO } from "../Redux/LoginStateSlice.tsx";
 import { useEffect } from "react";
 import useSWR from "swr";
-import request from "../Utils/request.ts";
+import request, { ErrorResponse } from "../Utils/request.ts";
+import { AxiosError } from "axios";
 
 export interface UserDTO {
     id: number,
@@ -42,10 +43,16 @@ export default function LoginState() {
             dto.avatar = data.avatar;
             dto.name = data.name;
             dto.id = data.id;
+        } else if (error !== undefined) {
+            const errorData = error as AxiosError<ErrorResponse>;
+            if (errorData?.response?.data?.code === "USER4") { // 계정 차단 당함
+                localStorage.removeItem("accessToken");                
+                localStorage.removeItem("refreshToken");                
+            }
         }
         
         dispatch(setLogin(dto));
-    }, [isLoading, data]);
+    }, [isLoading, error, data]);
 
     return null;
 }   

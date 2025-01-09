@@ -45,6 +45,9 @@ public class UserController {
             throw new UserException(UserException.Type.FAILED_LOGIN);
         }
 
+        if (user.isBan()) // 차단됨
+            throw new UserException(UserException.Type.BAN_ACCOUNT);
+
         // 이메일 인증??
         if (user.getVerify() != null) {
             throw new DomiException("SIGNUP2", "이메일 인증이 필요합니다.", HttpStatus.FORBIDDEN);

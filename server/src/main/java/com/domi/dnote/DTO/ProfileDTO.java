@@ -9,10 +9,12 @@ public class ProfileDTO {
     private UserDTO user;
     private ProfileSocialVO2 social;
     private String info;
+    private boolean banned;
 
     public static ProfileDTO toEntity(User user) {
         ProfileDTO data = new ProfileDTO();
         data.user = UserDTO.toEntity(user);
+        data.banned = user.isBan();
 
         ProfileSocialVO2 socials = new ProfileSocialVO2();
         Profile profile = user.getProfile();

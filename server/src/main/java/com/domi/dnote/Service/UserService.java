@@ -60,6 +60,9 @@ public class UserService {
             throw new UserException(UserException.Type.REQUIRE_LOGIN);
         }
 
+        if (user.isBan())
+            throw new UserException(UserException.Type.BAN_ACCOUNT);
+
         return user;
     }
 

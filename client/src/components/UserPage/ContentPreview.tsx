@@ -12,10 +12,11 @@ type Props = {
     user: string,
     title: string,
     sort: number,
-    size: number
+    size: number,
+    className?: string
 }
 
-export default function UserPageContentPreview({ title, user, sort, size }: Props) {
+export default function UserPageContentPreview({ title, user, sort, size, className = '' }: Props) {
     const [ list, setList ] = useState<PostDTO[] | null>(null);
 
     const loadData = async function(aliveRef: aliveType) {
@@ -39,7 +40,7 @@ export default function UserPageContentPreview({ title, user, sort, size }: Prop
 
     if (list?.length === 0) return; // 걍 없음
 
-    return <HeadMenuList title={title} menu='모두 보기' to={`/user/${user}/content?sort=${sort}`} className={`${style.list} screen_container`}>
+    return <HeadMenuList title={title} menu='모두 보기' to={`/user/${user}/content?sort=${sort}`} className={`${style.list} ${className} screen_container`}>
         {list && list.map(v => <PostBox key={v.id} post={v} user={false} />)}
         {list === null && <PreBoxs size={size} />}
     </HeadMenuList>

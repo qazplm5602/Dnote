@@ -7,7 +7,8 @@ public class UserException extends DomiException {
         REQUIRE_LOGIN(0, "로그인이 필요합니다.", HttpStatus.UNAUTHORIZED),
         FAILED_LOGIN(1, "아이디 및 비밀번호가 잘못되었습니다.", HttpStatus.FORBIDDEN),
         NOT_FOUND_USER(2, "사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
-        NEED_PERMISSION(3, "권한이 필요합니다.", HttpStatus.FORBIDDEN);
+        NEED_PERMISSION(3, "권한이 필요합니다.", HttpStatus.FORBIDDEN),
+        BAN_ACCOUNT(4, "차단된 계정입니다.", HttpStatus.FORBIDDEN);
 
         final int id;
         final String message;
