@@ -17,6 +17,7 @@ import { RootState } from '../Redux/Store';
 import { LoginState } from '../Redux/LoginStateSlice';
 import UserPageContentPreview from './ContentPreview';
 import { randomString } from '../Utils/misc';
+import MetaTag from '../MetaTag/MetaTag';
 
 export interface SocialDTO {
     github: string | null,
@@ -56,12 +57,14 @@ export default function UserPage() {
 
     if (status == LoadStatus.Loading || userId === undefined) {
         return <main>
+            <MetaTag title="Loading" />
             <ProfileLoading />
             <Footer />
         </main>;
     }
 
     return <main>
+        <MetaTag title={`${profile?.user.name} 프로필`} />
         <Profile id={userId} data={profile} />
         <LinkList social={profile?.social} />
         {profile?.banned && <BanBanner />}

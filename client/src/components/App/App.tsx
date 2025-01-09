@@ -24,18 +24,21 @@ import ContextMenu from "../ContextMenu/ContextMenu";
 import UserContents from "../UserContents/UserContents";
 import { useEffect, useRef } from "react";
 import PostPopular from "../PostPopular/PostPopular";
+import { HelmetProvider } from "react-helmet-async";
 
 export default function App() {
     
     return <BrowserRouter>
         <Provider store={store}>
             <NotifyContext>
+                <HelmetProvider>
                 
-                <LoginState />
-                <ContextMenu />
-                <Header />
-                <AppRouter />
+                    <LoginState />
+                    <ContextMenu />
+                    <Header />
+                    <AppRouter />
 
+                </HelmetProvider>
             </NotifyContext>
         </Provider>
     </BrowserRouter>;

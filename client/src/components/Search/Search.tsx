@@ -9,6 +9,7 @@ import SearchHead from './SearchHead';
 import SearchPagination from './SearchPagenation';
 import { aliveType } from '../Utils/misc';
 import PostList from '../UserContents/PostList/PostList';
+import MetaTag from '../MetaTag/MetaTag';
 
 export interface PostPageResultDTO {
     total: number,
@@ -56,6 +57,8 @@ export default function Search() {
 
     return <>
         <main className={`screen_container ${style.main}`}>
+            <MetaTag title={`${query} 검색결과`} />
+            
             <SearchHead total={total} />
             <PostList data={loading ? null : list} />
             <SearchPagination total={total} />

@@ -25,6 +25,7 @@ import PostChatMain from './Chat/ChatMain';
 import PostViewCounter from './ViewSys/ViewCounter';
 import PostPopularList from './PopularList/PopularList';
 import PostOtherMenu from './OtherMenu/OtherMenu';
+import MetaTag from '../MetaTag/MetaTag';
 
 export interface BasePostDTO {
     title: string,
@@ -106,6 +107,8 @@ function Content({ onError }: { onError: () => void }) {
     }
 
     return <article className={style.content}>
+        <MetaTag title={post.title} />
+
         <h2 className={style.title}>{post.title}</h2>
         <Tags tags={post.tags} />
         <Detail user={post.owner} time={post.created} read={post.read} view={post.view} />
@@ -120,6 +123,8 @@ function Content({ onError }: { onError: () => void }) {
 
 function LoadingContent() {
     return <article className={`${style.content} ${style.loading}`}>
+        <MetaTag title='Loading' />
+
         <LoadBox className={style.title} />
         <section className={style.tags}>
             <LoadBox className={style.tag} delay={100} />
@@ -196,6 +201,7 @@ function Interactions({ title }: { title: string }) {
 
 function ErrorPage() {
     return <main className={`screen_container ${style.main} ${style.error}`}>
+        <MetaTag title='Not Found' />
         <img src={errorSvg} className={style.icon} />
         
         <h2>게시물을 찾을 수 없습니다.</h2>

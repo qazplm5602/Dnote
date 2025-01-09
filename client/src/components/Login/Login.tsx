@@ -10,9 +10,12 @@ import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
 import LoginDomiWebButton from './DomiWebButton/DomiWebLoginButton';
 import LoginSocialBox from './Social/SocialSection';
+import MetaTag from '../MetaTag/MetaTag';
 
 export default function Login() {
     return <main className={style.main}>
+        <MetaTag title={"로그인"} description='로그인 한번으로 모든 서비스를 이용해보세요!' />
+        
         <h2 className={style.title}>
             <img src={Logo} />
             로그인

@@ -3,6 +3,7 @@ import SettingGeneric from './Generic';
 import style from './setting.module.css';
 import SettingPassword from './SettingPassword';
 import SettingSecurity from './SettingSecurity';
+import MetaTag from '../MetaTag/MetaTag';
 
 export default function Setting() {
     return <main className={style.main}>
@@ -34,6 +35,7 @@ function Menu() {
     const { pathname } = useLocation();
 
     return <article className={style.menu}>
+        <MetaTag title="설정" />
         {menuList.map(v => <Link key={v[0]} to={`/setting/${v[0]}`}><div className={checkUrl(pathname, v[0]) ? style.active : ''}>{v[1]}</div></Link>)}
     </article>
 }

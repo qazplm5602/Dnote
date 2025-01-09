@@ -6,9 +6,11 @@ import PostBox from '../PostBox/PostBox';
 import Footer from '../Footer/Footer';
 import SearchInput from '../Search/Input/Input';
 import HomePopularPost from './PopularPost';
+import MetaTag from '../MetaTag/MetaTag';
 
 export default function Home() {
     return <main>
+        <MetaTag title='Home' />
         <Title />
         <SearchSection />
 

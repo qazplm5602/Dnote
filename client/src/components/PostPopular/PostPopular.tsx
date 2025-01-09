@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { PostDTO } from '../Post/Post';
 import { aliveType } from '../Utils/misc';
 import request from '../Utils/request';
+import MetaTag from '../MetaTag/MetaTag';
 
 export default function PostPopular() {
     const [ list, setList ] = useState<PostDTO[] | null>(null);
@@ -37,6 +38,7 @@ export default function PostPopular() {
 
 function Header() {
     return <section className={`screen_container ${style.header}`}>
+        <MetaTag title={"최근 트렌드"} />
         <img src={trandUpIcon} className={style.icon} />
         <h1>최근 트렌드</h1>
     </section>

@@ -29,6 +29,7 @@ import { RootState } from '../Redux/Store';
 import { LoginState } from '../Redux/LoginStateSlice';
 import WriteThumbnailBox from './ThumbnailBox';
 import { PostDTO } from '../Post/Post';
+import MetaTag from '../MetaTag/MetaTag';
 
 type tempStatus = {
     id: string,
@@ -269,12 +270,19 @@ export default function Write() {
     }
 
     let initContent;
-    if (postId !== null)
+    let metaTitle = "글쓰기";
+    if (postId !== null) {
         initContent = postData?.content;
-    else if (tempId !== null)
+        metaTitle = "글 수정하기";
+    }
+    else if (tempId !== null) {
         initContent = tempData?.content;
+        metaTitle = "임시 글 수정하기";
+    }
     
+
     return <main>
+        <MetaTag title={metaTitle} />
         <TitleInput value={title} setValue={setTitle} />
         <TagBox tagSet={tags} setTagSet={setTags} />
         <EditorSection editorRef={editorRef} initValue={initContent || 'hello domi!'} />

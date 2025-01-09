@@ -12,6 +12,7 @@ import { PostDTO } from '../Post/Post';
 import request from '../Utils/request';
 import { PostPageResultDTO } from '../Search/Search';
 import { ProfileDTO } from '../UserPage/UserPage';
+import MetaTag from '../MetaTag/MetaTag';
 
 const ITEM_SIZE = 16;
 
@@ -74,6 +75,8 @@ export default function UserContents() {
     }, [ user ]);
 
     return <main>
+        <MetaTag title={username ? `${username} 포스트` : "Loading"} />
+        
         <Header name={username} />
         <PostList data={list} className={'screen_container'} showUser={false} />
         <Pagenation total={total} page={Number(page)} size={ITEM_SIZE} onSetPage={onSetPage} />
