@@ -41,6 +41,7 @@ dependencies {
     runtimeOnly "io.jsonwebtoken:jjwt-impl:0.12.3"
     implementation 'org.jsoup:jsoup:1.18.1'
     implementation 'org.commonmark:commonmark:0.24.0'
+    implementation "org.commonmark:commonmark-ext-gfm-tables:0.24.0"
 }
 
 tasks.named('test') {

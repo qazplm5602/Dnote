@@ -103,13 +103,7 @@ public class PostService {
     }
 
     public String createContentPreview(String markdown) {
-        // 마크다운 -> html
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(markdown);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
-
-        String html = renderer.render(document);
-        String content = Jsoup.parse(html).text(); // html에서 text만
+        String content = MarkdownUtil.extractText(markdown);
 
         int maxLength = 150; // 최대 100자리까지
         return content.substring(0, Math.min(content.length(), maxLength)).trim();
