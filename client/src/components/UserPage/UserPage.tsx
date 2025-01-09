@@ -10,7 +10,7 @@ import GithubIcon from '../../assets/icons/github.svg';
 import EmailIcon from '../../assets/icons/email.svg';
 import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
 import PostBox from '../PostBox/PostBox';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import request from '../Utils/request';
 import { UserDTO } from '../LoginState/LoginState';
 import { getProfileURL } from '../NameTag/NameTag';
@@ -20,6 +20,7 @@ import { RootState } from '../Redux/Store';
 import { LoginState } from '../Redux/LoginStateSlice';
 import PostBoxPre from '../PostBox/PostBoxPre';
 import UserPageContentPreview from './ContentPreview';
+import { randomString } from '../Utils/misc';
 
 export interface SocialDTO {
     github: string | null,
@@ -92,6 +93,8 @@ function FollowSection({ id }: { id?: string }) {
     const [ followed, setFollowed ] = useState(false);
     const [ loading, setLoading ] = useState(true);
     const [ count, setCount ] = useState(0);
+    
+    const followProcessRef = useRef<string | null>(null);
 
     const loadStatus = async function(): Promise<boolean> {
         const response = await request<boolean>(`user/follow/status?id=${id}`);
@@ -112,6 +115,26 @@ function FollowSection({ id }: { id?: string }) {
         setCount(num);
     }
 
+    const onFollow = function() {
+        if (loading || followProcessRef.current !== null) return;
+
+        const processId = followProcessRef.current = randomString(3);
+        setFollowed(!followed);
+        setCount(count + (followed ? -1 : 1));
+
+        request("user/follow/set", { method: "POST", params: { id }, headers: { "Content-Type": "application/json" }, data: !followed })
+        .catch(() => {
+            if (followProcessRef.current !== processId) return;
+
+            setFollowed(followed);
+            setCount(prev => prev + (followed ? 1 : -1));
+        })
+        .finally(() => {
+            if (followProcessRef.current === processId)
+                followProcessRef.current = null;
+        });
+    }
+
     useEffect(() => {
         let current = true;
 
@@ -130,6 +153,7 @@ function FollowSection({ id }: { id?: string }) {
         let current = true;
         
         setFollowed(false);
+        followProcessRef.current = null;
         if (!user.logined || user.id === Number(id)) return;
         
         loadStatus().then(v => {
@@ -137,14 +161,17 @@ function FollowSection({ id }: { id?: string }) {
                 setFollowed(v);
         });
 
-        return () => { current = false; }
+        return () => {
+            current = false;
+            followProcessRef.current = null;
+        }
     }, [ user.logined, user.id, id ]);
 
     if (loading) return <FollowLoading />;
     
     return <section className={style.right}>
         <IconText icon={HeartIcon} text={count.toString()} className={style.follow} />
-        {user.id !== Number(id) && <button className={`${style.follow_btn} ${followed ? style.active : ''}`}>{`${followed ? "언" : ""}팔로우`}</button>}
+        {user.id !== Number(id) && <button className={`${style.follow_btn} ${followed ? style.active : ''}`} onClick={onFollow}>{`${followed ? "언" : ""}팔로우`}</button>}
     </section>;
 }
 
@@ -158,24 +185,6 @@ function LinkList({ social }: { social?: SocialDTO }) {
             {social?.email && <Link to={`mailto:${social.email}`}><img src={EmailIcon} /></Link>}
         </ul>
     </section>
-}
-
-function PopularContent() {
-    return <HeadMenuList title='인기있는 콘텐츠' menu='모두 보기' to='/' className={`${style.list} screen_container`}>
-        <PostBoxPre />
-        <PostBoxPre delay={300} />
-        <PostBoxPre delay={300 * 2} />
-        <PostBoxPre delay={300 * 3} />
-    </HeadMenuList>
-}
-
-function LatestConent() {
-    return <HeadMenuList title='최근 콘텐츠' menu='모두 보기' to='/' className={`${style.list} screen_container`}>
-        <PostBox />
-        <PostBox />
-        <PostBox />
-        <PostBox />
-    </HeadMenuList>
 }
 
 function ProfileLoading() {
