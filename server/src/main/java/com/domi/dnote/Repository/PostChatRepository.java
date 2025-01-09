@@ -19,4 +19,5 @@ public interface PostChatRepository extends JpaRepository<PostChat, Long> {
     public int countByPostAndReplyIsNull(Post post);
     public int countByReply(PostChat reply);
     public void deleteByReply(PostChat reply);
+    public void deleteByPost(Post post);
 }

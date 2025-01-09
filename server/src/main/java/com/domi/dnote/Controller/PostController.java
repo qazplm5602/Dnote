@@ -40,6 +40,7 @@ public class PostController {
     final AggregateViewService aggregateViewService;
 
     final int VIEW_ACCEPT_TIME = 10; // 10초 이후 view 카운팅
+    private final PostChatService postChatService;
     Map<String, PostViewTokenDTO> viewTokens = new HashMap<>();
 
     @GetMapping("/info/{user}/{id}")
@@ -89,9 +90,13 @@ public class PostController {
     void removePost(@PathVariable("id") long postId) {
         User user = userService.getCurrentUser();
         Post post = postService.getPostByOwnerId(user, postId);
+
+        postChatService.removeChatByPost(post);
         boolean result = postService.removePost(user, postId);
 
-        if (!result) return; // 머임..
+//        if (!result) return; // 머임..
+        if (!result) // 익셉션 일어나게 해서 db 취소함 (트랜잭션)
+            throw new PostException(PostException.Type.FAILD_REMOVE_POST);
 
         List<String> images = MiscUtil.getImageUrls(post.getContent());
 
