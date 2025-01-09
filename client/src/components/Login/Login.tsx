@@ -3,14 +3,13 @@ import Logo from '../../assets/Dnote.svg';
 import Input from '../Recycle/Input';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
-import AppleIcon from '../../assets/icons/social/apple.svg';
-import DiscordIcon from '../../assets/icons/social/discord.svg';
-import GoogleIcon from '../../assets/icons/social/google.svg';
+
 import { useState } from 'react';
 import { validateEmail } from '../Utils/misc';
 import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
 import LoginDomiWebButton from './DomiWebButton/DomiWebLoginButton';
+import LoginSocialBox from './Social/SocialSection';
 
 export default function Login() {
     return <main className={style.main}>
@@ -29,22 +28,8 @@ export default function Login() {
             <div>다른 방법으로 로그인</div>
         </div>
 
-        <SocialSection />
+        <LoginSocialBox />
     </main>;
-}
-
-function SocialSection() {
-    return <article className={style.social_login}>
-        <button>
-            <img src={GoogleIcon} />
-        </button>
-        <button>
-            <img src={AppleIcon} />
-        </button>
-        <button className={style.discord}>
-            <img src={DiscordIcon} />
-        </button>
-    </article>;
 }
 
 interface InputData {
