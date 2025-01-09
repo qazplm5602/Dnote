@@ -67,6 +67,12 @@ public class SecurityConfig {
                                 .failureHandler(oAuth2FailureService)
                 )
 
+                .oauth2Login(oauth ->
+                    oauth.redirectionEndpoint(redirect ->
+                            redirect.baseUri("/oauth2/callback/**")
+                    )
+                )
+
                 .exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )

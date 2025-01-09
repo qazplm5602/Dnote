@@ -1,13 +1,13 @@
 import style from '../login.module.css';
 
-import AppleIcon from '../../../assets/icons/social/apple.svg';
+import NaverIcon from '../../../assets/icons/social/naver.svg';
 import DiscordIcon from '../../../assets/icons/social/discord.svg';
 import GoogleIcon from '../../../assets/icons/social/google.svg';
 
 export default function LoginSocialBox() {
     return <article className={style.social_login}>
         <SocialButton id='google' icon={GoogleIcon} />
-        <SocialButton id='apple' icon={AppleIcon} />
+        <SocialButton id='naver' icon={NaverIcon} />
         <SocialButton id='discord' icon={DiscordIcon} />
     </article>;
 }

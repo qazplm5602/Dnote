@@ -150,6 +150,11 @@
     background-color: #5865F2;
 }
 
+.main > .social_login > a > button.naver {
+    background-color: #03C75A;
+    padding: 15px;
+}
+
 .main .domi_web {
     margin-top: 60px;
 }
