@@ -25,8 +25,10 @@ export default function SearchInput({ className = '', disabled, inputRef, onBoxC
         setValue("");
     }
     const onInputKeyDown = function(e: React.KeyboardEvent<HTMLInputElement>) {
+        const query = encodeURI(value).replace(new RegExp("#", 'g'), '%23');
+
         if ((e.code === "Enter" || e.code === "NumpadEnter") && !IsStringBlank(value)) {
-            navigate(`/search?query=${value}&page=1`);
+            navigate(`/search?query=${query}&page=1`);
         }
     }
 
