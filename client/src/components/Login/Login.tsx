@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { validateEmail } from '../Utils/misc';
 import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
+import LoginDomiWebButton from './DomiWebButton/DomiWebLoginButton';
 
 export default function Login() {
     return <main className={style.main}>
@@ -19,7 +20,8 @@ export default function Login() {
         </h2>
         <div className={style.subtitle}>로그인 한번으로 모든 서비스를 이용해보세요!</div>
     
-        <IdPasswordSection />
+        {/* <IdPasswordSection /> */}
+        <LoginDomiWebButton />
 
         <div className={style.text_line}>
             <div>다른 방법으로 로그인</div>

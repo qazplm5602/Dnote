@@ -147,3 +147,42 @@
 .main > .social_login > button.discord {
     background-color: #5865F2;
 }
+
+.main .domi_web {
+    width: auto;
+    height: 70px;
+    margin-top: 20px;
+
+    border-radius: 50px;
+
+    display: flex;
+    align-items: center;
+    
+    padding: 0 8px;
+
+    background-color: var(--green-color);
+    /* background-color: #86cc7a; */
+}
+
+.main .domi_web > .icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.main .domi_web > .text {
+    padding: 0 15px;
+    color: white;
+
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.main .domi_web > .text > span {
+    font-weight: bold;
+}
+
+.main .domi_web > .text > span > span {
+    color: rgb(0, 0, 0);
+}
