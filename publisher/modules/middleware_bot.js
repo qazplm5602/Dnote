@@ -6,13 +6,13 @@ const urlCheckes = {};
 
 exports.middleware = async function(req, res, next) {
     const userAgent = req.headers["user-agent"];
-    if (userAgent.indexOf("Whale") === -1) {
-        return next();
-    }
-    // if (!isbot(userAgent)) { // 봇이 아니면 그냥 넘김
-    //     next();
-    //     return;
+    // if (userAgent.indexOf("Whale") === -1) {
+    //     return next();
     // }
+    if (!isbot(userAgent)) { // 봇이 아니면 그냥 넘김
+        next();
+        return;
+    }
 
     const pathname = req.baseUrl + req.path;
     const urlPattern = Object.keys(urlCheckes).find(v => new UrlPattern(v).match(pathname) !== null);

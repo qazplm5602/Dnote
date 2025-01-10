@@ -101,7 +101,7 @@ exports.startPageCache = async function(key) {
 let currentBrowser;
 async function getBrowser() {
     if (currentBrowser === undefined) { // 브라우저 없음
-        const newBrowser = puppeteer.launch({ headless: false });
+        const newBrowser = puppeteer.launch({ headless: true });
         currentBrowser = newBrowser;
         
         const result = await newBrowser;
