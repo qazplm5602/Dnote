@@ -45,7 +45,7 @@ exports.getPage = async function(key) {
 
 async function readPageFile(key) {
     return new Promise((reslove, reject) => {
-        const filePath = path.resolve(cache.path, encodeURI(key));
+        const filePath = path.join(path.resolve(), cache.path, encodeURIComponent(key));
         
         fs.readFile(filePath, "utf-8", (err, data) => {
             if (err)
@@ -53,6 +53,14 @@ async function readPageFile(key) {
             else
                 reslove(data);
         });
+    });
+}
+
+function writePageFile(key, content) {
+    const filePath = path.join(path.resolve(), cache.path, encodeURIComponent(key));
+    fs.writeFile(filePath, content, function(err) {
+        if (err)
+            console.error(err);
     });
 }
 
@@ -74,6 +82,7 @@ exports.startPageCache = async function(key) {
 
     delete data.creating;
     pages[key] = html; // 메모리에 캐싱
+    writePageFile(key, html); // 이건 기다릴 필요 없응
 
     return html;
 }
@@ -81,7 +90,7 @@ exports.startPageCache = async function(key) {
 let currentBrowser;
 async function getBrowser() {
     if (currentBrowser === undefined) { // 브라우저 없음
-        const newBrowser = puppeteer.launch();
+        const newBrowser = puppeteer.launch({ headless: false });
         currentBrowser = newBrowser;
         
         const result = await newBrowser;
@@ -99,5 +108,10 @@ async function getPageHtml(uri) {
     const browser = await getBrowser();
     const page = await browser.newPage();
 
-    page.goto(`http://localhost:${port}${uri}`);
+    await page.goto(`http://localhost:${port}${uri}`, { waitUntil: 'networkidle2' });
+    
+    const html = await page.content(); // html 갖고옴
+    page.close();
+
+    return html;
 }

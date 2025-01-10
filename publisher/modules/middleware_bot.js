@@ -5,14 +5,16 @@ const pageCache = require('./pageCache');
 const urlCheckes = {};
 
 exports.middleware = async function(req, res, next) {
-    const userAgent = req.headers["User-Agent"];
+    const userAgent = req.headers["user-agent"];
+    if (userAgent.indexOf("Whale") === -1) {
+        return next();
+    }
     // if (!isbot(userAgent)) { // 봇이 아니면 그냥 넘김
     //     next();
     //     return;
     // }
 
-    const pattern = new UrlPattern(req.baseUrl + req.path);
-    const urlPattern = Object.keys(urlCheckes).find(v => pattern.match(v) !== null);
+    const urlPattern = Object.keys(urlCheckes).find(v => new UrlPattern(v).match(req.baseUrl + req.path) !== null);
     if (urlPattern === undefined) { // 등록된 캐시 페이지가 아닌뎅
         next();
         return;
@@ -40,6 +42,10 @@ exports.middleware = async function(req, res, next) {
     }
 
     const page = await pageCache.startPageCache(urlKey);
+    if (page === undefined) { // 캐싱 실패 ㄷㄷㄷ
+        return next();
+    }
+
     res.send(page);
 }
 
