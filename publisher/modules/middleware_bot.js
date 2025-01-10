@@ -20,7 +20,13 @@ exports.middleware = async function(req, res, next) {
 
     const cacheOption = urlCheckes[urlPattern];
     const urlKey = cacheOption.ignoreQuery ? (req.baseUrl + req.path) : req.originalUrl;
-    if (pageCache.existPage(urlKey)) { // 캐싱된게 있음
+    const cacheExsist = await pageCache.existPage(urlKey);
+    if (cacheExsist === null) { // 캐싱중 오류남
+        next();
+        return;
+    }
+
+    if (cacheExsist) { // 캐싱된게 있음
         const page = await pageCache.getPage(urlKey);
         res.send(page);
         return;

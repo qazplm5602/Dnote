@@ -1,5 +1,6 @@
 const pageData = {
     "/test": {
+        creating: undefined,
         created: new Date()
     }
 }
@@ -10,10 +11,23 @@ const pages = {
 
 const fs = require("fs");
 const path = require("path");
-const { cache } = require("../config.json");
+const puppeteer = require("puppeteer");
 
-exports.existPage = function(key) {
-    return pageData[key] !== undefined;
+const { port, cache } = require("../config.json");
+
+// false = 없음
+// true = 있음
+// null = 캐싱중 오류남 ㅅㄱ
+exports.existPage = async function(key) {
+    const data = pageData[key];
+    if (data === undefined) return false;
+    
+    // 만약 캐싱 하는중이라면 기다림... (오류나면 없음 처리)
+    if (data.creating !== undefined) {
+        return (await data.creating) ? true : null;
+    }
+
+    return true;
 }
 
 exports.getPage = async function(key) {
@@ -43,5 +57,47 @@ async function readPageFile(key) {
 }
 
 exports.startPageCache = async function(key) {
-    
+    // 등록하고
+    const data = {
+        created: new Date()
+    };
+    pageData[key] = data;
+
+    const waitHandler = getPageHtml(key);
+    data.creating = waitHandler;
+
+    const html = await waitHandler;
+    if (html === false) {
+        delete pageData[key]; // 실패했으니 삭제
+        return;
+    }
+
+    delete data.creating;
+    pages[key] = html; // 메모리에 캐싱
+
+    return html;
+}
+
+let currentBrowser;
+async function getBrowser() {
+    if (currentBrowser === undefined) { // 브라우저 없음
+        const newBrowser = puppeteer.launch();
+        currentBrowser = newBrowser;
+        
+        const result = await newBrowser;
+        currentBrowser = result;
+    }
+
+    if (currentBrowser instanceof Promise) {
+        return await currentBrowser;
+    }
+
+    return currentBrowser; // 걍 브라우저 있음
+}
+
+async function getPageHtml(uri) {
+    const browser = await getBrowser();
+    const page = await browser.newPage();
+
+    page.goto(`http://localhost:${port}${uri}`);
 }
