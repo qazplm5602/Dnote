@@ -41,3 +41,7 @@ async function readPageFile(key) {
         });
     });
 }
+
+exports.startPageCache = async function(key) {
+    
+}
