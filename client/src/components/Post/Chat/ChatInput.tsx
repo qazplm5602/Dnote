@@ -35,7 +35,7 @@ export default function PostChatInput({ onChatAdd, onClose, reply, edit }: Props
         }
 
         // url 설정
-        let url = `/post/${user}/${id}/chat`;
+        let url = `post/${user}/${id}/chat`;
         if (reply)
             url = `chat/${reply}/reply`;
         else if (edit)
