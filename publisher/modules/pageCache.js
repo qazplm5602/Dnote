@@ -1,8 +1,9 @@
 const pageData = {
-    "/test": {
-        creating: undefined,
-        created: new Date()
-    }
+    // "/test": {
+    //     creating: undefined,
+    //     memoryCreated: new Date(),
+    //     created: new Date()
+    // }
 }
 
 const pages = {
@@ -40,7 +41,11 @@ exports.getPage = async function(key) {
     }
 
     // 하드에 저장되어있을 경우
-    return await readPageFile(key);
+    const page = await readPageFile(key);
+    pageData[key].memoryCreated = new Date();
+    pages[key] = page;
+
+    return page;
 }
 
 async function readPageFile(key) {
@@ -50,8 +55,9 @@ async function readPageFile(key) {
         fs.readFile(filePath, "utf-8", (err, data) => {
             if (err)
                 reject(err);
-            else
+            else {
                 reslove(data);
+            }
         });
     });
 }
@@ -67,7 +73,8 @@ function writePageFile(key, content) {
 exports.startPageCache = async function(key) {
     // 등록하고
     const data = {
-        created: new Date()
+        created: new Date(),
+        memoryCreated: new Date()
     };
     pageData[key] = data;
 
@@ -116,6 +123,14 @@ async function getPageHtml(uri) {
         
         html = await page.content(); // html 갖고옴
     } catch (e) {
+        // 브라우저가 뻗었나봄 ㄷ
+        if (e.message === "Protocol error: Connection closed.") {
+            try {
+                currentBrowser?.close();
+            } catch {}
+
+            currentBrowser = undefined;
+        }
         console.error("페이지 로드 실패", e);
     } finally {
         page?.close();
@@ -140,3 +155,37 @@ exports.workLimitCheck = async function() {
     await Promise.any(promises); // 아무거나 다 되믄
     await exports.workLimitCheck(); // 다시 체크
 }
+
+// 자동 삭제 스케줄
+setInterval(() => {
+    console.log("Starting Auto Schedule...");
+    const now = Date.now();
+    const folderPath = path.join(path.resolve(), cache.path);
+
+    Object.keys(pageData).forEach(key => {
+        const data = pageData[key];
+        if (data.creating !== undefined) return; // 만드는중이면 아무것도 안함
+
+        if (now - data.created > cache.TTL) { // 캐시 만료
+            fs.unlink(path.join(folderPath, encodeURIComponent(key)), (err) => { // 파일 삭제
+                if (err)
+                    console.error(`auto 스케줄 ${key}(${encodeURIComponent(key)}) 파일 삭제 실패`);
+            });
+            
+            if (data.memoryCreated !== undefined)
+                delete pages[key];
+            
+            delete pageData[key];
+
+            console.log(`${key} cache TTL expire removed`);
+            return;
+        }
+
+        if (data.memoryCreated !== undefined && (now - data.memoryCreated) > cache.memoryLive) { // 메모리에 있는거 만료
+            delete pageData[key].memoryCreated;
+            delete pages[key];
+            console.log(`${key} cache memory expire removed`);
+            return;
+        }
+    });
+}, cache.scheduleTime);

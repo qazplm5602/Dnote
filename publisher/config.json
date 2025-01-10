@@ -3,6 +3,9 @@
     "staticRoot": "./static",
     "cache": {
         "path": "cachePage",
-        "maxWorker": 5
+        "maxWorker": 5,
+        "TTL": 10000,
+        "memoryLive": 1000,
+        "scheduleTime": 2000
     }
 }
