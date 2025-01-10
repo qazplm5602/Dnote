@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import style from '../post.module.css';
-import PostChatBox, { PostChatDTO } from "./ChatBox";
-import { MoreButton, ReplyMoreButton } from './ChatMoreButton';
+import { PostChatDTO } from "./ChatBox";
+import { MoreButton } from './ChatMoreButton';
 import { useParams } from 'react-router-dom';
 import request from '../../Utils/request';
 import PostChatSection from './ChatSection';

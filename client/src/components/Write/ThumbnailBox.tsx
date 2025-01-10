@@ -1,7 +1,6 @@
 import style from './write.module.css';
 
 import landscapeIcon from '../../assets/icons/media-landscape-fill.svg';
-import exampleImage from '../../assets/exmaple.png';
 import editIcon from '../../assets/icons/ic-round-create.svg';
 import LoadBox from '../Recycle/LoadBox';
 import { useRef, useState } from 'react';

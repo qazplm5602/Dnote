@@ -10,6 +10,7 @@ import { dateFormatNumber } from '../Utils/misc';
 const testPostInit: PostDTO = {
     id: 10,
     content: "그래서 결론적으로 궁시렁~ 혀야ㅗㄹㅇ녀호ㅕㅇㄹ홍ㄹ허ㅏㄴㅇㄹ혀ㅏㄴㅇ론아ㅓㅣ혼일호닝호",
+    previewContent: "그래서 결론적으로 궁시렁~ 혀야ㅗㄹㅇ녀호ㅕㅇㄹ홍ㄹ허ㅏㄴㅇㄹ혀ㅏㄴㅇ론아ㅓㅣ혼일호닝호",
     created: "Mon Dec 30 2024 12:47:18 GMT+0900",
     owner: {
         avatar: null,

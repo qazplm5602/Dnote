@@ -1,7 +1,6 @@
 import style from './header.module.css';
 import SearchInput, { useCurrentSearchQuery } from "../Search/Input/Input";
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 
 export default function HeaderSearch() {
     const [ show, setShow ] = useState(false);

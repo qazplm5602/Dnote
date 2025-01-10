@@ -17,7 +17,6 @@ import style from './write.module.css';
 
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
 import sendSvg from '../../assets/icons/ic-round-send.svg';
-import editSvg from '../../assets/icons/ic-round-create.svg';
 import WriteTemp from './WriteTemp';
 import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
@@ -350,17 +349,17 @@ function TitleInput({ value, setValue }: { value: string, setValue: React.Dispat
 }
 
 function Interactions({ onPost, onTempLoad, onTempSave, onNewPost, temp, post, loading }: { onPost: () => void, onTempLoad: () => void, onNewPost: () => void, onTempSave: () => void, temp: boolean, post: boolean, loading: loadData }) {
-    const [ searchParams, setSearchParams ] = useSearchParams();
-    const onDebug = function() {
-        const tempId = searchParams.get("temp");
+    // const [ searchParams, setSearchParams ] = useSearchParams();
+    // const onDebug = function() {
+    //     const tempId = searchParams.get("temp");
         
-        if (tempId === null) {
-            setSearchParams({ temp: "asdf" });
-        } else {
-            searchParams.delete("temp");
-            setSearchParams(searchParams);
-        }
-    }
+    //     if (tempId === null) {
+    //         setSearchParams({ temp: "asdf" });
+    //     } else {
+    //         searchParams.delete("temp");
+    //         setSearchParams(searchParams);
+    //     }
+    // }
     
     return <article className={`screen_container ${style.interaction_main}`}>
         {!temp && !post && <Button className={[style.gray]} onClick={onTempLoad}>불러오기</Button>}

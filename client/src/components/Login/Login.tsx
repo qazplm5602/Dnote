@@ -1,13 +1,15 @@
 import style from './login.module.css';
 import Logo from '../../assets/Dnote.svg';
+import { useSearchParams } from 'react-router-dom';
+/*
 import Input from '../Recycle/Input';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 
 import { useState } from 'react';
 import { validateEmail } from '../Utils/misc';
 import request, { ErrorResponse } from '../Utils/request';
 import { AxiosError } from 'axios';
+*/
 import LoginDomiWebButton from './DomiWebButton/DomiWebLoginButton';
 import LoginSocialBox from './Social/SocialSection';
 import MetaTag from '../MetaTag/MetaTag';
@@ -35,11 +37,13 @@ export default function Login() {
     </main>;
 }
 
+/*
 interface InputData {
     value: string,
     error: boolean,
     text: string
 }
+
 const inputInitValue: InputData = { value: "", error: false, text: "" };
 
 function IdPasswordSection() {
@@ -108,6 +112,7 @@ function InputBox({ type, placeholder, data, onChange, onBlur }: { type: React.H
         <div className={style.errorT}>{data.text}</div>
     </>;
 }
+*/
 
 function ErrorBox() {
     const [searchParams, _] = useSearchParams();
