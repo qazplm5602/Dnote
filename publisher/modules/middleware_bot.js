@@ -14,14 +14,15 @@ exports.middleware = async function(req, res, next) {
     //     return;
     // }
 
-    const urlPattern = Object.keys(urlCheckes).find(v => new UrlPattern(v).match(req.baseUrl + req.path) !== null);
+    const pathname = req.baseUrl + req.path;
+    const urlPattern = Object.keys(urlCheckes).find(v => new UrlPattern(v).match(pathname) !== null);
     if (urlPattern === undefined) { // 등록된 캐시 페이지가 아닌뎅
         next();
         return;
     }
 
     const cacheOption = urlCheckes[urlPattern];
-    const urlKey = cacheOption.ignoreQuery ? (req.baseUrl + req.path) : req.originalUrl;
+    const urlKey = cacheOption.ignoreQuery ? (pathname) : req.originalUrl;
     const cacheExsist = await pageCache.existPage(urlKey);
     if (cacheExsist === null) { // 캐싱중 오류남
         next();
@@ -38,7 +39,10 @@ exports.middleware = async function(req, res, next) {
     await pageCache.workLimitCheck();
 
     // 캐시가 없엉음
-    const cacheRun = await cacheOption.callback();
+    const cacheRun = await cacheOption.callback(new UrlPattern(urlPattern).match(pathname)).catch(e => {
+        console.error(`cache callback 오류 반환 ${urlKey}`, e);
+        return false; // 캐싱 무시
+    });
     if (!cacheRun) { // 캐싱 하지마
         next();
         return;

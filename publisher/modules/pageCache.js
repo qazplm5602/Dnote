@@ -71,6 +71,8 @@ function writePageFile(key, content) {
 }
 
 exports.startPageCache = async function(key) {
+    console.log(`starting create ${key} page cache...`);
+
     // 등록하고
     const data = {
         created: new Date(),
@@ -83,9 +85,11 @@ exports.startPageCache = async function(key) {
 
     const html = await waitHandler;
     if (html === false) {
+        console.log(`error get html ${key}`);
         delete pageData[key]; // 실패했으니 삭제
         return;
     }
+    console.log(`success get ${key} page html`);
 
     delete data.creating;
     pages[key] = html; // 메모리에 캐싱
