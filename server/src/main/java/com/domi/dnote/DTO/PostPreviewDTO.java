@@ -10,6 +10,8 @@ public class PostPreviewDTO extends BasePostDTO {
     private long id;
     private UserDTO owner;
 
+    private int read;
+
     @Override
     protected void initPost(Post post) {
         super.initPost(post);
@@ -17,6 +19,7 @@ public class PostPreviewDTO extends BasePostDTO {
         id = post.getId();
         owner = UserDTO.toEntity(post.getOwner());
         content = post.getContentPreview();
+        read = post.getReadTime();
     }
 
     public static PostPreviewDTO toEntity(Post post) {

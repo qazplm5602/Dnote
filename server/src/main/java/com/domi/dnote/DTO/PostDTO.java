@@ -12,7 +12,6 @@ import java.util.List;
 public class PostDTO extends PostPreviewDTO {
     private String previewContent;
     private long view;
-    private int read;
 
     @Override
     protected void initPost(Post post) {
@@ -21,7 +20,6 @@ public class PostDTO extends PostPreviewDTO {
         content = post.getContent();
         previewContent = post.getContentPreview();
         view = post.getViewCount();
-        read = post.getReadTime();
     }
 
     public static PostDTO toEntity(Post post) {
