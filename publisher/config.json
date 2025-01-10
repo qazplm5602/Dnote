@@ -2,6 +2,7 @@
     "port": 3000,
     "staticRoot": "./static",
     "cache": {
-        "path": "cachePage"
+        "path": "cachePage",
+        "maxWorker": 5
     }
 }

@@ -131,3 +131,12 @@ function cacheFolderClear() {
     });
 }
 cacheFolderClear();
+
+// 처리중인 갯수 넘으면 대기 상태로
+exports.workLimitCheck = async function() {
+    const promises = Object.values(pageData).filter(v => v.creating !== undefined).map(v => v.creating);
+    if (promises.length < cache.maxWorker) return; // 자리 남앗다ㅏㅏ
+
+    await Promise.any(promises); // 아무거나 다 되믄
+    await exports.workLimitCheck(); // 다시 체크
+}

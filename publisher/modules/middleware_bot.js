@@ -34,6 +34,9 @@ exports.middleware = async function(req, res, next) {
         return;
     }
 
+    // 여기까지 오면 캐싱 해야되지만 (안해도되는 경우도 있음)
+    await pageCache.workLimitCheck();
+
     // 캐시가 없엉음
     const cacheRun = await cacheOption.callback();
     if (!cacheRun) { // 캐싱 하지마
