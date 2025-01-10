@@ -121,7 +121,7 @@ public class ProfileController {
     void changePassword(@RequestBody @Valid PasswordChangeFormDTO form) {
         User user = userService.getCurrentUser();
         if (user.getPassword() == null) { // 소셜 계정은 안됨
-            throw new ProfileException(ProfileException.Type.NOT_INPUT_ACCOUNT_ID);
+            throw new ProfileException(ProfileException.Type.NEED_NOT_SOCIAL_ACCOUNT);
         }
 
         // 비번 틀림
