@@ -6,4 +6,4 @@ const onCheckPage = async function(param) {
     return status === 200; // 게시글 있는것만 ㄱㄴ
 }
 
-middleware.registerCachePage("/post/:user(/:id)", 60 * 60 * 60, true, onCheckPage)
+middleware.registerCachePage("/post/:user/:id", 60 * 60 * 60, true, onCheckPage)

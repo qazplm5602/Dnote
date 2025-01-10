@@ -8,6 +8,10 @@ const config = require("./config.json");
 
 // 모듈 시작 =====
 require("./modules/cache_post.js");
+require("./modules/cache_post_popular.js");
+require("./modules/cache_search.js");
+require("./modules/cache_userpage.js");
+require("./modules/cache_userpage_content.js");
 
 const middleware_bot = require("./modules/middleware_bot.js");
 

@@ -5,8 +5,8 @@
     "cache": {
         "path": "cachePage",
         "maxWorker": 5,
-        "TTL": 10000,
-        "memoryLive": 1000,
-        "scheduleTime": 2000
+        "TTL": 1200000,
+        "memoryLive": 600000,
+        "scheduleTime": 1800000
     }
 }
