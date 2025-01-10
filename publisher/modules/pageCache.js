@@ -105,13 +105,29 @@ async function getBrowser() {
 }
 
 async function getPageHtml(uri) {
-    const browser = await getBrowser();
-    const page = await browser.newPage();
+    let html = false; // 기본 실패
+    let page;
 
-    await page.goto(`http://localhost:${port}${uri}`, { waitUntil: 'networkidle2' });
+    try {
+        const browser = await getBrowser();
+        page = await browser.newPage();
     
-    const html = await page.content(); // html 갖고옴
-    page.close();
+        await page.goto(`http://localhost:${port}${uri}`, { waitUntil: 'networkidle2' });
+        
+        html = await page.content(); // html 갖고옴
+    } catch (e) {
+        console.error("페이지 로드 실패", e);
+    } finally {
+        page?.close();
+    }
 
     return html;
 }
+
+function cacheFolderClear() {
+    const folderPath = path.join(path.resolve(), cache.path);
+    fs.readdir(folderPath, (err, files) => {
+        files.forEach(file => fs.unlink(path.join(folderPath, file), (err) => {}));
+    });
+}
+cacheFolderClear();
