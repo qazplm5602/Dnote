@@ -221,7 +221,7 @@ public class PostController {
 
     // 인기 post
     @GetMapping("/popular")
-    List<PostDTO> getPopularPosts(@RequestParam(name = "size", required = false) Byte size, @RequestParam(name = "random", required = false) Boolean random) {
+    List<PostPreviewDTO> getPopularPosts(@RequestParam(name = "size", required = false) Byte size, @RequestParam(name = "random", required = false) Boolean random) {
         List<PostPopularityDTO> posts = aggregateViewService.getPopularPosts();
 
         if (random != null) {

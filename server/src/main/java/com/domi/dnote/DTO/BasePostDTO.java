@@ -16,14 +16,17 @@ public class BasePostDTO {
     protected String content;
     protected LocalDateTime created;
 
+    protected void initPost(Post post) {
+        title = post.getTitle();
+        tags = post.getTags();
+        thumbnail = post.getThumbnail();
+        content = post.getContent();
+        created = post.getCreated();
+    }
+
     public static BasePostDTO toEntity(Post post) {
         BasePostDTO data = new BasePostDTO();
-
-        data.title = post.getTitle();
-        data.tags = post.getTags();
-        data.thumbnail = post.getThumbnail();
-        data.content = post.getContent();
-        data.created = post.getCreated();
+        data.initPost(post);
 
         return data;
     }

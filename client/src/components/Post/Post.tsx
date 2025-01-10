@@ -39,7 +39,8 @@ export interface PostDTO extends BasePostDTO {
     id: number,
     owner: UserDTO,
     view: number,
-    read: number
+    read: number,
+    previewContent: string
 }
 
 export interface PostIdDTO {
@@ -107,7 +108,7 @@ function Content({ onError }: { onError: () => void }) {
     }
 
     return <article className={style.content}>
-        <MetaTag title={post.title} />
+        <MetaTag title={post.title} description={post.previewContent} keywords={post.tags.join(", ")} />
 
         <h2 className={style.title}>{post.title}</h2>
         <Tags tags={post.tags} />

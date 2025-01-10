@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Data
 public class PostPageResultDTO {
     private long total;
-    private List<PostDTO> posts;
+    private List<PostPreviewDTO> posts;
 
     public static PostPageResultDTO toEntity(Page<Post> data) {
         PostPageResultDTO dto = new PostPageResultDTO();

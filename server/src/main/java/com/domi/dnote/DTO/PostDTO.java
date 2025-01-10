@@ -9,28 +9,24 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PostDTO extends BasePostDTO {
-    private long id;
-    private UserDTO owner;
-
+public class PostDTO extends PostPreviewDTO {
+    private String previewContent;
     private long view;
     private int read;
 
+    @Override
+    protected void initPost(Post post) {
+        super.initPost(post);
+
+        content = post.getContent();
+        previewContent = post.getContentPreview();
+        view = post.getViewCount();
+        read = post.getReadTime();
+    }
+
     public static PostDTO toEntity(Post post) {
         PostDTO data = new PostDTO();
-
-//        data.owner = post.getOwner().getId();
-        data.owner = UserDTO.toEntity(post.getOwner());
-        data.id = post.getId();
-
-        data.title = post.getTitle();
-        data.tags = post.getTags();
-
-        data.thumbnail = post.getThumbnail();
-        data.view = post.getViewCount();
-        data.content = post.getContent();
-        data.read = post.getReadTime();
-        data.created = post.getCreated();
+        data.initPost(post);
 
         return data;
     }
