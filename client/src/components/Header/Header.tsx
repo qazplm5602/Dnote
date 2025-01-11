@@ -6,6 +6,8 @@ import Logo from '../../assets/Dnote.svg'
 import GearIcon from '../../assets/icons/gear.svg';
 import LogoutIcon from '../../assets/icons/logout.svg';
 import UserIcon from '../../assets/icons/user.svg';
+import PenIcon from '../../assets/icons/ic-round-create-black.svg';
+
 import NameTag from '../NameTag/NameTag';
 import IconText from '../Recycle/IconText';
 import { useEffect, useRef, useState } from "react";
@@ -48,7 +50,7 @@ export default function Header() {
             {user.logined && <NameTag onClick={onNameClick} user={{ id: -1, avatar: user.avatar, name: user.name }} link={false} />}
 
             {!user.logined && <Button className={[style.link_btn].join(' ')} text='로그인' link='/login' />}
-            {!user.logined && <Button className={[style.link_btn, style.register].join(' ')} text='회원가입' link='/signup' />}
+            {!user.logined && <Button className={[style.link_btn, style.register].join(' ')} text='회원가입' link='https://domi.kr/bbs/register.php' />}
         </section>
 
         <AccountMenu show={menuShow} />
@@ -67,6 +69,7 @@ function AccountMenu({ show }: { show: boolean }) {
 
     return <CSSTransition in={show} nodeRef={ref} classNames={{enter: style.enter, enterActive: style.enter_active, exitActive: style.exit_active, exit: style.exit}} timeout={300} unmountOnExit>
         <section ref={ref} className={style.account_menu}>
+            <AccountMenuButton icon={PenIcon} text='글 쓰기' href={`/write`} />
             <AccountMenuButton icon={UserIcon} text='나의 프로필' href={`/user/${userId}`} />
             <AccountMenuButton icon={GearIcon} text='설정' href="/setting" />
             <AccountMenuButton icon={LogoutIcon} text='로그아웃' href="/logout" />
@@ -75,5 +78,5 @@ function AccountMenu({ show }: { show: boolean }) {
 }
 
 function AccountMenuButton({ href, icon, text }: { href: string, icon: string, text: string }) {
-    return <Link to={href}><IconText icon={icon} text={text} /></Link>
+    return <Link to={href}><IconText icon={icon} text={text} style={{fill: "red"}} /></Link>
 }
