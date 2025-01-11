@@ -26,6 +26,7 @@ import PostPopularList from './PopularList/PopularList';
 import PostOtherMenu from './OtherMenu/OtherMenu';
 import MetaTag from '../MetaTag/MetaTag';
 import ErrorPage from '../ErrorPage/ErrorPage';
+import { getThumbnailUrl } from '../PostBox/PostBox';
 
 export interface BasePostDTO {
     title: string,
@@ -109,7 +110,7 @@ function Content({ onError }: { onError: () => void }) {
     }
 
     return <article className={style.content}>
-        <MetaTag title={post.title} description={post.previewContent} keywords={post.tags.join(", ")} />
+        <MetaTag title={post.title} description={post.previewContent} keywords={post.tags.join(", ")} image={post.thumbnail ? getThumbnailUrl(post.thumbnail) : undefined} />
 
         <h2 className={style.title}>{post.title}</h2>
         <Tags tags={post.tags} />
