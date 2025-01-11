@@ -22,6 +22,6 @@ public class UserException extends DomiException {
     }
 
     public UserException(Type type) {
-        super("USER"+type.id, type.message, HttpStatus.FORBIDDEN);
+        super("USER"+type.id, type.message, type.status);
     }
 }

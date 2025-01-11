@@ -6,19 +6,18 @@ import style from './post.module.css';
 
 import NameTag from '../NameTag/NameTag';
 import TimeTake from '../TimeTake/TimeTake';
-import Button, { IconButton } from '../Recycle/Button';
+import { IconButton } from '../Recycle/Button';
 
 import eyeSvg from '../../assets/icons/eyes.svg';
 import shareSvg from '../../assets/icons/share.svg';
 import Footer from '../Footer/Footer';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import LoadBox from '../Recycle/LoadBox';
 import { UserDTO } from '../LoginState/LoginState';
-import request from '../Utils/request';
+import request, { ErrorResponse } from '../Utils/request';
 import { dateFormatNumber, numberToKorean } from '../Utils/misc';
 
-import errorSvg from '../../assets/icons/error.svg';
 import { AxiosError } from 'axios';
 import PostLikeButton from './LikeButton';
 import PostChatMain from './Chat/ChatMain';
@@ -26,6 +25,7 @@ import PostViewCounter from './ViewSys/ViewCounter';
 import PostPopularList from './PopularList/PopularList';
 import PostOtherMenu from './OtherMenu/OtherMenu';
 import MetaTag from '../MetaTag/MetaTag';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 export interface BasePostDTO {
     title: string,
@@ -66,14 +66,13 @@ export default function Post() {
     //     <Footer />
     // </>;
 
-    return <main>
-        {!error ? <section className={`screen_container ${style.main}`}>
+    return !error ? <main>
+        <section className={`screen_container ${style.main}`}>
             <Content onError={onError} />
             <PostPopularList />
-        </section> : <ErrorPage />}
-
+        </section>
         <Footer />
-    </main>;
+    </main> : <ErrorPage title='게시물을 찾을 수 없습니다.' desc='삭제된 게시물이거나 잘못된 URL일 수 있습니다.' />;
 }
 
 function Content({ onError }: { onError: () => void }) {
@@ -81,12 +80,14 @@ function Content({ onError }: { onError: () => void }) {
     const { id, user } = useParams();
 
     const onPostLoad = async function(process: { alive: boolean }) {
-        const result = await request<PostDTO>(`post/info/${user}/${id}`).catch(e => e as AxiosError);
+        const result = await request<PostDTO>(`post/info/${user}/${id}`).catch(e => e as AxiosError<ErrorResponse>);
         if (!process.alive) return; // state 가 확실하지 않음 ㅅㄱ
 
         if (result instanceof AxiosError) {
-            if (result.status !== 404) return; // 이거 말고는 대응 할게 없음
-            onError();
+            const code = result.response?.data?.code;
+            if (code === "POST0" || code === "USER2")
+                onError();
+
             return;
         }
         
@@ -198,18 +199,4 @@ function Interactions({ title }: { title: string }) {
         <IconButton className={[style.share]} icon={shareSvg} onClick={shareClick} />
         <PostOtherMenu />
     </section>;
-}
-
-function ErrorPage() {
-    return <main className={`screen_container ${style.main} ${style.error}`}>
-        <MetaTag title='Not Found' />
-        <img src={errorSvg} className={style.icon} />
-        
-        <h2>게시물을 찾을 수 없습니다.</h2>
-        <div className={style.sub}>삭제된 게시물이거나 잘못된 URL일 수 있습니다.</div>
-        
-        <Link to='/' className={style.goBack}>
-            <Button>홈으로</Button>
-        </Link>
-    </main>;
 }

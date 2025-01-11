@@ -18,6 +18,7 @@ import { LoginState } from '../Redux/LoginStateSlice';
 import UserPageContentPreview from './ContentPreview';
 import { randomString } from '../Utils/misc';
 import MetaTag from '../MetaTag/MetaTag';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 export interface SocialDTO {
     github: string | null,
@@ -44,8 +45,13 @@ export default function UserPage() {
 
     const profileLoad = async function() {
         const { data, status } = await request<ProfileDTO>(`profile/${userId}`).catch(e => e);
-        if (status !== 200) return; // 잘못됨...
+        if (status !== 200) { // 잘못됨 ...
+            if (status === 404)
+                setStatus(LoadStatus.NotFound);
 
+            return;
+        }
+        
         setProfile(data);
         setStatus(LoadStatus.Success);
     }
@@ -61,6 +67,10 @@ export default function UserPage() {
             <ProfileLoading />
             <Footer />
         </main>;
+    }
+
+    if (status == LoadStatus.NotFound) {
+        return <ErrorPage title='사용자를 찾을 수 없습니다.' desc='사용자가 없거나 잘못된 URL일 수 있습니다.' />
     }
 
     return <main>

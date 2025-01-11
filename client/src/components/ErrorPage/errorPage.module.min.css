@@ -1,0 +1,2 @@
+.main{display:flex;height:calc(100dvh - var(--header-height) - 50px);flex-direction:column;align-items:center;justify-content:center}.main>.icon{height:100px}.main>h2{margin:0;margin-top:15px;margin-bottom:20px}.main>.sub{font-size:15px;color:#9a9a9a}.main>a{margin-top:13px}
+/*# sourceMappingURL=errorPage.module.min.css.map */
