@@ -37,8 +37,9 @@ export default function Header() {
     }, [menuShow]);
 
     return <header className={style.main}>
-        <Link to="/">
+        <Link to="/" className={style.logo_container}>
             <img className={style.logo} src={Logo} />
+            <div className={style.beta}>BETA</div>
         </Link>
         
         <section className={style.menu}>
