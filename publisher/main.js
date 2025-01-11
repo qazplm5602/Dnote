@@ -20,7 +20,9 @@ process.on('uncaughtException', (err) => {
 });
 
 
-// app.use("/", proxy("http://localhost:5173"));
+app.use("/api", (req, res, next) => { // api 경로 리다이렉트
+    res.redirect(`http://localhost:${config.apiPort}${req.originalUrl}`);
+});
 app.use("/", middleware_bot.middleware);
 app.use("/", express.static(config.staticRoot));
 

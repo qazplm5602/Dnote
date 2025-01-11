@@ -101,7 +101,7 @@ exports.startPageCache = async function(key) {
 let currentBrowser;
 async function getBrowser() {
     if (currentBrowser === undefined) { // 브라우저 없음
-        const newBrowser = puppeteer.launch({ headless: true });
+        const newBrowser = puppeteer.launch({ headless: true, args: [ '--disable-web-security' ] });
         currentBrowser = newBrowser;
         
         const result = await newBrowser;
@@ -123,7 +123,8 @@ async function getPageHtml(uri) {
         const browser = await getBrowser();
         page = await browser.newPage();
     
-        await page.goto(`http://localhost:${port}${uri}`, { waitUntil: 'networkidle2' });
+        await page.setUserAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'); // 접속 차단 방지
+        await page.goto(`http://localhost:${port}${uri}`, { waitUntil: 'networkidle0', });
         
         html = await page.content(); // html 갖고옴
     } catch (e) {
