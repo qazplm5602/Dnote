@@ -6,6 +6,8 @@ import com.domi.dnote.DTO.PostPageResultDTO;
 import com.domi.dnote.Entity.Post;
 import com.domi.dnote.Enums.PostSort;
 import com.domi.dnote.Service.PostService;
+import com.domi.dnote.Service.TagCountService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,9 +21,10 @@ import java.util.List;
 @RestController
 public class PostSearchController {
     private final PostService postService;
+    private final TagCountService tagCountService;
 
     @GetMapping("")
-    PostPageResultDTO getSearchResult(@ModelAttribute @Valid PostSearchParamDTO form) {
+    PostPageResultDTO getSearchResult(@ModelAttribute @Valid PostSearchParamDTO form, HttpServletRequest request) {
         List<String> keywords = new ArrayList<>();
         List<String> tags = new ArrayList<>();
 
@@ -44,6 +47,9 @@ public class PostSearchController {
             case 2 -> PostSort.Popular;
             default -> sortType;
         };
+
+        // 태그 인기 수집
+        tagCountService.tagsUpClient(request.getRemoteAddr(), tags);
 
         Page<Post> postPage = postService.searchPost(keywords, tags, sortType, form.getPage());
 

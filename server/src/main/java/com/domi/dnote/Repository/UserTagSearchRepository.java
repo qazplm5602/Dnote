@@ -4,5 +4,5 @@ import com.domi.dnote.Entity.UserTagSearch;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserTagSearchRepository extends CrudRepository<UserTagSearch, String> {
-    byte countByIpAndTag(String ip, String tag);
+    UserTagSearch findByIpAndTag(String ip, String tag);
 }
