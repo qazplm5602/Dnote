@@ -2,6 +2,7 @@ package com.domi.dnote.Controller;
 
 import com.domi.dnote.DTO.*;
 import com.domi.dnote.Entity.Post;
+import com.domi.dnote.Entity.TagCount;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
 import com.domi.dnote.Enums.PostSort;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,6 +40,7 @@ public class PostController {
     final FileService fileService;
     final TempAttachService tempAttachService;
     final AggregateViewService aggregateViewService;
+    final TagCountService tagCountService;
 
     final int VIEW_ACCEPT_TIME = 10; // 10초 이후 view 카운팅
     private final PostChatService postChatService;
@@ -245,5 +248,10 @@ public class PostController {
         }
 
         return posts.stream().map(v -> PostPreviewDTO.toEntity(v.getPost())).toList();
+    }
+
+    @GetMapping("/popular/tag")
+    List<String> getPopularTags() {
+        return tagCountService.getPopularTags().stream().map(TagCount::getTag).collect(Collectors.toList());
     }
 }

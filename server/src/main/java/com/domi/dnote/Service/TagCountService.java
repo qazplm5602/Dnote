@@ -17,6 +17,7 @@ public class TagCountService {
     private final TagCountRepository tagCountRepository;
     private final UserTagSearchService userTagSearchService;
     private static final int EXPIRE_TIME = 60; // 초
+    private static final int POPULAR_MIN_COUNT = 30; // 인기 태그에 들려면 30번 이상 검색되야함
 
     public void tagCountUp(String tag) {
         LocalDateTime now = LocalDateTime.now();
@@ -49,5 +50,11 @@ public class TagCountService {
             userTagSearchService.registerLock(tag, ip);
             tagCountUp(tag);
         });
+    }
+
+    public List<TagCount> getPopularTags() {
+        LocalDateTime now = LocalDateTime.now();
+
+        return tagCountRepository.findTop10ByCountIsAfterAndUpdateAtIsAfterOrderByCountDesc(POPULAR_MIN_COUNT, now.minusSeconds(EXPIRE_TIME));
     }
 }
