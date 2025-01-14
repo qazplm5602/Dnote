@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,8 +17,8 @@ import java.util.Optional;
 public class TagCountService {
     private final TagCountRepository tagCountRepository;
     private final UserTagSearchService userTagSearchService;
-    private static final int EXPIRE_TIME = 60; // 초
-    private static final int POPULAR_MIN_COUNT = 30; // 인기 태그에 들려면 30번 이상 검색되야함
+    private static final int EXPIRE_TIME = 30; // 일
+    private static final int POPULAR_MIN_COUNT = 10; // 인기 태그에 들려면 30번 이상 검색되야함
 
     public void tagCountUp(String tag) {
         LocalDateTime now = LocalDateTime.now();
@@ -31,8 +32,8 @@ public class TagCountService {
             return newTagCount;
         });
 
-        Duration duration = Duration.between(tagCount.getUpdateAt(), now);
-        if (duration.getSeconds() > EXPIRE_TIME) { // 만료됨 ㅅㄱ
+        long dayDiff = ChronoUnit.DAYS.between(tagCount.getUpdateAt(), now);
+        if (dayDiff > EXPIRE_TIME) { // 만료됨 ㅅㄱ
             tagCount.setCount(1);
         } else {
             tagCount.setCount(tagCount.getCount() + 1);
@@ -55,6 +56,6 @@ public class TagCountService {
     public List<TagCount> getPopularTags() {
         LocalDateTime now = LocalDateTime.now();
 
-        return tagCountRepository.findTop10ByCountIsAfterAndUpdateAtIsAfterOrderByCountDesc(POPULAR_MIN_COUNT, now.minusSeconds(EXPIRE_TIME));
+        return tagCountRepository.findTop10ByCountIsAfterAndUpdateAtIsAfterOrderByCountDesc(POPULAR_MIN_COUNT, now.minusDays(EXPIRE_TIME));
     }
 }
