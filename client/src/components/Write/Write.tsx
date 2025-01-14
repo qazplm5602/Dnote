@@ -13,6 +13,22 @@ import EditorColor from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 
+// 코드 하이라이트 플러그인
+import Prism from 'prismjs';
+import 'prismjs/themes/prism.css';
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+
+// 코드 리스트
+import 'prismjs/components/prism-lua';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-csharp';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-kotlin';
+
 import style from './write.module.css';
 
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
@@ -410,7 +426,10 @@ function EditorSection({ editorRef, initValue }: { editorRef?: React.RefObject<E
             initialEditType="markdown"
             useCommandShortcut={true}
             language="ko-KR"
-            plugins={[ EditorColor ]}
+            plugins={[
+                EditorColor,
+                [codeSyntaxHighlight, { highlighter: Prism }]
+            ]}
             ref={editorRef}
         />
     </article>;
