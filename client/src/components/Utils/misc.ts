@@ -25,8 +25,8 @@ export const dateFormat = function(date: Date): string {
   return `${formatDate} ${ampm} ${clock}`;
 }
 
-export const dateFormatNumber = function(date: Date) {
-  return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2,'0')}.${date.getDate().toString().padStart(2,'0')}`;
+export const dateFormatNumber = function(date: Date, joinText = '.') {
+  return `${date.getFullYear()}${joinText}${(date.getMonth() + 1).toString().padStart(2,'0')}${joinText}${date.getDate().toString().padStart(2,'0')}`;
 }
 
 export const numberToKorean = function(value: number): string {

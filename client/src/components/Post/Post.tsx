@@ -110,7 +110,14 @@ function Content({ onError }: { onError: () => void }) {
     }
 
     return <article className={style.content}>
-        <MetaTag title={post.title} description={post.previewContent} keywords={post.tags.join(", ")} image={post.thumbnail ? getThumbnailUrl(post.thumbnail) : undefined} />
+        <MetaTag
+            title={post.title}
+            description={post.previewContent}
+            keywords={post.tags.join(", ")}
+            image={post.thumbnail ? getThumbnailUrl(post.thumbnail) : undefined}
+            date={new Date(post.created)}
+            owner={post.owner.name}
+        />
 
         <h2 className={style.title}>{post.title}</h2>
         <Tags tags={post.tags} />
