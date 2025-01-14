@@ -22,7 +22,7 @@ public class MarkdownUtil {
         return parser.parse(markdown);
     }
 
-    public static String extractText(String markdown) {
+    public static String convertHtml(String markdown) {
         Node document = parse(markdown);
 
         // 마크다운 -> html
@@ -30,7 +30,11 @@ public class MarkdownUtil {
                 .extensions(MarkdownUtil.extensions)
                 .build();
 
-        String html = renderer.render(document);
+        return renderer.render(document);
+    }
+
+    public static String extractText(String markdown) {
+        String html = convertHtml(markdown);
         return Jsoup.parse(html).text(); // html에서 text만
     }
 }

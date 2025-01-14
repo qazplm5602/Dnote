@@ -41,15 +41,11 @@ public class MiscUtil {
 
     static final String SERVER_IMAGE_PATH = "/file/attachment/";
     public static List<String> getImageUrls(String content) {
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(content);
+        String html = MarkdownUtil.convertHtml(content);
+        Document document = Jsoup.parse(html);
 
-        ImageLinkExtractor imagelinkExtractor = new ImageLinkExtractor();
-        document.accept(imagelinkExtractor);
-
-        List<String> imageLinks = imagelinkExtractor.getImageLinks();
-
-        return imageLinks.stream()
+        return document.select("img").stream()
+                .map(img -> img.attr("src"))
                 .filter(v -> v.startsWith(SERVER_IMAGE_PATH))
                 .map(v -> v.substring(SERVER_IMAGE_PATH.length()))
                 .toList();
