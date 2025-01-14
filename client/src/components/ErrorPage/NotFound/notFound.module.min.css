@@ -1,0 +1,2 @@
+.main{display:flex;align-items:center;justify-content:center;flex-direction:column;height:calc(100dvh - var(--header-height))}.main>.code{font-size:100px;font-weight:800;letter-spacing:5px;margin:0}.main>.code>span{color:var(--green-color)}.main>.title{font-size:28;font-weight:800;margin:0}.main>.subtitle{font-size:13px;margin-top:5px;text-align:center;color:gray}.main>button{margin-top:13px}
+/*# sourceMappingURL=notFound.module.min.css.map */

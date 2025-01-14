@@ -25,6 +25,7 @@ import UserContents from "../UserContents/UserContents";
 import { useEffect, useRef } from "react";
 import PostPopular from "../PostPopular/PostPopular";
 import { HelmetProvider } from "react-helmet-async";
+import NotFoundPage from "../ErrorPage/NotFound/NotFound";
 
 export default function App() {
     
@@ -86,6 +87,7 @@ function AppRouter() {
                 <Route path="/post/:user/:id" element={<Post />} />
                 <Route path="/post/popular" element={<PostPopular />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="*" element={<NotFoundPage />} />
 
             </Routes>
         </CSSTransition>

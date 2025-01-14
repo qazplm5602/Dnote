@@ -1,0 +1,40 @@
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    flex-direction: column;
+
+    height: calc(100dvh - var(--header-height) - 50px);
+
+    & > .code {
+        font-size: 100px;
+        font-weight: 800;
+
+        letter-spacing: 5px;
+        margin: 0;
+
+        & > span {
+            color: var(--green-color);
+        }
+    }
+
+    & > .title {
+        font-size: 28;
+        font-weight: 800;
+        
+        margin: 0;
+    }
+    
+    & > .subtitle {
+        font-size: 13px;
+
+        margin-top: 5px;
+        text-align: center;
+        color: gray;
+    }
+
+    & > button {
+        margin-top: 13px;
+    }
+}
