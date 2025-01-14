@@ -7,6 +7,7 @@ import Footer from '../Footer/Footer';
 import SearchInput from '../Search/Input/Input';
 import HomePopularPost from './PopularPost';
 import MetaTag from '../MetaTag/MetaTag';
+import HomePopularTags from './PopularTags';
 
 export default function Home() {
     return <main>
@@ -85,18 +86,7 @@ function Title() {
 function SearchSection() {
     return <section className={style.search_main}>
         <SearchInput />
-        <PopularTags />
-    </section>;
-}
-
-function PopularTags() {
-    return <section className={style.popular_tags}>
-        <div>#linux</div>
-        <div>#spring</div>
-        <div>#javascript</div>
-        <div>#react</div>
-        <div>#jquery</div>
-        <div>#unity</div>
+        <HomePopularTags />
     </section>;
 }
 
