@@ -49,7 +49,10 @@ public class PostSearchController {
         };
 
         // 태그 인기 수집
-        tagCountService.tagsUpClient(request.getRemoteAddr(), tags);
+//        System.out.println("post search CF-Connecting-IP: " + request.getHeader("CF-Connecting-IP") + " / x-real-ip: "+ request.getHeader("x-real-ip") + " / X-Forwarded-For: " + request.getHeader("X-Forwarded-For"));
+        String ip = request.getHeader("CF-Connecting-IP"); // cloudflare에서 헤더로 ip보내줌 (신뢰 ㄱㄴ)
+        if (ip != null) // 만약 null 이면 페이지 캐싱으로 접속한듯
+            tagCountService.tagsUpClient(ip, tags);
 
         Page<Post> postPage = postService.searchPost(keywords, tags, sortType, form.getPage());
 
