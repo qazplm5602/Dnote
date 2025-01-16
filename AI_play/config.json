@@ -8,5 +8,5 @@
         "db": "dnote"
     },
     "maxAgent": 1,
-    "newDelay": 3000
+    "newDelay": 300000
 }

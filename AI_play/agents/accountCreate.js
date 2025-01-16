@@ -2,6 +2,8 @@ const { AIbase } = require("./base");
 const pool = require('../util/mysql');
 const { getRandomString } = require("../util/misc");
 const { requestAI } = require("../util/aiRequest");
+const { request } = require("../util/backendRequest");
+const { createAccessToken } = require("../util/token");
 
 class AccountCreateAI extends AIbase {
     constructor() {
@@ -20,8 +22,11 @@ class AccountCreateAI extends AIbase {
         // id 구함
         const [ rows ] = await connection.query("SELECT MAX(id) AS id FROM users");
         await pool.query("INSERT INTO users(id, ban, email, name, role) VALUES(?, 0, ?, ?, 'USER')", [ rows[0].id + 1, email, name ]);
-        
+
         connection.release();
+
+        const accessToken = createAccessToken(email);
+        await request("profile/info", { method: "POST", body: "테스트" }, accessToken);
     }
 
     async createUsername(count) {
