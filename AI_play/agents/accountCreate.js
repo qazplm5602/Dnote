@@ -4,6 +4,7 @@ const { getRandomString } = require("../util/misc");
 const { requestAI } = require("../util/aiRequest");
 const { request } = require("../util/backendRequest");
 const { createAccessToken } = require("../util/token");
+const chalk = require("chalk");
 
 class AccountCreateAI extends AIbase {
     constructor() {
@@ -12,9 +13,11 @@ class AccountCreateAI extends AIbase {
     }
 
     async start() {
-        this.log("계정 생성...");
+        this.log("계정 생성 시작...");
 
         const name = await this.createUsername();
+        const info = await this.createInfo(name);
+
         const randomString = getRandomString(20);
         const email = `${randomString}.AI@domi.kr`;
         const connection = await pool.getConnection();
@@ -26,7 +29,9 @@ class AccountCreateAI extends AIbase {
         connection.release();
 
         const accessToken = createAccessToken(email);
-        await request("profile/info", { method: "POST", body: "테스트" }, accessToken);
+        await request("profile/info", { method: "POST", body: `${info} - Domi AI Generated` }, accessToken);
+    
+        this.log(chalk.green("계정 생성 완료!"), email, name, info);
     }
 
     async createUsername(count) {
@@ -42,6 +47,22 @@ class AccountCreateAI extends AIbase {
         }
         
         return sanitizedUsername;
+    }
+
+    async createInfo(name, count) {
+        const result = await requestAI('짧은 자기소개 해줘.', {
+            system: `당신의 이름은 ${name} 입니다. Dnote 사이트의 사용자이며 모든 대답은 한국어(Korean)으로 대답해주세요. 50글자 이내로.`
+        });
+        
+        // 잘못됨.
+        if (result.length === 0 || result.length > 60) {
+            if (count > 5)
+                throw new Error("소개 생성을 실패하였습니다.");
+
+            return this.createInfo(name, (count || 0) + 1);
+        }
+
+        return result;
     }
 }
 
