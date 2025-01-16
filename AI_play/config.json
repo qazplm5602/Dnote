@@ -1,11 +1,12 @@
 {
     "api": "http://localhost:8080/api",
+    "ai": "http://172.30.1.68:11434",
     "sql": {
         "host": "localhost",
         "port": 3306,
         "user": "root",
         "db": "dnote"
     },
-    "maxAgent": 10,
+    "maxAgent": 1,
     "newDelay": 3000
 }
