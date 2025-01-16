@@ -1,10 +1,11 @@
 const { AccountCreateAI } = require("../agents/accountCreate");
 const PostCreateAI = require("../agents/postCreate");
 const PostViewAI = require("../agents/postView");
+const GoodPostAI = require("../agents/goodPost");
 const { getRandomNumber } = require("./misc");
 
 exports.getRandomAgent = function() {
-    const rand = getRandomNumber(0, 2);
+    const rand = getRandomNumber(0, 3);
 
     switch (rand) {
         case 0:
@@ -12,7 +13,9 @@ exports.getRandomAgent = function() {
         case 1:
             // return new PostCreateAI();
         case 2:
-            return new PostViewAI();
+            // return new PostViewAI();
+        case 3:
+            return new GoodPostAI();
         default:
             throw new Error('WTF');
     }
