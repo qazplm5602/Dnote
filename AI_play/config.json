@@ -5,5 +5,7 @@
         "port": 3306,
         "user": "root",
         "db": "dnote"
-    }
+    },
+    "maxAgent": 10,
+    "newDelay": 3000
 }
