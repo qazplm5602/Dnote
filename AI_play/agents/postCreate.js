@@ -34,7 +34,7 @@ class PostCreateAI extends AIbase {
         }
 
         const post = await this.createPost(theme, user.name);
-        post.content += "</br> > domiAI를 이용하여 생성되었습니다. 실수를 할 수 있으니 다시 한번 확인해주세요.";
+        post.content += "\n\n> domiAI를 이용하여 생성되었습니다. 실수를 할 수 있으니 다시 한번 확인해주세요.";
 
         const accessToken = createAccessToken(user.email);
         
