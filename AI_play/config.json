@@ -7,6 +7,6 @@
         "user": "root",
         "db": "dnote"
     },
-    "maxAgent": 5,
+    "maxAgent": 1,
     "newDelay": 3000
 }
