@@ -7,8 +7,21 @@ const GoodChatAI = require("../agents/goodChat");
 const ChatReplyCreateAI = require("../agents/chatReplyCreate");
 const { getRandomNumber } = require("./misc");
 
+const weights = [
+    1,
+    3,
+    10,
+    8,
+    3,
+    8,
+    5
+];
+
+
+
 exports.getRandomAgent = function() {
-    const rand = getRandomNumber(1, 6);
+    // const rand = getRandomNumber(0, 6);
+    const rand = weightedRandom(weights);
 
     switch (rand) {
         case 0:
@@ -30,3 +43,15 @@ exports.getRandomAgent = function() {
     }
 }
 
+
+function weightedRandom(weights) {
+    let total = weights.reduce((acc, weight) => acc + weight, 0);
+    let threshold = Math.random() * total;
+
+    for (let i = 0; i < weights.length; i++) {
+        if (threshold < weights[i]) {
+            return i;
+        }
+        threshold -= weights[i];
+    }
+}
