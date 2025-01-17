@@ -19,7 +19,7 @@ exports.getRandomPost = async function() {
 }
 
 exports.getRandomChat = async function(excludeReply = false) {
-    const [ rows ] = await pool.query(`SELECT id, owner_id, post_id, post_owner_id FROM post_chats${excludeReply ? "WHERE reply_id IS NULL" : ''} ORDER BY RAND() LIMIT 1`);
+    const [ rows ] = await pool.query(`SELECT id, owner_id, post_id, post_owner_id FROM post_chats${excludeReply ? " WHERE reply_id IS NULL" : ''} ORDER BY RAND() LIMIT 1`);
     const result = rows[0];
 
     if (result === undefined)

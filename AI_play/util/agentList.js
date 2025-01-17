@@ -4,10 +4,11 @@ const PostViewAI = require("../agents/postView");
 const GoodPostAI = require("../agents/goodPost");
 const ChatCreateAI = require("../agents/chatCreate");
 const GoodChatAI = require("../agents/goodChat");
+const ChatReplyCreateAI = require("../agents/chatReplyCreate");
 const { getRandomNumber } = require("./misc");
 
 exports.getRandomAgent = function() {
-    const rand = getRandomNumber(0, 5);
+    const rand = getRandomNumber(0, 6);
 
     switch (rand) {
         case 0:
@@ -21,7 +22,9 @@ exports.getRandomAgent = function() {
         case 4:
             // return new ChatCreateAI();
         case 5:
-            return new GoodChatAI();
+            // return new GoodChatAI();
+        case 6:
+            return new ChatReplyCreateAI();
         default:
             throw new Error('WTF');
     }
