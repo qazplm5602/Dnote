@@ -8,21 +8,21 @@ const ChatReplyCreateAI = require("../agents/chatReplyCreate");
 const { getRandomNumber } = require("./misc");
 
 exports.getRandomAgent = function() {
-    const rand = getRandomNumber(0, 6);
+    const rand = getRandomNumber(1, 6);
 
     switch (rand) {
         case 0:
-            // return new AccountCreateAI();
+            return new AccountCreateAI();
         case 1:
-            // return new PostCreateAI();
+            return new PostCreateAI();
         case 2:
-            // return new PostViewAI();
+            return new PostViewAI();
         case 3:
-            // return new GoodPostAI();
+            return new GoodPostAI();
         case 4:
-            // return new ChatCreateAI();
+            return new ChatCreateAI();
         case 5:
-            // return new GoodChatAI();
+            return new GoodChatAI();
         case 6:
             return new ChatReplyCreateAI();
         default:
