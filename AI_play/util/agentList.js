@@ -8,13 +8,13 @@ const ChatReplyCreateAI = require("../agents/chatReplyCreate");
 const { getRandomNumber } = require("./misc");
 
 const weights = [
-    1,
+    2,
     3,
     10,
     8,
     3,
     8,
-    5
+    4
 ];
 
 
