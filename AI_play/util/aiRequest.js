@@ -1,8 +1,8 @@
 const { ai } = require("../config.json");
 
 const defaultOption = {
-    "model": "ollama-ko-0502:latest",
     "stream": false
+    "model": "llama3-bllossom-ko-q8_0:latest",
 }
 
 exports.requestAI = async function(prompt, option) {
