@@ -6,5 +6,6 @@ export default {
         user: "root"
     },
     thread: 10,
-    cron: "* * 0 0 0"
+    cron: "* * 0 0 0",
+    sitemapPath: "./sitemaps"
 }

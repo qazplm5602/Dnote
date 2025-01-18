@@ -1,8 +1,11 @@
 import { getUserPostCount } from "./modules/postAnalyze.ts";
 import config from './_config.ts';
+import { batchRun } from "./modules/batchRunner.ts";
 
 async function start() {
+    console.log("getting post counts...");
     const postCounts = await getUserPostCount();
+    console.log(`post counts total: ${postCounts.length}`);
 
     if (postCounts.length === 0) return; // ?
     
@@ -14,12 +17,13 @@ async function start() {
         batchSize = 1;
         threadAmount = overSize;
     }
+    console.log(`batchSize: ${batchSize} overSize: ${overSize} threadAmount: ${threadAmount}`);
 
     for (let i = 0; i < threadAmount; i++) {
         const start = i * batchSize;
         const rows = postCounts.slice(start, start + batchSize + (i === threadAmount - 1 ? overSize : 0));
 
-        console.log(rows);
+        batchRun(i, rows);
     }
 }
 
