@@ -1,6 +1,7 @@
 import { getUserPostCount } from "./modules/postAnalyze.ts";
 import config from './_config.ts';
 import { batchRun } from "./modules/batchRunner.ts";
+import { updateSitemap as updateMainSitemap, clear as clearMainSitemap } from "./modules/mainSitemap.ts";
 
 async function start() {
     console.log("getting post counts...");
@@ -18,13 +19,20 @@ async function start() {
         threadAmount = overSize;
     }
     console.log(`batchSize: ${batchSize} overSize: ${overSize} threadAmount: ${threadAmount}`);
+    
+    const threads = [];
+
+    clearMainSitemap();
 
     for (let i = 0; i < threadAmount; i++) {
         const start = i * batchSize;
         const rows = postCounts.slice(start, start + batchSize + (i === threadAmount - 1 ? overSize : 0));
 
-        batchRun(i, rows);
+        threads.push(batchRun(i, rows));
     }
+
+    await Promise.all(threads);
+    updateMainSitemap();
 }
 
 start();
