@@ -3,7 +3,7 @@ import { UserPostCountRow } from "./postAnalyze.ts";
 import { getUserSitemap, setUserSitemap, urlEntity } from "./userSitemap.ts";
 import UrlPattern from "url-pattern";
 import config from '../_config.ts';
-import { registerAddUser, registerRemoveUser } from "./mainSitemap.ts";
+import { registerUser } from "./mainSitemap.ts";
 
 interface Post {
     id: number,
@@ -39,7 +39,7 @@ export default async function updateUserSitemap(data: UserPostCountRow) {
         postIds.add(v.id);
         currentPosts[v.id] = v;
     });
-    
+
     if (sitemap) {
         sitemap
             .map(v => ({
@@ -87,14 +87,10 @@ export default async function updateUserSitemap(data: UserPostCountRow) {
         if (xmls.length > 0) {
             // 없으면 생성 ㄱㄱㄱ
             await setUserSitemap(data.id, xmls);
-            
-            if (!sitemap) {
-                // 생성 요청
-                registerAddUser(data.id);
-            }
+            registerUser(data.id, sitemap ? 'update' : 'add');
         } else if (sitemap) { // 없음 (사이트맵 잇네)
             // 삭제 ㄱㄱㄱㄱ
-            registerRemoveUser(data.id);
+            registerUser(data.id, 'remove');
         }
     }
 }

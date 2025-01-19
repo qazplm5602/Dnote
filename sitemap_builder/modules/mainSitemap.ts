@@ -1,20 +1,21 @@
-let reserveAddUser: number[] = [];
-let reserveRemoveUser: number[] = [];
-
-export function registerAddUser(id: number) {
-    reserveAddUser.push(id);
+type reserveData = {
+    userId: number,
+    action: 'add' | 'remove' | 'update'
 }
 
-export function registerRemoveUser(id: number) {
-    reserveRemoveUser.push(id);
+let reserveUsers: reserveData[] = [];
+
+
+export function registerUser(id: number, action: reserveData['action']) {
+    reserveUsers.push({ userId: id, action: action });
 }
 
 export function clear() {
-    reserveAddUser = [];
-    reserveRemoveUser = [];
+    reserveUsers = [];
 }
 
 export function updateSitemap() {
-    console.log("reserveAddUser", reserveAddUser);
-    console.log("reserveRemoveUser", reserveRemoveUser);
+    const currentUserIds = new Set<number>();
+
+    console.log("reserveUsers", reserveUsers);
 }
