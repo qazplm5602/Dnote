@@ -58,3 +58,16 @@ export async function setUserSitemap(userId: number, posts: urlEntity[]) {
         });
     });
 }
+
+export async function removeUserSitemap(userId: number) {
+    return new Promise((resolve, reject) => {
+        fs.unlink(path.join(path.resolve(), config.sitemapPath, `user-${userId}.xml`), function(err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+            
+            resolve(undefined);
+        });
+    })
+}
