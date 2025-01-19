@@ -139,6 +139,7 @@ public class PostController {
         post.setContentPreview(postService.createContentPreview(form.getContent()));
         post.setReadTime(postService.calculateReadTime(form.getContent()));
         post.setThumbnail(form.getThumbnail());
+        post.setModified(LocalDateTime.now());
 
         postService.save(post);
     }

@@ -44,4 +44,6 @@ public class Post {
 
     @JoinColumn(nullable = false)
     private LocalDateTime created;
+
+    private LocalDateTime modified;
 }
