@@ -28,8 +28,33 @@ export async function getUserSitemap(userId: number): Promise<undefined | urlEnt
             }
 
             const xml = xmlParser.parse(data);
-            resolve(xml.urlset.url as urlEntity[]);
+            const urls = xml.urlset.url;
+            resolve((urls instanceof Array ? urls : [urls]) as urlEntity[]);
         });
     });
     
+}
+
+export async function setUserSitemap(userId: number, posts: urlEntity[]) {
+    return new Promise((resolve, reject) => {
+        let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<script/>`;
+        posts.forEach(v => {
+            xml += `<url>
+    <loc>${v.loc}</loc>
+    <lastmod>${v.lastmod}</lastmod>
+</url>`;
+        });
+        
+        xml += '\n</urlset>';
+
+        fs.writeFile(path.join(path.resolve(), config.sitemapPath, `user-${userId}.xml`), xml, function(err) {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            resolve(undefined);
+        });
+    });
 }
