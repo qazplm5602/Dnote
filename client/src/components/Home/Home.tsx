@@ -2,7 +2,6 @@ import style from './home.module.css';
 import { useEffect, useMemo, useState } from 'react';
 
 import Logo from '../../assets/Dnote.svg'
-import PostBox from '../PostBox/PostBox';
 import Footer from '../Footer/Footer';
 import SearchInput from '../Search/Input/Input';
 import HomePopularPost from './PopularPost';
@@ -17,7 +16,7 @@ export default function Home() {
 
         {/* <img className={style.highlight_bg} src={HighlightBg} draggable={false} /> */}
         <div className={style.highlight_bg}></div>
-        <HighlightSection />
+        {/* <HighlightSection /> */}
         
         <HomePopularPost />
 
@@ -90,21 +89,21 @@ function SearchSection() {
     </section>;
 }
 
-function HighlightSection() {
-    return <section className={[style.highlight_section, "screen_container"].join(' ')}>
-        <div className={style.title_info}>
-            <div>학생들의 게임 제작</div>
-            <div>Unity</div>
-        </div>
+// function HighlightSection() {
+//     return <section className={[style.highlight_section, "screen_container"].join(' ')}>
+//         <div className={style.title_info}>
+//             <div>학생들의 게임 제작</div>
+//             <div>Unity</div>
+//         </div>
 
-        <HighlightList />
-    </section>;
-}
+//         <HighlightList />
+//     </section>;
+// }
 
-function HighlightList() {
-    return <section className={style.highlight_list}>
-        <PostBox />
-        <PostBox />
-        <PostBox />
-    </section>;
-}
+// function HighlightList() {
+//     return <section className={style.highlight_list}>
+//         <PostBox />
+//         <PostBox />
+//         <PostBox />
+//     </section>;
+// }

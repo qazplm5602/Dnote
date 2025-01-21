@@ -1,14 +1,16 @@
 import style from './home.module.css';
 
-import PostBox from "../PostBox/PostBox";
 import HeadMenuList from "../Recycle/HeadMenuList/HeadMenuList";
-import PostBoxPre from '../PostBox/PostBoxPre';
 import { PostDTO } from '../Post/Post';
 import { useEffect, useState } from 'react';
 import { aliveType } from '../Utils/misc';
 import request from '../Utils/request';
+import IconText from '../Recycle/IconText';
 
-const ITEM_SIZE = 4;
+import trandIcon from '../../assets/icons/trending-up.svg';
+import PostList from '../UserContents/PostList/PostList';
+
+const ITEM_SIZE = 8;
 
 export default function HomePopularPost() {
     const [ list, setList ] = useState<PostDTO[] | null>(null);
@@ -30,19 +32,7 @@ export default function HomePopularPost() {
         }
     }, []);
 
-    return <HeadMenuList title='최근 트렌드' menu='더보기' to='/post/popular' className={`screen_container ${style.popular_list}`}>
-        {list ? <PostBoxList list={list} /> : <PreBoxs />}
+    return <HeadMenuList title={<IconText icon={trandIcon} text='최근 트렌드' />} menu='더보기' to='/post/popular' headClass={style.head} className={`screen_container ${style.popular_list}`}>
+        <PostList data={list} preAmount={ITEM_SIZE} />
     </HeadMenuList>;
-}
-
-function PreBoxs() {
-    return <>
-        {Array.from(Array(ITEM_SIZE)).map((_, i) => <PostBoxPre key={i} delay={100 * i} />)}
-    </>;
-}
-
-function PostBoxList({ list }: { list: PostDTO[] }) {
-    return <>
-        {list.map(v => <PostBox key={v.id} post={v} />)}
-    </>
 }
