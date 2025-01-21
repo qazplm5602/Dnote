@@ -7,7 +7,7 @@ export default {
     },
     port: 3000,
     thread: 10,
-    cron: "30 * * * * *",
+    cron: "0 */3 * * *",
     sitemapPath: "./sitemaps",
     siteUrl: "https://note.domi.kr",
     postUrl: "/post/:owner/:id",

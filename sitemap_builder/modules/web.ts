@@ -5,7 +5,8 @@ import config from '../_config.ts';
 const app = express();
 
 app.get(config.userUrl, function(req, res) {
-
+    const { id } = req.params;
+    res.sendFile(`${config.sitemapPath}/user-${id}.xml`, { root: path.resolve() });
 });
 
 app.get("/sitemap.xml", function(req, res) {
