@@ -10,14 +10,19 @@ import PenIcon from '../../assets/icons/ic-round-create-black.svg';
 
 import NameTag from '../NameTag/NameTag';
 import IconText from '../Recycle/IconText';
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../Redux/Store";
 import { LoginState } from "../Redux/LoginStateSlice";
 import HeaderSearch from "./Search";
+import { useScreenWidth } from "../Recycle/ScreenWidth/ScreenWidth";
+import HeaderMenuButton from "./Menu";
 
 export default function Header() {
     const user = useSelector<RootState, LoginState>(v => v.user);
+    const small = useScreenWidth(500);
+
+    const showGuestMenu = useMemo(() => !user.logined && !small, [ user, small ]);
 
     const [ menuShow, setMenuShow ] = useState(false);
     const onNameClick = function(e: React.MouseEvent) {
@@ -50,8 +55,9 @@ export default function Header() {
 
             {user.logined && <NameTag onClick={onNameClick} user={{ id: -1, avatar: user.avatar, name: user.name }} link={false} />}
 
-            {!user.logined && <Button className={[style.link_btn].join(' ')} text='로그인' link='/login' />}
-            {!user.logined && <Button className={[style.link_btn, style.register].join(' ')} text='회원가입' link='https://domi.kr/bbs/register.php' />}
+            {showGuestMenu && <Button className={[style.link_btn].join(' ')} text='로그인' link='/login' />}
+            {showGuestMenu && <Button className={[style.link_btn, style.register].join(' ')} text='회원가입' link='https://domi.kr/bbs/register.php' />}
+            {!user.logined && !showGuestMenu && <HeaderMenuButton />}
         </section>
 
         <AccountMenu show={menuShow} />

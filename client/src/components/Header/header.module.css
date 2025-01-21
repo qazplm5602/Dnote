@@ -193,3 +193,8 @@
     transform: translateY(100%) scale(0.9);
     transition: transform 300ms, opacity 300ms;
 }
+
+.main > .menu > .more {
+    width: 20px;
+    margin-left: 10px;
+}
