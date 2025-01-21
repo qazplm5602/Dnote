@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import config from '../_config.ts';
 import { urlEntity } from "./userSitemap.ts";
+import UrlPattern from "url-pattern";
 
 type reserveData = {
     userId: number,
@@ -15,6 +16,7 @@ type IndexedSitemap = {
 let reserveUsers: reserveData[] = [];
 
 const xmlParser = new XMLParser();
+const urlPatter = new UrlPattern(config.userUrl);
 
 export function registerUser(id: number, action: reserveData['action']) {
     reserveUsers.push({ userId: id, action: action });
@@ -29,7 +31,7 @@ export async function updateSitemap() {
     const nowTime = new Date().toISOString().replace('Z', '+09:00');
 
     for (const event of reserveUsers) {
-        const loc = `${config.siteUrl}/user/${event.userId}/sitemap.xml`;
+        const loc = `${config.siteUrl}${urlPatter.stringify({ id: event.userId })}`;
 
         if (event.action === "add" || event.action === "update") {
             let updated = false;
