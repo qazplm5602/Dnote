@@ -83,8 +83,8 @@ function Title() {
 }
 
 function SearchSection() {
-    return <section className={style.search_main}>
-        <SearchInput />
+    return <section className={`screen_container ${style.search_main}`}>
+        <SearchInput className={style.search_box} />
         <HomePopularTags />
     </section>;
 }
