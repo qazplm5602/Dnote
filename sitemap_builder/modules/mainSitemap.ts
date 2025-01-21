@@ -25,10 +25,44 @@ export function clear() {
 }
 
 export async function updateSitemap() {
-    const currentUserIds = new Set<number>();
     const currentSitemap = IndexingSitemap(await getSitemap() || []);
+    const nowTime = new Date().toISOString().replace('Z', '+09:00');
 
-    console.log("reserveUsers", reserveUsers, currentSitemap);
+    for (const event of reserveUsers) {
+        const loc = `${config.siteUrl}/user/${event.userId}/sitemap.xml`;
+
+        if (event.action === "add" || event.action === "update") {
+            let updated = false;
+            if (currentSitemap[loc] === undefined) {
+                currentSitemap[loc] = {
+                    loc,
+                    lastmod: nowTime
+                }
+                updated = true;
+            }
+
+            if (!updated && event.action === "update") {
+                currentSitemap[loc].lastmod = nowTime;
+            }
+        } else {
+            delete currentSitemap[loc];
+        }
+    }
+
+    // 파일에 반영 ㄱㄱㄱㄱ
+    let xml = '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+    Object.values(currentSitemap).forEach(v => {
+        xml +=  `
+<sitemap>
+    <loc>${v.loc}</loc>
+    <lastmod>${v.lastmod}</lastmod>
+</sitemap>`;
+    });
+    
+    xml += '\n</sitemapindex>';
+
+    await setSitemap(xml);
 }
 
 async function getSitemap(): Promise<urlEntity[] | undefined> {
@@ -52,6 +86,17 @@ async function getSitemap(): Promise<urlEntity[] | undefined> {
         }
 
         fs.readFile(path.join(path.resolve(), config.sitemapPath, 'main.xml'), { encoding: "utf-8" }, onSuccess);
+    });
+}
+
+async function setSitemap(data: string) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(path.join(path.resolve(), config.sitemapPath, 'main.xml'), data, { encoding: 'utf-8' }, function(err) {
+            if (err)
+                reject(err);
+            else
+                resolve(undefined);
+        });
     });
 }
 

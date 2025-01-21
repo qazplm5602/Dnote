@@ -32,7 +32,10 @@ async function start() {
     }
 
     await Promise.all(threads);
-    updateMainSitemap();
+    console.log('all thread done.');
+
+    await updateMainSitemap();
+    console.log('main sitemap update done.');
 }
 
 start();

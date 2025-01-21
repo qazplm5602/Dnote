@@ -29,7 +29,10 @@ export async function getUserSitemap(userId: number): Promise<undefined | urlEnt
 
             const xml = xmlParser.parse(data);
             const urls = xml.urlset.url;
-            resolve((urls instanceof Array ? urls : [urls]) as urlEntity[]);
+            if (urls)
+                resolve((urls instanceof Array ? urls : [urls]) as urlEntity[]);
+            else
+                resolve(undefined);
         });
     });
     
