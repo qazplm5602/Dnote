@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /login
+Disallow: /signup
+Disallow: /setting
+Disallow: /write
+
+Sitemap: https://note.domi.kr/sitemap.xml
