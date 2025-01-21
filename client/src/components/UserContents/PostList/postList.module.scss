@@ -8,13 +8,13 @@
     & > .item {
         width: 23.8888888888%;
 
-        @media screen and (max-width: 1234px) {
+        @media screen and (max-width: 1253px) {
             & {
                 width: 23.55555%;
             }
         }
         
-        @media screen and (max-width: 953px) {
+        @media screen and (max-width: 973px) {
             & {
                 width: 31.33333%;
             }
@@ -26,7 +26,7 @@
             }
         }
         
-        @media screen and (max-width: 470px) {
+        @media screen and (max-width: 500px) {
             & {
                 width: 100%;
             }
