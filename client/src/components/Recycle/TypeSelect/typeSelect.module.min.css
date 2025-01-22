@@ -1,2 +1,2 @@
-.main>button{height:30px;padding:0 13px;border:none;border-radius:30px;margin-left:10px;color:dimgray;background-color:#f6f6f6}.main>button.active{background-color:#000;font-weight:500;color:#fff}
+.main>button{height:30px;padding:0 13px;border:none;border-radius:30px;color:dimgray;background-color:#f6f6f6}.main>button:not(:first-child){margin-left:10px}.main>button.active{background-color:#000;font-weight:500;color:#fff}
 /*# sourceMappingURL=typeSelect.module.min.css.map */

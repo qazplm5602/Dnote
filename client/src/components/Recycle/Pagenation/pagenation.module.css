@@ -3,6 +3,7 @@
   justify-content: center;
   gap: 0 6px;
   height: 30px;
+  margin-top: 20px;
 }
 
 .pagination > button {

@@ -48,6 +48,7 @@ header, button, main, div, section, article {
 
 button {
   cursor: pointer;
+  color: var(--text-color-black);
 }
 
 .screen_container {

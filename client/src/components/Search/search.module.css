@@ -6,16 +6,23 @@
 
 .main > .head > .info {
     font-size: 16px;
-    display: flex;
 }
 
 .main > .head > .info > .amount {
-    margin-left: 5px;
+    display: inline-flex;
 }
 
 .main > .head > .info > .amount > .load {
     display: inline-block;
     width: 100px;
+    margin-left: 3px;
+    margin-right: 5px;
+
+    transform: translateY(5px);
+}
+
+.main > .head > :nth-child(2) {
+    flex-shrink: 0;
 }
 
 /* 검색 인풋 */
@@ -61,4 +68,13 @@
     border: none;
 
     outline: none;
+}
+
+@media screen and (max-width: 500px) {
+    .main > .head {
+        align-items: start;
+        flex-direction: column;
+        
+        gap: 5px 0;
+    }    
 }

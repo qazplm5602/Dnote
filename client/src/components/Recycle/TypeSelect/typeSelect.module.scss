@@ -5,10 +5,12 @@
     border: none;
     border-radius: 30px;
 
-    margin-left: 10px;
-
     color: rgb(105, 105, 105);
     background-color: #F6F6F6;
+}
+
+.main > button:not(:first-child) {
+    margin-left: 10px;
 }
 
 .main > button.active {
