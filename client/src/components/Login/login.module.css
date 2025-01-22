@@ -210,3 +210,21 @@
 
     background-color: var(--red-color);
 }
+
+@media screen and (max-width: 500px) {
+    .main > .title {
+        font-size: 30px;
+    }
+
+    .main > .title > img {
+        height: 30px;
+    }
+
+    .main > .subtitle {
+        font-size: 17px;
+    }
+
+    .main > .text_line {
+        width: calc(100% - 40px);
+    }
+}
