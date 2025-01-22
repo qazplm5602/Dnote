@@ -2,7 +2,6 @@ import { CSSTransition } from "react-transition-group";
 import { Link } from 'react-router-dom';
 import style from './header.module.css';
 
-import Logo from '../../assets/Dnote.svg'
 import GearIcon from '../../assets/icons/gear.svg';
 import LogoutIcon from '../../assets/icons/logout.svg';
 import UserIcon from '../../assets/icons/user.svg';
@@ -17,10 +16,13 @@ import { LoginState } from "../Redux/LoginStateSlice";
 import HeaderSearch from "./Search";
 import { useScreenWidth } from "../Recycle/ScreenWidth/ScreenWidth";
 import HeaderMenuButton from "./Menu";
+import HeaderLogo from "./Logo";
+import HeaderShortSearch from "./ShortSearch";
 
 export default function Header() {
     const user = useSelector<RootState, LoginState>(v => v.user);
-    const small = useScreenWidth(500);
+    const small = useScreenWidth(700);
+    const [ shortSearch, setShortSearch ] = useState(false);
 
     const showGuestMenu = useMemo(() => !user.logined && !small, [ user, small ]);
 
@@ -28,6 +30,14 @@ export default function Header() {
     const onNameClick = function(e: React.MouseEvent) {
         setMenuShow(!menuShow);
         e.stopPropagation();
+    }
+
+    const onSearchClick = function() {
+        if (small)
+            setShortSearch(true);
+    }
+    const onShortSearchBlur = function() {
+        setShortSearch(false);
     }
 
     useEffect(() => {
@@ -41,26 +51,32 @@ export default function Header() {
         return () => document.removeEventListener('click', bodyClick);
     }, [menuShow]);
 
-    return <header className={style.main}>
-        <Link to="/" className={style.logo_container}>
-            <img className={style.logo} src={Logo} />
-            <div className={style.beta}>BETA</div>
-        </Link>
-        
-        <section className={style.menu}>
-            {/* <img className={style.search} src={SearchIcon} /> */}
-            <HeaderSearch />
+    useEffect(() => {
+        if (!small && shortSearch)
+            setShortSearch(false);
+    }, [small]);
 
-            <div className={style.line}></div>
+    return <header className={`${style.main} ${shortSearch ? style.short_search : ''}`}>
+        {!shortSearch && <>
+            <HeaderLogo />
+            
+            <section className={style.menu}>
+                {/* <img className={style.search} src={SearchIcon} /> */}
+                <HeaderSearch onClick={onSearchClick} lock={small} />
 
-            {user.logined && <NameTag onClick={onNameClick} user={{ id: -1, avatar: user.avatar, name: user.name }} link={false} />}
+                <div className={style.line}></div>
 
-            {showGuestMenu && <Button className={[style.link_btn].join(' ')} text='로그인' link='/login' />}
-            {showGuestMenu && <Button className={[style.link_btn, style.register].join(' ')} text='회원가입' link='https://domi.kr/bbs/register.php' />}
-            {!user.logined && !showGuestMenu && <HeaderMenuButton />}
-        </section>
+                {user.logined && <NameTag onClick={onNameClick} user={{ id: -1, avatar: user.avatar, name: user.name }} link={false} />}
 
-        <AccountMenu show={menuShow} />
+                {showGuestMenu && <Button className={[style.link_btn].join(' ')} text='로그인' link='/login' />}
+                {showGuestMenu && <Button className={[style.link_btn, style.register].join(' ')} text='회원가입' link='https://domi.kr/bbs/register.php' />}
+                {!user.logined && !showGuestMenu && <HeaderMenuButton />}
+            </section>
+
+            <AccountMenu show={menuShow} />
+        </>}
+
+        <HeaderShortSearch active={shortSearch} onClose={onShortSearchBlur} />
     </header>;
 }
 

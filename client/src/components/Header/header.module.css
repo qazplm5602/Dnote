@@ -22,6 +22,10 @@
     z-index: 99;
 }
 
+.main.short_search {
+    padding: 0 15px;
+}
+
 .main > .logo_container {
     position: relative;
 }

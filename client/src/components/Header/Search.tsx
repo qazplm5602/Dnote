@@ -2,17 +2,34 @@ import style from './header.module.css';
 import SearchInput, { useCurrentSearchQuery } from "../Search/Input/Input";
 import { useEffect, useRef, useState } from 'react';
 
-export default function HeaderSearch() {
+type Props = {
+    onClick?: () => void,
+    onBlur?: () => void,
+    lock?: boolean
+}
+
+export default function HeaderSearch({ onClick, onBlur, lock = false }: Props) {
     const [ show, setShow ] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const search_query = useCurrentSearchQuery();
     useEffect(() => {
-        if (search_query !== '')
+        if (search_query !== '' && !lock)
             setShow(true);
     }, [ search_query ]);
 
+    useEffect(() => {
+        if (lock && show) {
+            setShow(false);
+            if (onClick)
+                onClick();
+        }
+    }, [ lock ]);
+
     const onInputBlur = function() {
+        if (onBlur)
+            onBlur();
+        
         if (inputRef.current !== null && inputRef.current.value !== "") {
             return; // 숨기지 않음
         }
@@ -21,6 +38,9 @@ export default function HeaderSearch() {
     }
     
     const onSearchBoxClick = function() {
+        if (onClick)
+            onClick();
+
         setShow(true);
         
         const input = inputRef.current;
