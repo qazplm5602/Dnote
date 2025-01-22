@@ -1,28 +1,54 @@
+import { useEffect, useState } from 'react';
 import LoadBox from '../../Recycle/LoadBox';
 import style from '../post.module.css';
+import { useParams } from 'react-router-dom';
 
-export default function PostIndexSection() {
+export type IndexInitEvent = (element: Element) => void;
+
+export default function PostIndexSection({ initRef }: { initRef: React.MutableRefObject<IndexInitEvent | undefined> }) {
+    const { id, user } = useParams();
+    const [ titles, setTitles ] = useState<HTMLElement[] | null>(null);
+    
+    const onInit = function(el: Element) {
+        console.log("Post Index Init", el);
+        const list = el.querySelectorAll<HTMLElement>("h1, h2, h3, h4");
+        setTitles(Object.values(list));
+    }
+    
+    useEffect(() => {
+        initRef.current = onInit;
+    }, []);
+
+    useEffect(() => {
+        setTitles(null);
+    }, [ id, user ]);
+
     return <article className={style.index}>
         <h2>목차</h2>
-        {/* <IndexList /> */}
-        <PreList />
+        {titles ? <IndexList data={titles} /> : <PreList />}
     </article>;
 }
 
-function IndexList() {
+function IndexList({ data }: { data: HTMLElement[] }) {
     return <ul>
-        <li className={style.h1}>React가 머야</li>
+        {data.map(v => <Item key={v.textContent} el={v} />)}
+
+        {/* <li className={style.h1}>React가 머야</li>
         <li className={style.h2}>훅 다뤄보기</li>
-        <Item />
+        
         <li className={style.h3}>useRef</li>
         <li className={style.h3}>useEffect</li>
         <li className={style.h3}>useTransition</li>
-        <li className={style.h4}>비슷한 훅</li>
+        <li className={style.h4}>비슷한 훅</li> */}
     </ul>
 }
 
-function Item() {
-    return <li className={style.h3}><div className={style.circle}></div>useState</li>
+function Item({ el }: { el: HTMLElement }) {
+    const onClick = function() {
+        el.scrollIntoView({ behavior: "smooth", block: 'center' });
+    }
+
+    return <li className={style[el.tagName.toLocaleLowerCase()]} onClick={onClick}>{el.textContent}</li>
 }
 
 function PreList() {

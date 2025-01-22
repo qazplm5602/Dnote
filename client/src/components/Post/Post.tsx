@@ -31,7 +31,7 @@ import PostOtherMenu from './OtherMenu/OtherMenu';
 import MetaTag from '../MetaTag/MetaTag';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import { getThumbnailUrl } from '../PostBox/PostBox';
-import PostIndexSection from './IndexSection/IndexSection';
+import PostIndexSection, { IndexInitEvent } from './IndexSection/IndexSection';
 
 export interface BasePostDTO {
     title: string,
@@ -54,10 +54,13 @@ export interface PostIdDTO {
     owner: number
 }
 
+type IndexInitRefType = React.MutableRefObject<IndexInitEvent | undefined>;
+
 export default function Post() {
     const { id, user } = useParams();
     const [ error, setError ] = useState(false);
     const onError = () => setError(true);
+    const indexInitRef = useRef<IndexInitEvent>();
 
     useEffect(() => {
         setError(false);
@@ -74,10 +77,10 @@ export default function Post() {
 
     return !error ? <main>
         <section className={`screen_container ${style.main}`}>
-            <Content onError={onError} />
+            <Content onError={onError} indexInitRef={indexInitRef} />
 
             <aside className={style.side}>
-                <PostIndexSection />
+                <PostIndexSection initRef={indexInitRef} />
                 <PostPopularList />
             </aside>
         </section>
@@ -85,7 +88,7 @@ export default function Post() {
     </main> : <ErrorPage title='게시물을 찾을 수 없습니다.' desc='삭제된 게시물이거나 잘못된 URL일 수 있습니다.' />;
 }
 
-function Content({ onError }: { onError: () => void }) {
+function Content({ onError, indexInitRef }: { onError: () => void, indexInitRef?: IndexInitRefType }) {
     const [ post, setPost ] = useState<PostDTO | null>(null);
     const { id, user } = useParams();
 
@@ -132,7 +135,7 @@ function Content({ onError }: { onError: () => void }) {
         <Tags tags={post.tags} />
         <Detail user={post.owner} time={post.created} read={post.read} view={post.view} />
         
-        <ViewerContainer content={post.content} />
+        <ViewerContainer content={post.content} indexInitRef={indexInitRef} />
         <PostViewCounter />
 
         <Interactions title={post.title} />
@@ -185,11 +188,15 @@ function Detail({ user, time, read, view }: { user: UserDTO, time: string, read:
     </section>;
 }
 
-function ViewerContainer({ content }: { content: string }) {
+function ViewerContainer({ content, indexInitRef }: { content: string, indexInitRef?: IndexInitRefType }) {
     const viewRef = useRef<Viewer>(null);
     useEffect(() => {
         const instance = viewRef.current?.getInstance();
         instance.setMarkdown(content);
+        
+        const rootEl = viewRef.current?.getRootElement();
+        if (indexInitRef?.current && rootEl)
+            indexInitRef.current(rootEl);
     }, [content]);
 
     return <Viewer
