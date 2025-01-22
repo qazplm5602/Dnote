@@ -1,9 +1,11 @@
+import LoadBox from '../../Recycle/LoadBox';
 import style from '../post.module.css';
 
 export default function PostIndexSection() {
     return <article className={style.index}>
         <h2>목차</h2>
-        <IndexList />
+        {/* <IndexList /> */}
+        <PreList />
     </article>;
 }
 
@@ -21,4 +23,15 @@ function IndexList() {
 
 function Item() {
     return <li className={style.h3}><div className={style.circle}></div>useState</li>
+}
+
+function PreList() {
+    return <ul className={style.pre}>
+        <LoadBox className={`${style.box} ${style.h1}`} />
+        <LoadBox className={`${style.box} ${style.h2}`} delay={100} />
+        <LoadBox className={`${style.box} ${style.h2}`} delay={200} />
+        <LoadBox className={`${style.box} ${style.h3}`} delay={300} />
+        <LoadBox className={`${style.box} ${style.h2}`} delay={400} />
+        <LoadBox className={`${style.box} ${style.h3}`} delay={500} />
+    </ul>;
 }
