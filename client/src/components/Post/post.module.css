@@ -73,6 +73,12 @@
 
     background-color: var(--green-color);
     border-radius: 50%;
+    
+    transition: opacity 500ms;
+}
+
+.main > .side > .index > ul > li > .circle.hide {
+    opacity: 0;
 }
 
 .main > .side > .index > ul.pre > .box {

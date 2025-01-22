@@ -44,11 +44,31 @@ function IndexList({ data }: { data: HTMLElement[] }) {
 }
 
 function Item({ el }: { el: HTMLElement }) {
+    const [ screenIn, setScreeIn ] = useState(false);
+
     const onClick = function() {
         el.scrollIntoView({ behavior: "smooth", block: 'center' });
     }
+    const onUpdate = function() {
+        const startY = window.scrollY;
+        const endY = startY + window.innerHeight;
+        const currentY = el.offsetTop;
 
-    return <li className={style[el.tagName.toLocaleLowerCase()]} onClick={onClick}>{el.textContent}</li>
+        // console.log(`${startY} ~ [${currentY}] ~ ${endY}`);
+        setScreeIn(startY <= currentY && endY >= currentY);
+    }
+
+    useEffect(() => {
+        window.addEventListener("scroll", onUpdate);
+        window.addEventListener("resize", onUpdate);
+        
+        return () => {
+            window.removeEventListener("scroll", onUpdate);
+            window.removeEventListener("resize", onUpdate);
+        }
+    }, []);
+
+    return <li className={style[el.tagName.toLocaleLowerCase()]} onClick={onClick}><div className={`${style.circle} ${screenIn ? '' : style.hide}`}></div>{el.textContent}</li>
 }
 
 function PreList() {
