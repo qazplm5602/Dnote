@@ -6,16 +6,73 @@
     flex-grow: 1;
 }
 
-.main > .popular {
+.main > .side {
     width: 330px;
     margin-left: 40px;
     flex-shrink: 0;
 }
 
-.main > .popular > h2 {
+.main > .side > .popular > h2 {
     font-size: 20px;
     margin: 0;
     margin-bottom: 8px;
+}
+
+.main > .side > .index {
+    margin-bottom: 20px;
+}
+
+.main > .side > .index > h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.main > .side > .index > ul {
+    margin: 0;
+    margin-top: 5px;
+    padding: 0;
+    list-style-type: none;
+}
+
+.main > .side > .index > ul > li {
+    position: relative;
+
+    font-size: 14px;
+    color: #999999;
+
+    cursor: pointer;
+}
+
+.main > .side > .index > ul > li:hover {
+    color: #616161;
+}
+
+.main > .side > .index > ul > li:not(:first-child) {
+    margin-top: 3px;
+}
+
+.main > .side > .index > ul > li.h2 {
+    margin-left: 16px;
+}
+.main > .side > .index > ul > li.h3 {
+    margin-left: calc(16px * 2);
+}
+.main > .side > .index > ul > li.h4 {
+    margin-left: calc(16px * 3);
+}
+
+.main > .side > .index > ul > li > .circle {
+    position: absolute;
+
+    transform: translateY(-50%);
+    top: 50%;
+    left: -12px;
+
+    width: 6px;
+    height: 6px;
+
+    background-color: var(--green-color);
+    border-radius: 50%;
 }
 
 .main > .content > .title {
@@ -376,7 +433,7 @@
         flex-direction: column;
     }
 
-    .main > .popular {
+    .main > .side {
         width: 100%;
 
         margin: 0;

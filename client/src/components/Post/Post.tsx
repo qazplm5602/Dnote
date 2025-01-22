@@ -31,6 +31,7 @@ import PostOtherMenu from './OtherMenu/OtherMenu';
 import MetaTag from '../MetaTag/MetaTag';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import { getThumbnailUrl } from '../PostBox/PostBox';
+import PostIndexSection from './IndexSection/IndexSection';
 
 export interface BasePostDTO {
     title: string,
@@ -74,7 +75,11 @@ export default function Post() {
     return !error ? <main>
         <section className={`screen_container ${style.main}`}>
             <Content onError={onError} />
-            <PostPopularList />
+
+            <aside className={style.side}>
+                <PostIndexSection />
+                <PostPopularList />
+            </aside>
         </section>
         <Footer />
     </main> : <ErrorPage title='게시물을 찾을 수 없습니다.' desc='삭제된 게시물이거나 잘못된 URL일 수 있습니다.' />;
