@@ -43,3 +43,23 @@
 .main > .screen > .menu > a > div.active {
     background-color: #F9F9F9;
 }
+
+@media screen and (max-width: 500px) {
+    .main > .screen {
+        flex-direction: column;
+    }
+    .main > .screen > .menu {
+        display: flex;
+        width: 100%;
+
+        gap: 0 5px;
+        margin-bottom: 15px;
+    }
+    .main > .screen > .menu > a {
+        /* width: 100%; */
+        flex-grow: 1;
+    }
+    .main > .screen > .menu > a:not(:first-child) > div {
+        margin-top: 0;
+    }
+}
