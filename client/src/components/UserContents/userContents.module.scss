@@ -6,4 +6,12 @@
     & > h1 {
         margin: 0;
     }
+
+    @media screen and (max-width: 500px) {
+        & {
+            flex-direction: column;
+            align-items: start;
+            gap: 5px 0;
+        }
+    }
 }
