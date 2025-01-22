@@ -10,6 +10,11 @@
     width: 330px;
     margin-left: 40px;
     flex-shrink: 0;
+
+    position: sticky;
+    top: var(--header-height);
+
+    height: max-content;
 }
 
 .main > .side > .popular > h2 {

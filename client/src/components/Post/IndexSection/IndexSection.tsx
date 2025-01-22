@@ -23,6 +23,8 @@ export default function PostIndexSection({ initRef }: { initRef: React.MutableRe
         setTitles(null);
     }, [ id, user ]);
 
+    if (titles && titles.length === 0) return null;
+
     return <article className={style.index}>
         <h2>목차</h2>
         {titles ? <IndexList data={titles} /> : <PreList />}
@@ -32,14 +34,6 @@ export default function PostIndexSection({ initRef }: { initRef: React.MutableRe
 function IndexList({ data }: { data: HTMLElement[] }) {
     return <ul>
         {data.map(v => <Item key={v.textContent} el={v} />)}
-
-        {/* <li className={style.h1}>React가 머야</li>
-        <li className={style.h2}>훅 다뤄보기</li>
-        
-        <li className={style.h3}>useRef</li>
-        <li className={style.h3}>useEffect</li>
-        <li className={style.h3}>useTransition</li>
-        <li className={style.h4}>비슷한 훅</li> */}
     </ul>
 }
 
@@ -61,7 +55,8 @@ function Item({ el }: { el: HTMLElement }) {
     useEffect(() => {
         window.addEventListener("scroll", onUpdate);
         window.addEventListener("resize", onUpdate);
-        
+        onUpdate();
+
         return () => {
             window.removeEventListener("scroll", onUpdate);
             window.removeEventListener("resize", onUpdate);
