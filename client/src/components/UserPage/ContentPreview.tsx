@@ -7,6 +7,7 @@ import { PostDTO } from '../Post/Post';
 import { aliveType } from '../Utils/misc';
 import request from '../Utils/request';
 import { PostPageResultDTO } from '../Search/Search';
+import PostList from '../UserContents/PostList/PostList';
 
 type Props = {
     user: string,
@@ -41,13 +42,6 @@ export default function UserPageContentPreview({ title, user, sort, size, classN
     if (list?.length === 0) return; // 걍 없음
 
     return <HeadMenuList title={title} menu='모두 보기' to={`/user/${user}/content?sort=${sort}`} className={`${style.list} ${className} screen_container`}>
-        {list && list.map(v => <PostBox key={v.id} post={v} user={false} />)}
-        {list === null && <PreBoxs size={size} />}
+        <PostList data={list} preAmount={size} showUser={false} />
     </HeadMenuList>
-}
-
-function PreBoxs({ size }: { size: number }) {
-    return <>
-        {Array.from(Array(size), (_, i) => <PostBoxPre key={i} delay={300 * i} />)}
-    </>;
 }

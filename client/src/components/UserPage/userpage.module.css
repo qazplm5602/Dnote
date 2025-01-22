@@ -35,6 +35,7 @@
 .profile > .right {
     gap: 0 13px;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .profile > .right > .follow {
@@ -139,4 +140,14 @@
 .profile > .right > .follow_loading {
     height: 35px;
     border-radius: 50px;
+}
+
+@media screen and (max-width: 500px) {
+    .profile {
+        flex-direction: column;
+        gap: 5px 0;
+    }
+    .profile > .right {
+        justify-content: end;
+    }
 }
