@@ -4,11 +4,11 @@ import style from './footer.module.css';
 export default function Footer() {
     return <footer className={style.footer_main}>
         <article className={`${style.links} screen_container`}>
-            <Link to="#">공지사항</Link>
+            <Link to="https://domi.kr/notice">공지사항</Link>
             <div className={style.line}></div>
-            <Link to="#">이용약관</Link>
+            <Link to="https://domi.kr/content/provision">이용약관</Link>
             <div className={style.line}></div>
-            <Link to="#">개인정보 처리방침</Link>
+            <Link to="https://domi.kr/content/privacy">개인정보 처리방침</Link>
         </article>
 
         <article className='screen_container'>
