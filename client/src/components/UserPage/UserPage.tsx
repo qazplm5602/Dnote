@@ -8,7 +8,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import GithubIcon from '../../assets/icons/github.svg';
 import EmailIcon from '../../assets/icons/email.svg';
 import { useEffect, useRef, useState } from 'react';
-import request from '../Utils/request';
+import request, { ErrorResponse } from '../Utils/request';
 import { UserDTO } from '../LoginState/LoginState';
 import { getProfileURL } from '../NameTag/NameTag';
 import LoadBox from '../Recycle/LoadBox';
@@ -19,6 +19,7 @@ import UserPageContentPreview from './ContentPreview';
 import { randomString } from '../Utils/misc';
 import MetaTag from '../MetaTag/MetaTag';
 import ErrorPage from '../ErrorPage/ErrorPage';
+import { AxiosError } from 'axios';
 
 export interface SocialDTO {
     github: string | null,
@@ -104,7 +105,7 @@ function FollowSection({ id }: { id?: string }) {
     
     const [ followed, setFollowed ] = useState(false);
     const [ loading, setLoading ] = useState(true);
-    const [ count, setCount ] = useState(0);
+    const [ count, setCount ] = useState<number | null>(0);
     
     const followProcessRef = useRef<string | null>(null);
 
@@ -113,8 +114,15 @@ function FollowSection({ id }: { id?: string }) {
         return response.data;
     }
 
-    const loadCount = async function(): Promise<number> {
-        const response = await request<number>(`user/follow/count?id=${id}`);
+    const loadCount = async function(): Promise<number | null> {
+        const response = await request<number>(`user/follow/count?id=${id}`).catch(e => e as AxiosError<ErrorResponse>);
+        if (response instanceof AxiosError) {
+            if (response.response?.data?.code === "FOLLOW3")
+                return null; // 비공개
+            
+            throw response;
+        }
+
         return response.data;
     }
 
@@ -137,14 +145,16 @@ function FollowSection({ id }: { id?: string }) {
 
         const processId = followProcessRef.current = randomString(3);
         setFollowed(!followed);
-        setCount(count + (followed ? -1 : 1));
+        
+        if (count !== null)
+            setCount(count + (followed ? -1 : 1));
 
         request("user/follow/set", { method: "POST", params: { id }, headers: { "Content-Type": "application/json" }, data: !followed })
         .catch(() => {
             if (followProcessRef.current !== processId) return;
 
             setFollowed(followed);
-            setCount(prev => prev + (followed ? 1 : -1));
+            setCount(prev => prev !== null ? (prev + (followed ? 1 : -1)) : prev);
         })
         .finally(() => {
             if (followProcessRef.current === processId)
@@ -187,7 +197,7 @@ function FollowSection({ id }: { id?: string }) {
     if (loading) return <FollowLoading />;
     
     return <section className={style.right}>
-        <IconText icon={HeartIcon} text={count.toString()} className={style.follow} />
+        {count !== null && <IconText icon={HeartIcon} text={count.toString()} className={style.follow} />}
         {user.id !== Number(id) && <button className={`${style.follow_btn} ${followed ? style.active : ''}`} onClick={onFollow}>{`${followed ? "언" : ""}팔로우`}</button>}
     </section>;
 }

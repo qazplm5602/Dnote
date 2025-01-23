@@ -143,7 +143,7 @@ public class ProfileController {
     void changeSettingSecurity(@RequestBody SettingSecurityDTO data) {
         User user = userService.getCurrentUser();
         Profile profile = user.getProfileForce();
-        
+
         if (data.getFollowHide() != null)
             profile.setFollowHide(data.getFollowHide());
 
