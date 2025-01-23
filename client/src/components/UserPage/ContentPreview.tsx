@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import PostBox from '../PostBox/PostBox';
-import PostBoxPre from '../PostBox/PostBoxPre';
 import HeadMenuList from '../Recycle/HeadMenuList/HeadMenuList';
 import style from './userpage.module.css';
 import { PostDTO } from '../Post/Post';
