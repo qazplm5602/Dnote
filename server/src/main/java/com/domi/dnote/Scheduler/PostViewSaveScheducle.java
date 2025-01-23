@@ -26,7 +26,6 @@ public class PostViewSaveScheducle {
     void testInit() {
         // 처음 할때는 갱신을 해줘야징
 //        aggregateViewService.refreshPopularPosts();
-        startSavePostView();
     }
 
     @Scheduled(cron = "0 0 * * * *") // 시간 당
