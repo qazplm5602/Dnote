@@ -32,7 +32,7 @@ export default function HomePopularPost() {
         }
     }, []);
 
-    return <HeadMenuList title={<IconText icon={trandIcon} text='최근 트렌드' />} menu='더보기' to='/post/popular' headClass={style.head} className={`screen_container ${style.popular_list}`}>
+    return <HeadMenuList title={<IconText icon={trandIcon} text='최근 트렌드' />} menu='더보기' to='/post/popular' className={`screen_container ${style.popular_list}`}>
         <PostList data={list} preAmount={ITEM_SIZE} />
     </HeadMenuList>;
 }

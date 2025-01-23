@@ -126,10 +126,6 @@
     margin-top: -200px;
 }
 
-.popular_list > .head {
-    margin: 0;
-}
-
 .popular_list > section > h2 > section {
     display: flex;
     align-items: center;
