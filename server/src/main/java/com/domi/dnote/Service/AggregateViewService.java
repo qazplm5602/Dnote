@@ -10,6 +10,7 @@ import com.domi.dnote.Repository.AggregateViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -86,5 +87,10 @@ public class AggregateViewService {
 
         long good = postLikeService.getLikeCountByPost(post);
         return view.getViews() + recent_weight + (good * 0.5f);
+    }
+
+    @Transactional
+    public int removeGarbageData() {
+        return aggregateViewRepository.deleteByCreatedBefore(LocalDateTime.now().minusDays(1));
     }
 }
