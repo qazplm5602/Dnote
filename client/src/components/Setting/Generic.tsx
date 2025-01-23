@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react';
 import { ProfileDTO, SocialDTO } from '../UserPage/UserPage';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/Store';
-import Spinner from '../Recycle/Spinner';
 import request from '../Utils/request';
 import { LoginStateDTO } from '../Redux/LoginStateSlice';
 import SettingProfileOption from './AvaterOption/AvaterOption';
 import SettingInputField from './InputField/SettingInputField';
 import SettingLinkOption from './LinkOption/LinkOption';
+import SettingLoading from './Loading/Loading';
 
 export default function SettingGeneric() {
     const user = useSelector<RootState, LoginStateDTO>(v => v.user);
@@ -35,7 +35,7 @@ export default function SettingGeneric() {
     }, [ user, profile ]);
 
     if (profile === null) {
-        return <Loading />;
+        return <SettingLoading />;
     }
 
     return <article className={style.main}>
@@ -43,11 +43,5 @@ export default function SettingGeneric() {
         <SettingInputField title='이름' payload='name' defaultValue={profile.user.name} refresh={true} />
         <SettingInputField title='소개' payload='info' defaultValue={profile.info} blank={true} />
         <SettingLinkOption defaultValue={profile.social} onChangeSocial={onChangeSocial} />
-    </article>;
-}
-
-function Loading() {
-    return <article className={style.main}>
-        <Spinner className={style.spinner} />
     </article>;
 }

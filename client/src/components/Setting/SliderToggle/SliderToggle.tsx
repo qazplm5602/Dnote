@@ -1,6 +1,6 @@
 import style from '../settingSecurity.module.css';
 
-type Props = {
+export interface Props {
     id: string,
     title: string,
     desc: string,
