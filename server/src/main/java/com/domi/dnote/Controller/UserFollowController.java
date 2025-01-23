@@ -1,5 +1,6 @@
 package com.domi.dnote.Controller;
 
+import com.domi.dnote.Entity.Profile;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Entity.UserFollow;
 import com.domi.dnote.Exception.DomiException;
@@ -22,6 +23,15 @@ public class UserFollowController {
     @GetMapping("/count")
     long getUserFollowerCount(@RequestParam("id") long id) { // 팔로워 수
         User user = userService.getUserById(id);
+        Profile userProfile = user.getProfile();
+
+        // 숨김 처리
+        if (userProfile != null && userProfile.isFollowHide()) {
+            User my = userService.getCurrentUserForce();
+            if (my == null || user != my)
+                throw new DomiException("FOLLOW3", "팔로우 수 비공개 입니다.", HttpStatus.FORBIDDEN);
+        }
+
         List<UserFollow> follows = userFollowService.getFollowers(user);
 
         return follows.size();

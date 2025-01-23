@@ -94,7 +94,7 @@ function AccountMenu({ show }: { show: boolean }) {
         <section ref={ref} className={style.account_menu}>
             <AccountMenuButton icon={PenIcon} text='글 쓰기' href={`/write`} />
             <AccountMenuButton icon={UserIcon} text='나의 프로필' href={`/user/${userId}`} />
-            <AccountMenuButton icon={GearIcon} text='설정' href="/setting" />
+            <AccountMenuButton icon={GearIcon} text='설정' href="/setting/" />
             <AccountMenuButton icon={LogoutIcon} text='로그아웃' href="/logout" />
         </section>
     </CSSTransition>;

@@ -3,6 +3,7 @@ package com.domi.dnote.Controller;
 import com.domi.dnote.DTO.PasswordChangeFormDTO;
 import com.domi.dnote.DTO.ProfileDTO;
 import com.domi.dnote.DTO.ProfileSocialVO2;
+import com.domi.dnote.DTO.SettingSecurityDTO;
 import com.domi.dnote.Entity.Profile;
 import com.domi.dnote.Entity.User;
 import com.domi.dnote.Enums.FileGroup;
@@ -130,5 +131,11 @@ public class ProfileController {
         }
 
         userService.changeUserPassword(user, form.getNewPassword());
+    }
+
+    @GetMapping("/security")
+    SettingSecurityDTO getSettingSecurity() {
+        User user = userService.getCurrentUser();
+        return SettingSecurityDTO.toEntity(user);
     }
 }
