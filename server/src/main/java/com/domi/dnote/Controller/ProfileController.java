@@ -138,4 +138,15 @@ public class ProfileController {
         User user = userService.getCurrentUser();
         return SettingSecurityDTO.toEntity(user);
     }
+
+    @PostMapping("/security")
+    void changeSettingSecurity(@RequestBody SettingSecurityDTO data) {
+        User user = userService.getCurrentUser();
+        Profile profile = user.getProfileForce();
+        
+        if (data.getFollowHide() != null)
+            profile.setFollowHide(data.getFollowHide());
+
+        userService.save(user);
+    }
 }
