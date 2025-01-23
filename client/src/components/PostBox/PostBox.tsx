@@ -1,6 +1,6 @@
 import style from './postbox.module.css';
 
-import ExampleImg from '../../assets/exmaple.png';
+import ExampleImg from '../../assets/exmaple2.png';
 import NameTag from '../NameTag/NameTag';
 import TimeTake from '../TimeTake/TimeTake';
 import { Link } from 'react-router-dom';
