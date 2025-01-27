@@ -13,7 +13,7 @@ import org.hibernate.annotations.GeneratedColumn;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
     String name;
