@@ -25,7 +25,7 @@ public class PostViewSaveScheducle {
     @PostConstruct
     void testInit() {
         // 처음 할때는 갱신을 해줘야징
-//        aggregateViewService.refreshPopularPosts();
+        startRefreshPopularPosts();
     }
 
     @Scheduled(cron = "0 0 * * * *") // 시간 당
@@ -39,15 +39,18 @@ public class PostViewSaveScheducle {
 
         List<Post> posts = postService.getPostsByDateAfter(beforeMonth);
         posts.stream().filter(post -> post.getViewCount() > 0).forEach(post -> aggregateViewService.addView(post, nowHour));
-        
+
         // 이제 안쓰는 데이터는 삭제
         log.info("Start PostView Log Garbage Remove...");
         int removeTotal = aggregateViewService.removeGarbageData();
 
         log.info("Removed old logs. total: {}", removeTotal);
+
+        // 조회수 기록 후 인기 글 갱신 ㄱㄱ
+        startRefreshPopularPosts();
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 3)
+//    @Scheduled(fixedRate = 1000 * 60 * 60 * 3)
     void startRefreshPopularPosts() {
         log.info("Start Refreshing Popular Posts....");
         aggregateViewService.refreshPopularPosts();
