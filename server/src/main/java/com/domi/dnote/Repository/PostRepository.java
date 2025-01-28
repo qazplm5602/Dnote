@@ -66,4 +66,7 @@ public interface PostRepository extends JpaRepository<Post, PostId> {
     Page<Post> findByOwnerOrderByCreatedAsc(User owner, Pageable pageable); // 오래된거
 
     List<Post> findByCreatedAfter(LocalDateTime created);
+
+    // 최신순 포스트 가져오기
+    Page<Post> findByOrderByCreatedDesc(Pageable page);
 }

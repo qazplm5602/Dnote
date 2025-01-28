@@ -117,4 +117,9 @@ public class PostService {
 
         return wordCount / readSpeed;
     }
+
+    public Page<Post> getPostsOrderLatest(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findByOrderByCreatedDesc(pageable);
+    }
 }

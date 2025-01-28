@@ -12,6 +12,8 @@ import com.domi.dnote.Service.*;
 import com.domi.dnote.Util.MiscUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -254,5 +256,12 @@ public class PostController {
     @GetMapping("/popular/tag")
     List<String> getPopularTags() {
         return tagCountService.getPopularTags().stream().map(TagCount::getTag).collect(Collectors.toList());
+    }
+
+    // post 최신순
+    @GetMapping("/latest")
+    PostPageResultDTO getPostsLatest(@RequestParam("size") @Min(4) @Max(20) @Valid byte size, @RequestParam("page") int page) {
+        Page<Post> posts = postService.getPostsOrderLatest(page, size);
+        return PostPageResultDTO.toEntity(posts);
     }
 }
