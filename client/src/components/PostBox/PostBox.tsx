@@ -43,7 +43,9 @@ export default function PostBox({ className, post = testPostInit, user = true }:
         </Link>
         
         <ul className={style.tags}>
-            {post.tags.map(v => <div key={v}>#{v}</div>)}
+            <section>
+                {post.tags.map(v => <div key={v}>#{v}</div>)}
+            </section>
         </ul>
 
         <Link to={postUrl}>

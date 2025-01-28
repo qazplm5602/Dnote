@@ -17,17 +17,33 @@
 }
 
 .tags {
+    position: relative;
+
     padding: 0;
     margin: 0;
     margin-top: 3px;
 
+    color: #999999;
+    font-weight: 300;
+    font-size: 14px;
+
+    /* 넘치는 문제해결 */
+    flex-shrink: 0;
+    max-height: 18px;
+    overflow: hidden;
+}
+
+.tags:hover {
+    overflow: visible;
+}
+
+.tags > section {
     display: flex;
     flex-wrap: wrap;
     gap: 0 5px;
 
-    color: #999999;
-    font-weight: 300;
-    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
 }
 
 .item a > h3 {
@@ -38,6 +54,18 @@
     line-height: 26px;
     
     color: var(--text-color-black);
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: box;
+
+    overflow:hidden;
+    vertical-align:top;
+    text-overflow: ellipsis;
+    word-break:break-all;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    line-clamp:2;
 }
 
 .item > a.subtext {
