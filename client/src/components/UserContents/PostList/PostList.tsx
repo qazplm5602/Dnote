@@ -19,7 +19,7 @@ export default function PostList({ data, className, showUser = true, preAmount =
 
 function PostResult({ data, user }: { data: PostDTO[], user: boolean }) {
     return <>
-        {data.map(v => <PostBox key={v.id} className={style.item} post={v} user={user} />)}
+        {data.map(v => <PostBox key={`${v.owner.id}/${v.id}`} className={style.item} post={v} user={user} />)}
     </>;
 }
 

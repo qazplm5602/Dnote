@@ -1,5 +1,6 @@
 .main > .title {
     font-size: 35px;
+    box-sizing: border-box;
     /* margin: 0; */
 }
 
