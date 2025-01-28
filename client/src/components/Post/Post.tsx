@@ -169,7 +169,7 @@ function LoadingContent() {
 
 function Tags({ tags }: { tags: string[] }) {
     return <section className={style.tags}>
-        {tags.map(v => <div>#{v}</div>)}
+        {tags.map(v => <div key={v}>#{v}</div>)}
     </section>;
 }
 

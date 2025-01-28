@@ -34,7 +34,7 @@ export default function PostPopularList() {
 
 function PostBoxList({ list }: { list: PostDTO[] }) {
     return <>
-        {list.map(v => <PostBoxRow key={v.id} post={v} />)}
+        {list.map(v => <PostBoxRow key={`${v.owner.id}/${v.id}`} post={v} />)}
     </>
 }
 
