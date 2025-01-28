@@ -26,6 +26,7 @@ import { useEffect, useRef } from "react";
 import PostPopular from "../PostPopular/PostPopular";
 import { HelmetProvider } from "react-helmet-async";
 import NotFoundPage from "../ErrorPage/NotFound/NotFound";
+import PostLatest from "../PostLatest/PostLatest";
 
 export default function App() {
     
@@ -86,6 +87,7 @@ function AppRouter() {
                 <Route path="/write" element={<Write />} />
                 <Route path="/post/:user/:id" element={<Post />} />
                 <Route path="/post/popular" element={<PostPopular />} />
+                <Route path="/post/latest" element={<PostLatest />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="*" element={<NotFoundPage />} />
 

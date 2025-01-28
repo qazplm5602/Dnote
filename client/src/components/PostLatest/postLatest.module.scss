@@ -1,0 +1,14 @@
+.head {
+    & > h1 {
+        display: flex;
+        align-items: center;
+
+        margin: 0;
+        
+        gap: 0 5px;
+
+        & > img {
+            height: 30px;
+        }
+    }
+}
