@@ -1,7 +1,7 @@
 import HeadMenu from "../HeadMenu/HeadMenu";
 import style from './headmenulist.module.css';
 
-export default function HeadMenuList({ className, headClass, children, title, menu, to }: { className?: string, headClass?: string, children: React.ReactNode, title: React.ReactNode, menu: string, to: string }) {
+export default function HeadMenuList({ className, headClass, children, title, menu, to }: { className?: string, headClass?: string, children: React.ReactNode, title?: React.ReactNode, menu?: string, to: string }) {
     const classList = [style.main];
     if (className)
         classList.push(className);

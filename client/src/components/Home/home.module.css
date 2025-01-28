@@ -126,14 +126,14 @@
     margin-top: -200px;
 }
 
-.popular_list > section > h2 > section {
+.post_section > section > h2 > section {
     display: flex;
     align-items: center;
 
     gap: 0 6px;
 }
 
-.popular_list > section > h2 img {
+.post_section > section > h2 img {
     width: 33px;
 }
 

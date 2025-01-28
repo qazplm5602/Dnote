@@ -4,9 +4,12 @@ import { useEffect, useMemo, useState } from 'react';
 import Logo from '../../assets/Dnote.svg'
 import Footer from '../Footer/Footer';
 import SearchInput from '../Search/Input/Input';
-import HomePopularPost from './PopularPost';
 import MetaTag from '../MetaTag/MetaTag';
 import HomePopularTags from './PopularTags';
+import HomePostSection from './PostSection';
+import IconText from '../Recycle/IconText';
+
+import trandIcon from '../../assets/icons/trending-up.svg';
 
 export default function Home() {
     return <main>
@@ -18,7 +21,7 @@ export default function Home() {
         <div className={style.highlight_bg}></div>
         {/* <HighlightSection /> */}
         
-        <HomePopularPost />
+        <HomePostSection size={8} title={<IconText icon={trandIcon} text='최근 트렌드' />} uri='post/popular' menu={{ to: "/post/popular", text: "더보기" }} className={style.popular_list} />
 
         <Footer />
     </main>;
