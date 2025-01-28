@@ -126,6 +126,10 @@
     margin-top: -200px;
 }
 
+.latest_list {
+    margin-top: 50px;
+}
+
 .post_section > section > h2 > section {
     display: flex;
     align-items: center;

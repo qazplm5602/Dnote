@@ -10,6 +10,7 @@ import HomePostSection from './PostSection';
 import IconText from '../Recycle/IconText';
 
 import trandIcon from '../../assets/icons/trending-up.svg';
+import timeIcon from '../../assets/icons/recent.svg';
 
 export default function Home() {
     return <main>
@@ -22,6 +23,7 @@ export default function Home() {
         {/* <HighlightSection /> */}
         
         <HomePostSection size={8} title={<IconText icon={trandIcon} text='최근 트렌드' />} uri='post/popular' menu={{ to: "/post/popular", text: "더보기" }} className={style.popular_list} />
+        <HomePostSection size={4} title={<IconText icon={timeIcon} text='새로운 게시글' />} uri='post/latest' menu={{ to: "/post/latest", text: "더보기" }} className={style.latest_list} pageType={true} />
 
         <Footer />
     </main>;
