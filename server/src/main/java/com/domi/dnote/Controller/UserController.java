@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -87,6 +88,7 @@ public class UserController {
                     .role(Role.USER)
                     .password(null)
                     .verify(null)
+                    .created(LocalDateTime.now())
                     .build();
 
             userService.save(user); // 회원가입 해버림

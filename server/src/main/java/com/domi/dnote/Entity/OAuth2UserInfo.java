@@ -4,6 +4,7 @@ import jakarta.security.auth.message.AuthException;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Getter
@@ -64,6 +65,7 @@ public class OAuth2UserInfo {
                 .email(email)
                 .verify(null)
                 .role(Role.USER)
+                .created(LocalDateTime.now())
                 .build();
     }
 }

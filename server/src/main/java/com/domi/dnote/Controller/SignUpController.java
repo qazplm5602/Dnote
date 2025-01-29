@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,6 +41,7 @@ public class SignUpController {
                 .password(passwordEncoder.encode(data.password))
                 .email(data.email)
                 .role(Role.USER)
+                .created(LocalDateTime.now())
                 .build();
 
         userService.save(user);

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GeneratedColumn;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -28,6 +30,9 @@ public class User {
 
     boolean ban;
     String verify; // null 이면 인증 되어있음 , 토큰이면 인증해야됨
+
+    @Column(nullable = false)
+    LocalDateTime created;
 
     @JoinColumn(nullable = true)
     @ManyToOne(cascade = CascadeType.PERSIST)
