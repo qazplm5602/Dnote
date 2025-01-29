@@ -19,7 +19,9 @@ export default function PostBoxRow({ className, post }: { className?: string, po
                 <h3>{post.title}</h3>
             </Link>
             <ul className={`${defaultStyle.tags} ${style.tags}`}>
-                {post.tags.map(v => <div key={v}>#{v}</div>)}
+                <section>
+                    {post.tags.map(v => <div key={v}>#{v}</div>)}
+                </section>
             </ul>
         </div>
 

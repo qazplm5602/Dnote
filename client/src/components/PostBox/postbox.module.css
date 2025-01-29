@@ -38,12 +38,18 @@
 }
 
 .tags > section {
+    position: relative;
+    
     display: flex;
     flex-wrap: wrap;
     gap: 0 5px;
 
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(20px);
+}
+
+.tags:hover > section {
+    z-index: 1;
 }
 
 .item a > h3 {

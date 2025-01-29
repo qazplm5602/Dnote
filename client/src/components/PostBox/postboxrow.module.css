@@ -2,7 +2,9 @@
     flex-direction: row;
 
     width: 100%;
-    height: max-content;
+    height: 65px;
+
+    margin-bottom: 5px;
 }
 
 .item a > h3 {
@@ -12,6 +14,8 @@
 
 .item .tags {
     font-size: 13px;
+    max-height: none;
+    flex-shrink: 1;
 }
 
 .item a > .thumbnail {
@@ -24,6 +28,9 @@
 
 .item > .detail {
     flex-grow: 1;
+    
+    display: flex;
+    flex-direction: column;
 }
 
 /* pre */
