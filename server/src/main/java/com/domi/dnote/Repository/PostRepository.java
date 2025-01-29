@@ -69,4 +69,9 @@ public interface PostRepository extends JpaRepository<Post, PostId> {
 
     // 최신순 포스트 가져오기
     Page<Post> findByOrderByCreatedDesc(Pageable page);
+
+    // 설명서 포스트
+//    @Query("SELECT p FROM Post p WHERE (p.owner.id, p.id) IN :value ORDER BY p.created ASC")
+    @Query(value = "SELECT * FROM posts WHERE CONCAT(owner_id, '-', id) IN (:value) ORDER BY created ASC", nativeQuery = true)
+    List<Post> findByDomiDocsPost(@Param("value") List<String> value);
 }

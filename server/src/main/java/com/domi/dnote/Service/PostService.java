@@ -18,8 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -121,5 +124,20 @@ public class PostService {
     public Page<Post> getPostsOrderLatest(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return postRepository.findByOrderByCreatedDesc(pageable);
+    }
+
+    public List<Post> getDomiDocsPosts() {
+        // 설명서 id..
+        List<long[]> ids = Arrays.asList(
+                new long[]{1, 1},
+                new long[]{1, 2},
+                new long[]{1, 3}
+        );
+
+        List<String> values = ids.stream()
+                .map(arr -> arr[0] + "-" + arr[1])
+                .toList();
+
+        return postRepository.findByDomiDocsPost(values);
     }
 }

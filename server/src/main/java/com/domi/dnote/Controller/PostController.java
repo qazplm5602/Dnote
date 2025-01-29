@@ -264,4 +264,11 @@ public class PostController {
         Page<Post> posts = postService.getPostsOrderLatest(page, size);
         return PostPageResultDTO.toEntity(posts);
     }
+
+    // 설명서 포스트
+    @GetMapping("/newbie")
+    List<PostPreviewDTO> getNewbiePosts() {
+        List<Post> posts = postService.getDomiDocsPosts();
+        return posts.stream().map(PostPreviewDTO::toEntity).toList();
+    }
 }
