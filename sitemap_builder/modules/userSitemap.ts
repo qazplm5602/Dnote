@@ -40,8 +40,7 @@ export async function getUserSitemap(userId: number): Promise<undefined | urlEnt
 
 export async function setUserSitemap(userId: number, posts: urlEntity[]) {
     return new Promise((resolve, reject) => {
-        let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<script/>`;
+        let xml = `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
         posts.forEach(v => {
             xml += `<url>
     <loc>${v.loc}</loc>
