@@ -42,16 +42,18 @@ public class MiscUtil {
     static final String SERVER_IMAGE_PATH = "/file/attachment/";
     public static List<String> getImageUrls(String content) {
         // 파싱이 제대로 안될수도 있어서 안되는 태그 삭제
-        content = content.replaceAll("</?br>", "");
+        content = content.replaceAll("</?br>", "").replaceAll("!\\[", "\n![");
 
         String html = MarkdownUtil.convertHtml(content);
         Document document = Jsoup.parse(html);
 
-        return document.select("img").stream()
+        List<String> imageList = document.select("img").stream()
                 .map(img -> img.attr("src"))
                 .filter(v -> v.startsWith(SERVER_IMAGE_PATH))
                 .map(v -> v.substring(SERVER_IMAGE_PATH.length()))
                 .toList();
+
+        return imageList;
     }
     public static LocalDateTime getDatetimeTimestemp(long time) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault());
