@@ -102,24 +102,13 @@
     margin-top: -250px;
 }
 
-.highlight_section > .title_info > div {
-    font-size: 30px;   
+.title_info > div {
+    font-size: 30px;
+    font-weight: 400;
 }
 
-.highlight_section > .title_info > div:nth-child(2) {
+.title_info > div:nth-child(2) {
     font-weight: 800;
-}
-
-.highlight_section > .highlight_list {
-    width: 100%;
-    height: auto;
-
-    display: flex;
-    flex-wrap: wrap;
-
-    gap: 20px;
-
-    margin-top: 20px;
 }
 
 .popular_list {

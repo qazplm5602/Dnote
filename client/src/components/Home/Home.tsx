@@ -22,7 +22,18 @@ export default function Home() {
         <div className={style.highlight_bg}></div>
         {/* <HighlightSection /> */}
         
-        <HomePostSection size={8} title={<IconText icon={trandIcon} text='최근 트렌드' />} uri='post/popular' menu={{ to: "/post/popular", text: "더보기" }} className={style.popular_list} />
+        <HomePostSection
+            size={4}
+            title={<div className={style.title_info}>
+                <div>초보자를 위한 가이드</div>
+                <div>Dnote 설명서</div>
+            </div>}
+            uri='post/newbie'
+            className={style.highlight_section}
+        />
+        
+
+        {/* <HomePostSection size={8} title={<IconText icon={trandIcon} text='최근 트렌드' />} uri='post/popular' menu={{ to: "/post/popular", text: "더보기" }} className={style.popular_list} /> */}
         <HomePostSection size={4} title={<IconText icon={timeIcon} text='새로운 게시글' />} uri='post/latest' menu={{ to: "/post/latest", text: "더보기" }} className={style.latest_list} pageType={true} />
 
         <Footer />
@@ -93,22 +104,3 @@ function SearchSection() {
         <HomePopularTags />
     </section>;
 }
-
-// function HighlightSection() {
-//     return <section className={[style.highlight_section, "screen_container"].join(' ')}>
-//         <div className={style.title_info}>
-//             <div>학생들의 게임 제작</div>
-//             <div>Unity</div>
-//         </div>
-
-//         <HighlightList />
-//     </section>;
-// }
-
-// function HighlightList() {
-//     return <section className={style.highlight_list}>
-//         <PostBox />
-//         <PostBox />
-//         <PostBox />
-//     </section>;
-// }
