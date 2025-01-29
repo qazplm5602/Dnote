@@ -9,12 +9,11 @@ import HomePopularTags from './PopularTags';
 import HomePostSection from './PostSection';
 import IconText from '../Recycle/IconText';
 
-import trandIcon from '../../assets/icons/trending-up.svg';
 import timeIcon from '../../assets/icons/recent.svg';
 
 export default function Home() {
     return <main>
-        <MetaTag title='Home' />
+        <MetaTag title='Home' description='모두의 이야기가 당신의 로직을 완성합니다. Dnote.' keywords='Dnote, 디노트, 노트, 블로그, 도미, 글, 게시글, 포스트, post' />
         <Title />
         <SearchSection />
 
