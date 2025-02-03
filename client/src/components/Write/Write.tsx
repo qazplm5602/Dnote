@@ -322,8 +322,9 @@ function TagBox({ tagSet, setTagSet }: { tagSet: Set<string>, setTagSet: React.D
         setTagValue("");
     }
     const onInputKeyUp = function(e: React.KeyboardEvent<HTMLInputElement>) {
-        if (e.code === "Enter")
+        if (e.key !== "Process" && e.code === "Enter") {
             onInputBlur();
+        }
     }
     const removeTag = function(value: string) {
         if (tagSet.delete(value))
