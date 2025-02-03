@@ -34,7 +34,12 @@ public class MarkdownUtil {
     }
 
     public static String extractText(String markdown) {
+        markdown = replaceSafeContent(markdown);
         String html = convertHtml(markdown);
         return Jsoup.parse(html).text(); // html에서 text만
+    }
+
+    public static String replaceSafeContent(String markdown) {
+        return markdown.replaceAll("</?br>", "").replaceAll("!\\[", "\n![");
     }
 }
