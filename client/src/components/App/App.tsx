@@ -64,6 +64,14 @@ function AppRouter() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            // behavior: "smooth"
+        });
+    }, [location.pathname]);
+
     return <TransitionGroup >
         <CSSTransition key={location.pathname} onExit={onExit} classNames={{
             enter: style.enter,
