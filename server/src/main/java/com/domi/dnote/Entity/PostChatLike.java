@@ -3,6 +3,8 @@ package com.domi.dnote.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,5 +18,6 @@ public class PostChatLike {
 
     @Id
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     PostChat chat;
 }
