@@ -40,6 +40,9 @@ export default defineConfig({
 
             return `@toast-ui${prefix}`;
           }
+          if (id.includes("katex")) {
+            return "@katex";
+          }
           // if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/") || id.includes("node_modules/react-redux")) {
           //   return "@react-vendor";
           // }
