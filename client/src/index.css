@@ -69,3 +69,7 @@ button {
   -webkit-background-clip: text;
   color: transparent;
 }
+
+.katex {
+  font-size: 18px;
+}

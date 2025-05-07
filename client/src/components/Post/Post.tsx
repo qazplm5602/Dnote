@@ -32,6 +32,7 @@ import MetaTag from '../MetaTag/MetaTag';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import { getThumbnailUrl } from '../PostBox/PostBox';
 import PostIndexSection, { IndexInitEvent } from './IndexSection/IndexSection';
+import { renderKatexView } from '../Utils/katex';
 
 export interface BasePostDTO {
     title: string,
@@ -201,6 +202,9 @@ function ViewerContainer({ content, indexInitRef }: { content: string, indexInit
 
     return <Viewer
         ref={viewRef}
+        customHTMLRenderer={{
+            katex: renderKatexView
+        }}
         plugins={[
             [codeSyntaxHighlight, { highlighter: Prism }]
         ]}

@@ -29,9 +29,6 @@ import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-kotlin';
 
-// katex
-import katex from 'katex';
-
 import style from './write.module.css';
 
 import closeSvg from '../../assets/icons/ic-close-solid.svg';
@@ -48,6 +45,7 @@ import { LoginState } from '../Redux/LoginStateSlice';
 import WriteThumbnailBox from './ThumbnailBox';
 import { PostDTO } from '../Post/Post';
 import MetaTag from '../MetaTag/MetaTag';
+import { renderKatexView } from '../Utils/katex';
 
 type tempStatus = {
     id: string,
@@ -431,14 +429,7 @@ function EditorSection({ editorRef, initValue }: { editorRef?: React.RefObject<E
             useCommandShortcut={true}
             language="ko-KR"
             customHTMLRenderer={{
-                katex(node: any) {
-                    const html = katex.renderToString(node.literal, { throwOnError: false, output: 'mathml' });
-                    return [
-                        { type: 'openTag', tagName: 'div', outerNewLine: true },
-                        { type: 'html', content: html },
-                        { type: 'closeTag', tagName: 'div', outerNewLine: true }
-                    ];
-                }
+                katex: renderKatexView
             }}
             plugins={[
                 EditorColor,
